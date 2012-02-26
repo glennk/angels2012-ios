@@ -9,13 +9,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "198"
          endingLineNumber = "198"
-         landmarkName = "-tableView:numberOfRowsInSection:"
-         landmarkType = "5">
+         landmarkName = "@implementation TeamsTableViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -23,13 +23,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "199"
          endingLineNumber = "199"
-         landmarkName = "-tableView:numberOfRowsInSection:"
-         landmarkType = "5">
+         landmarkName = "@implementation TeamsTableViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -51,13 +51,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "190"
          endingLineNumber = "190"
-         landmarkName = "-numberOfSectionsInTableView:"
-         landmarkType = "5">
+         landmarkName = "@implementation TeamsTableViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "Yes"
@@ -79,13 +79,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "226"
          endingLineNumber = "226"
-         landmarkName = "-tableView:cellForRowAtIndexPath:"
-         landmarkType = "5">
+         landmarkName = "@implementation TeamsTableViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -93,13 +93,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "293"
-         endingLineNumber = "293"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
+         endingLineNumber = "293">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -107,13 +105,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "288"
-         endingLineNumber = "288"
-         landmarkName = "-tableView:didSelectRowAtIndexPath:"
-         landmarkType = "5">
+         endingLineNumber = "288">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -121,13 +117,13 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamsTableViewController.m"
-         timestampString = "351967333.819687"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "206"
          endingLineNumber = "206"
-         landmarkName = "-teamAtIndexPath:"
-         landmarkType = "5">
+         landmarkName = "@implementation TeamsTableViewController"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -177,11 +173,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/PlayerSummaryViewController.m"
-         timestampString = "351904503.238262"
+         timestampString = "351972345.346174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "157"
-         endingLineNumber = "157"
+         startingLineNumber = "88"
+         endingLineNumber = "88"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -191,11 +187,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "351742893.465254"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "365"
-         endingLineNumber = "365"
+         startingLineNumber = "296"
+         endingLineNumber = "296"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -205,11 +201,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "351742893.465254"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "366"
-         endingLineNumber = "366"
+         startingLineNumber = "297"
+         endingLineNumber = "297"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -233,11 +229,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "348110321.343608"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "19"
-         endingLineNumber = "19"
+         startingLineNumber = "16"
+         endingLineNumber = "16"
          landmarkName = "byNickname"
          landmarkType = "19">
       </FileBreakpoint>
@@ -247,11 +243,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamPlayersTableViewController.m"
-         timestampString = "348451678.064181"
+         timestampString = "351972043.390143"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "63"
-         endingLineNumber = "63"
+         startingLineNumber = "37"
+         endingLineNumber = "37"
          landmarkName = "-setTeam:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -330,20 +326,6 @@
          ignoreCount = "0"
          continueAfterRunningActions = "No"
          isPathRelative = "1"
-         filePath = "Angels2011/AllCoachesTableViewController.m"
-         timestampString = "350966747.061706"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "67"
-         endingLineNumber = "67"
-         landmarkName = "-coaches"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
          filePath = "Angels2011/AwsURLHelper.m"
          timestampString = "351966321.346349"
          startingColumnNumber = "9223372036854775807"
@@ -373,11 +355,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "351742893.465254"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "95"
-         endingLineNumber = "95"
+         startingLineNumber = "68"
+         endingLineNumber = "68"
          landmarkName = "-sections"
          landmarkType = "5">
       </FileBreakpoint>
@@ -387,11 +369,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamPlayersTableViewController.m"
-         timestampString = "348451678.064181"
+         timestampString = "351972043.390143"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "91"
-         endingLineNumber = "91"
+         startingLineNumber = "65"
+         endingLineNumber = "65"
          landmarkName = "-viewDidLoad"
          landmarkType = "5">
       </FileBreakpoint>
@@ -401,11 +383,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/TeamPlayersTableViewController.m"
-         timestampString = "348451678.064181"
+         timestampString = "351972043.390143"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
+         startingLineNumber = "33"
+         endingLineNumber = "33"
          landmarkName = "-setTeam:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -415,11 +397,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "351742893.465254"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "57"
-         endingLineNumber = "57"
+         startingLineNumber = "31"
+         endingLineNumber = "31"
          landmarkName = "-playersAsDictionary"
          landmarkType = "5">
       </FileBreakpoint>
@@ -429,11 +411,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "351742893.465254"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "137"
-         endingLineNumber = "137"
+         startingLineNumber = "86"
+         endingLineNumber = "86"
          landmarkName = "-toggleNicknames"
          landmarkType = "5">
       </FileBreakpoint>
@@ -443,11 +425,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/Player.m"
-         timestampString = "351965668.390028"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "44"
-         endingLineNumber = "44"
+         startingLineNumber = "45"
+         endingLineNumber = "45"
          landmarkName = "+playerFromJson:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -457,25 +439,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/AllCoachesTableViewController.m"
-         timestampString = "350966747.061706"
+         timestampString = "351973842.151925"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "87"
-         endingLineNumber = "87"
-         landmarkName = "-coaches"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Angels2011/AllCoachesTableViewController.m"
-         timestampString = "351138340.892955"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "257"
-         endingLineNumber = "257"
+         startingLineNumber = "231"
+         endingLineNumber = "231"
          landmarkName = "-tableView:didSelectRowAtIndexPath:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -485,11 +453,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/PlayerSummaryViewController.m"
-         timestampString = "351904503.238262"
+         timestampString = "351972345.346174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "82"
-         endingLineNumber = "82"
+         startingLineNumber = "38"
+         endingLineNumber = "38"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -499,11 +467,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/PlayerSummaryViewController.m"
-         timestampString = "351298860.111886"
+         timestampString = "351972345.346174"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "76"
-         endingLineNumber = "76"
+         startingLineNumber = "32"
+         endingLineNumber = "32"
          landmarkName = "-viewWillAppear:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -513,11 +481,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/Player.m"
-         timestampString = "351965668.390028"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "53"
-         endingLineNumber = "53"
+         startingLineNumber = "54"
+         endingLineNumber = "54"
          landmarkName = "+playerFromJson:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -583,11 +551,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/Player.m"
-         timestampString = "351965668.390028"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "45"
-         endingLineNumber = "45"
+         startingLineNumber = "46"
+         endingLineNumber = "46"
          landmarkName = "+playerFromJson:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -597,11 +565,11 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/Player.m"
-         timestampString = "351965668.390028"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "69"
-         endingLineNumber = "69"
+         startingLineNumber = "70"
+         endingLineNumber = "70"
          landmarkName = "+playerFromJson:"
          landmarkType = "5">
       </FileBreakpoint>
@@ -611,26 +579,12 @@
          continueAfterRunningActions = "No"
          isPathRelative = "1"
          filePath = "Angels2011/Player.m"
-         timestampString = "351965668.390028"
+         timestampString = "351971717.296332"
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "59"
-         endingLineNumber = "59"
+         startingLineNumber = "60"
+         endingLineNumber = "60"
          landmarkName = "+playerFromJson:"
-         landmarkType = "5">
-      </FileBreakpoint>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         isPathRelative = "1"
-         filePath = "Angels2011/AllPlayersTableViewController.m"
-         timestampString = "351895382.297138"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "103"
-         endingLineNumber = "103"
-         landmarkName = "-players"
          landmarkType = "5">
       </FileBreakpoint>
    </FileBreakpoints>

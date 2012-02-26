@@ -65,6 +65,7 @@
 		0CDB774714581ACC00672CEB /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CDB774614581ACC00672CEB /* MobileCoreServices.framework */; };
 		0CDB774914581AF700672CEB /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CDB774814581AF700672CEB /* libz.dylib */; };
 		0CDB774D14581B5300672CEB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB774C14581B5300672CEB /* Reachability.m */; };
+		0CF5FC7914FAB1BA0064133C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CF5FC7814FAB1BA0064133C /* icon.png */; };
 		0CFEEF0514FA9F4400348FDE /* PlayerMoreInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -166,6 +167,7 @@
 		0CDB774814581AF700672CEB /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		0CDB774B14581B5300672CEB /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
 		0CDB774C14581B5300672CEB /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		0CF5FC7814FAB1BA0064133C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		0CFEEF0314FA9F4400348FDE /* PlayerMoreInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerMoreInfoTableViewController.h; sourceTree = "<group>"; };
 		0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerMoreInfoTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -238,8 +240,7 @@
 		0CDB74ED1455AB5E00672CEB /* Angels2011 */ = {
 			isa = PBXGroup;
 			children = (
-				0CFEEF0314FA9F4400348FDE /* PlayerMoreInfoTableViewController.h */,
-				0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */,
+				0CF5FC7814FAB1BA0064133C /* icon.png */,
 				0C19DB8114EB466700A457E5 /* Coach.h */,
 				0C19DB8214EB466700A457E5 /* Coach.m */,
 				0CD1010414BFAC2D003EEFEA /* Player.h */,
@@ -264,14 +265,13 @@
 				0C683D571462255C00133A54 /* PlayerSummaryViewController.h */,
 				0C683D581462255C00133A54 /* PlayerSummaryViewController.m */,
 				0C5741661466C49600275112 /* PlayerSummaryViewController.xib */,
-				0CDB752414563BBA00672CEB /* PlayerPhotoViewController.h */,
-				0CDB752514563BBA00672CEB /* PlayerPhotoViewController.m */,
-				0CD19E2514623E7F004974C3 /* PlayerPhotoViewController.xib */,
 				0C5254DF1470996D00C116C7 /* CalendarTableViewController.h */,
 				0C5254E01470996D00C116C7 /* CalendarTableViewController.m */,
-				0CDB74F91455AB5E00672CEB /* MainWindow.xib */,
+				0CFEEF0314FA9F4400348FDE /* PlayerMoreInfoTableViewController.h */,
+				0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */,
 				0CA2DB7614B24F730071C30D /* AwsURLHelper.h */,
 				0CA2DB7714B24F730071C30D /* AwsURLHelper.m */,
+				0CDB74F91455AB5E00672CEB /* MainWindow.xib */,
 				0C19DB9514F0234200A457E5 /* Ian2.png */,
 				0C19DB8F14EE7C7800A457E5 /* Ian.png */,
 				0C57415F1466BB7400275112 /* baseball_field.jpeg */,
@@ -286,6 +286,9 @@
 				0C5254E314709A7200C116C7 /* 83-calendar.png */,
 				0CD19E291462DD43004974C3 /* 112-group.png */,
 				0CD19E271462DC8A004974C3 /* 85-trophy.png */,
+				0CDB752414563BBA00672CEB /* PlayerPhotoViewController.h */,
+				0CDB752514563BBA00672CEB /* PlayerPhotoViewController.m */,
+				0CD19E2514623E7F004974C3 /* PlayerPhotoViewController.xib */,
 				0CDB74EE1455AB5E00672CEB /* Supporting Files */,
 			);
 			path = Angels2011;
@@ -452,6 +455,7 @@
 				0C19DBA614F035A900A457E5 /* 13URedClubTag.png in Resources */,
 				0C19DBA814F035A900A457E5 /* 11UClubTag.png in Resources */,
 				0C99798614F0473B007C00A2 /* 12UWhiteClubTag.png in Resources */,
+				0CF5FC7914FAB1BA0064133C /* icon.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,6 +8,10 @@
 
 #import "Player.h"
 #import "Parent.h"
+#import "Team.h"
+#import <YAJLios/YAJL.h>
+#import "ASIHTTPRequest.h"
+#import "AwsURLHelper.h"
 
 @implementation Player
 
@@ -68,5 +72,91 @@
     
     return p;
 }
+
++ (NSArray *)allPlayers
+{
+    NSLog(@"getPlayers()");
+    NSMutableArray *jplayers = [[[NSMutableArray alloc] init] autorelease];
+    NSURL *playersURL = [AwsURLHelper getPlayers];
+    NSLog(@"players.url %@", playersURL);
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
+    [request addRequestHeader:@"Accept" value:@"application/json"];
+    [request startSynchronous];
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        NSLog(@"players.response = %@", response);
+        NSDictionary *temp = [response yajl_JSON];
+        NSLog(@"players[after json parse] = %@", temp);
+        NSArray *x = [temp objectForKey:@"players"];
+        NSLog(@"x = %@", x);
+        for (NSDictionary *t in x) {
+            NSLog(@"t = %@", t);
+            Player* p = [Player playerFromJson:t];
+            [jplayers addObject:p];
+        }
+    }
+    NSLog(@"jplayers array = %@", jplayers);
+    return jplayers;
+}
+
++ (NSArray *)teamPlayers:(Team *)team
+{
+    NSLog(@"getTeamPlayers()");
+    NSLog(@"team = %@", team);
+    NSString *key = team.uniqueId;
+    NSLog(@"key = %@", key);
+    
+    NSMutableArray *jplayers = [[[NSMutableArray alloc] init] autorelease];
+    NSURL *playersURL = [AwsURLHelper getPlayersOnASpecifiedTeam:key];
+    NSLog(@"players.url %@", playersURL);
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
+    [request addRequestHeader:@"Accept" value:@"application/json"];
+    [request startSynchronous];
+    NSError *error = [request error];
+    if (!error) {
+        NSString *response = [request responseString];
+        NSLog(@"players.response = %@", response);
+        NSDictionary *temp = [response yajl_JSON];
+        NSLog(@"players[after json parse] = %@", temp);
+        NSArray *x = [temp objectForKey:@"players"];
+        NSLog(@"x = %@", x);
+        for (NSDictionary *t in x) {
+            NSLog(@"t = %@", t);
+            Player *p = [Player playerFromJson:t];
+            [jplayers addObject:p];
+        }
+    }
+    //NSLog(@"players dict = %@", jplayers);
+    return jplayers;
+}
+
++ (UIImage*)playerCardPhoto:(Player *)player
+{
+    NSLog(@"player = %@", player);
+    NSString *id = player.uniqueId;
+    NSURL *playersURL = [AwsURLHelper getPhotoOfPlayer:id];
+    NSLog(@"players.photo.url %@", playersURL);
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
+    [request addRequestHeader:@"Accept" value:@"image/jpeg"];
+    [request startSynchronous];
+    NSError *error = [request error];
+    UIImage *image = nil;
+    if (!error) {
+        NSData *responseData = [request responseData];
+        image = [UIImage imageWithData:responseData];
+    }      
+    
+    if (image == nil)
+        NSLog(@"Failed to load image for URL: %@", playersURL);
+    else {
+        //        fieldImage.image = image;
+        //        playerPhoto.frame = CGRectMake(0, 0, image.size.width*SCALE, image.size.height*SCALE);
+        //        CGSize size = CGSizeMake(image.size.width*SCALE, image.size.height*SCALE);
+        //        scrollView.contentSize = size; //image.size;
+    }
+    return image;
+}
+
 
 @end

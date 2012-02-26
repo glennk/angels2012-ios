@@ -8,14 +8,10 @@
 
 #import "TeamsTableViewController.h"
 #import "TeamPlayersTableViewController.h"
-#import <YAJLios/YAJL.h>
-#include "ASIHTTPRequest.h"
-#import "AwsURLHelper.h"
 #import "Team.h"
 
 @interface TeamsTableViewController()
 
-//@property (nonatomic, retain) NSMutableArray * zteams;
 @property (nonatomic, retain) NSDictionary * teamsAsDictionary;
 @end
 
@@ -24,72 +20,26 @@
 @synthesize sections = _sections;
 @synthesize teams = _teams;
 
-//@synthesize zteams;
 @synthesize teamsAsDictionary = _teamsAsDictionary;
 
-/*
- * teams[NSArray]
- *
- * [0] = NSDictionary(level=13U, name=Austin Angels 13U Red, etc)
- * [1] = NSDictionary(level=13U, name=Austin Angels 13U White, etc)
- 
- key=13U, value=NSArray
-          [0] = Austin Angels 13U Red
-          [1] = Austin Angels 13U White
- 
- key=12U, value=NSArray
-          [0] = Austin Angels 12U Red
-          [1] = Austin Angels 12U White
- */
 
 - (NSArray *)sections
 {
-//    NSLog(@"getSections()");
-//    NSLog(@"sections = %@", _sections);
     if (!_sections) {
         _sections = [[self.teamsAsDictionary allKeys] retain];
         NSLog(@"sections = %@", _sections);
     }
-//    NSLog(@"sections.retainCount = %d", [_sections retainCount]);
     
     return _sections;
 }
 
 - (NSArray *)teams
 {
-    return [Team allTeams];
+    if (!_teams)
+        _teams = [[Team allTeams] retain];
+    
+    return _teams;
 }
-
-//- (NSArray *)teamsOLD
-//{
-////    NSLog(@"getTeams()");
-//    if (!_teams) {
-//        NSMutableArray *jteams = [[NSMutableArray alloc] init];
-//        NSURL *teamsURL = [AwsURLHelper getTeams];
-//        NSLog(@"teams.url %@", teamsURL);
-//        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:teamsURL];
-//        [request addRequestHeader:@"Accept" value:@"application/json"];
-//        [request startSynchronous];
-//        NSError *error = [request error];
-//        if (!error) {
-//            NSString *response = [request responseString];
-//            NSLog(@"teams.response = %@", response);
-//            NSDictionary *temp = [response yajl_JSON];
-//            NSLog(@"teams[after json parse] = %@", temp);
-//            NSArray *x = [temp objectForKey:@"teams"];
-//            NSLog(@"x = %@", x);
-//            for (NSDictionary *d in x) {
-//                NSLog(@"t = %@", d);
-//                Team *t = [Team teamFromJson:d];
-//                [jteams addObject:t];
-//            }
-//        }
-//        NSLog(@"teams = %@ (retain count=%d)", jteams, [jteams retainCount]);
-//        _teams = [[NSArray alloc] initWithArray:jteams];
-//        [jteams release];
-//    }
-//    return _teams;
-//}
 
 - (NSDictionary *)teamsAsDictionary
 {

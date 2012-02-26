@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Parent.h"
+#import "Team.h"
 
 @interface Player : NSObject
 
@@ -22,6 +23,9 @@
 @property (nonatomic, retain) NSString * throws;
 @property (nonatomic, retain) Parent * parents;
 
-+ (Player *)playerFromJson:(NSDictionary *)jsonData;
+//+ (Player *)playerFromJson:(NSDictionary *)jsonData;
++ (NSArray *)allPlayers;
++ (NSArray *)teamPlayers:(Team *)team;
++ (UIImage *)playerCardPhoto:(Player *)player;
 
 @end

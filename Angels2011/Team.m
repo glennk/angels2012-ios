@@ -29,7 +29,7 @@
 
 + (NSArray *)allTeams
 {
-    NSMutableArray *jteams = [[NSMutableArray alloc] init];
+    NSMutableArray *jteams = [[[NSMutableArray alloc] init] autorelease];
 
     NSURL *teamsURL = [AwsURLHelper getTeams];
     NSLog(@"teams.url %@", teamsURL);

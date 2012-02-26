@@ -101,14 +101,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     if (section == 0) {
         return 3;
@@ -123,13 +121,6 @@
         return 1;
     }
 }
-
-//- (NSString *)parentName:(Parent *)p
-//{
-//    NSString *f = (p.firstname != NULL) ? p.firstname : @"";
-//    NSString *l = (p.lastname != NULL) ? p.lastname : @"";
-//    return [NSString stringWithFormat:@"%@ %@", f, l];
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

@@ -8,9 +8,6 @@
 
 #import "AllPlayersTableViewController.h"
 #import "PlayerSummaryViewController.h"
-#import <YAJLios/YAJL.h>
-#include "ASIHTTPRequest.h"
-#include "AwsURLHelper.h"
 #include "Player.h"
 
 @interface AllPlayersTableViewController()
@@ -28,29 +25,6 @@
 @synthesize playersAsDictionary = _playersAsDictionary;
 @synthesize byNickname;
 
-/*
- * players[NSArray]
- *
- * [0] = NSDictionary(name=Aaron Little, etc)
- * [1] = NSDictionary(name=Michael Kronschnabl, etc)
- 
- key=A, value=NSArray
- [0] = Aaron Little
- [1] = <any other names that start with A>
- 
- key=M, value=NSArray
- [0] = Michael Kronschnabl
- [1] = <any other names that start with M>
- */
-
-//- (NSArray *)sectionsOLD
-//{
-//    if (!_sections) {
-//        _sections = [[[self.players allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
-//        NSLog(@"sections = %@", _sections);
-//    }
-//    return _sections;
-//}
 
 - (NSDictionary *)playersAsDictionary
 {
@@ -88,7 +62,6 @@
     return _playersAsDictionary;
 }
 
-
 - (NSArray *)sections
 {
     if (!_sections) {
@@ -100,35 +73,11 @@
 
 - (NSArray *)players
 {
-    if (!_players) {
-        NSLog(@"getPlayers()");
-        NSMutableArray *jplayers = [[NSMutableArray alloc] init];
-        NSURL *playersURL = [AwsURLHelper getPlayers];
-        NSLog(@"players.url %@", playersURL);
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
-        [request addRequestHeader:@"Accept" value:@"application/json"];
-        [request startSynchronous];
-        NSError *error = [request error];
-        if (!error) {
-            NSString *response = [request responseString];
-            NSLog(@"players.response = %@", response);
-            NSDictionary *temp = [response yajl_JSON];
-            NSLog(@"players[after json parse] = %@", temp);
-            NSArray *x = [temp objectForKey:@"players"];
-            NSLog(@"x = %@", x);
-            for (NSDictionary *t in x) {
-                NSLog(@"t = %@", t);
-                Player* p = [Player playerFromJson:t];
-                [jplayers addObject:p];
-            }
-        }
-        NSLog(@"jplayers array = %@", jplayers);
-        _players = [[NSArray alloc] initWithArray:jplayers];
-        [jplayers release];
-    }
+    if (!_players)
+        _players = [[Player allPlayers] retain];
+    
     return _players;
 }
- 
 
 - (void)toggleNicknames
 {
@@ -240,18 +189,6 @@
     return playersInSection.count;
 }
 
-//- (NSDictionary *)playerAtIndexPath:(NSIndexPath *)indexPathOLD
-//{
-//    //NSLog(@"playerAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
-//    //NSLog(@"_players.retainCount = %d", [_players retainCount]);
-//    NSArray *playersInSection = [self.players objectForKey:[self.sections objectAtIndex:indexPath.section]];
-//    //NSLog(@"playerAtIndexPath.playersInSection = %@", playersInSection);
-//    NSDictionary *t = [playersInSection objectAtIndex:indexPath.row];
-//    NSLog(@"playerAtIndexPath = %@", t);
-//    return t;
-//    //    return [teamsInSection objectAtIndex:indexPath.row];
-//}
-
 - (Player *)playerAtIndexPath:(NSIndexPath *)indexPath
 {
     //NSLog(@"playerAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
@@ -263,12 +200,6 @@
     return t;
     //    return [teamsInSection objectAtIndex:indexPath.row];
 }
-
-//- (NSDictionary *)playerAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    NSArray *playersInSection = [self.players objectForKey:[self.sections objectAtIndex:indexPath.section]];
-//    return [playersInSection objectAtIndex:indexPath.row];
-//}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

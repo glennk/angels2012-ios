@@ -14,6 +14,7 @@
 @property (nonatomic, retain) NSString * firstname;
 @property (nonatomic, retain) NSString * lastname;
 
-+ (Coach *)coachFromJson:(NSDictionary *)jsonData;
+//+ (Coach *)coachFromJson:(NSDictionary *)jsonData;
++ (NSArray *)allCoaches;
 
 @end

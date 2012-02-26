@@ -7,64 +7,20 @@
 //
 
 #import "PlayerSummaryViewController.h"
-//#import "PlayerPhotoViewController.h"
 #import "PlayerMoreInfoTableViewController.h"
-#import <YAJLios/YAJL.h>
-#import "AwsURLHelper.h"
-#include "ASIHTTPRequest.h"
-#include "Player.h"
+#import "Player.h"
 
 
 @interface PlayerSummaryViewController()
-//@property (retain) IBOutlet UILabel *playerLabel;
-//@property (retain) IBOutlet UIImageView *fieldImage;
-//@property (retain) IBOutlet UIView *fieldOverlay;
-//@property (retain) NSMutableDictionary *positions;
 @end
 
 @implementation PlayerSummaryViewController
 
-//@synthesize playerLabel;
-@synthesize player; //, playerInfo;
-//@synthesize fieldImage; //, fieldOverlay
-//@synthesize banner;
+@synthesize player;
 
-
-- (void)drawCircelAtPoint:(CGPoint)p withRaduis:(CGFloat)radius inContext:(CGContextRef)context
+- (UIImage *)playerCardPhoto
 {
-    UIGraphicsPushContext(context);
-    CGContextBeginPath(context);
-    CGContextAddArc(context, p.x, p.y, radius, 0, 2*M_PI, YES);
-    CGContextStrokePath(context);
-    UIGraphicsPopContext();
-    
-}
-
-- (UIImage*)getImage
-{
-    NSLog(@"player = %@", player);
-    NSString *id = player.uniqueId;
-    NSURL *playersURL = [AwsURLHelper getPhotoOfPlayer:id];
-    NSLog(@"players.photo..url %@", playersURL);
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
-    [request addRequestHeader:@"Accept" value:@"image/jpeg"];
-    [request startSynchronous];
-    NSError *error = [request error];
-    UIImage *image = nil;
-    if (!error) {
-        NSData *responseData = [request responseData];
-        image = [UIImage imageWithData:responseData];
-    }      
-    
-    if (image == nil)
-        NSLog(@"Failed to load image for URL: %@", playersURL);
-    else {
-//        fieldImage.image = image;
-//        playerPhoto.frame = CGRectMake(0, 0, image.size.width*SCALE, image.size.height*SCALE);
-//        CGSize size = CGSizeMake(image.size.width*SCALE, image.size.height*SCALE);
-//        scrollView.contentSize = size; //image.size;
-    }
-    return image;
+    return [Player playerCardPhoto: self.player];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -73,7 +29,7 @@
 //    UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ian2" ofType:@"png"]];
 //    if (image == nil)
 //        NSLog(@"Failed to load image for control vieww");
-    fieldImage.image = [self getImage]; //image;
+    fieldImage.image = [self playerCardPhoto];
     
     NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
                            @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];
@@ -81,36 +37,11 @@
     NSLog(@"player.level = %@", player.level);
     NSString *bName = [bImgs objectForKey:player.level];
     NSLog(@"bName = %@", bName);
-//    UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"11UClubTag" ofType:@"png"]];
     UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:bName ofType:@"png"]];
     if (bimg == nil)
         NSLog(@"Failed to load banner for control vieww");
     banner.image = bimg;
-
-//    [image release];
-    
-//     UIImage *dot = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"85-trophy" ofType:@"png"]];
-//    UIImageView *overlayImageView = [[UIImageView alloc] initWithImage:dot];
-//    //[overlayImageView setFrame:CGRectMake(30, 100, 260, 200)];
-//    [overlayImageView setCenter:CGPointMake(150, 200)];
-//    [[self view] addSubview:overlayImageView];
-//    [overlayImageView release];
-
-  
-//         // Drawing code
-//        CGPoint midPoint;
-//        midPoint.x = self.fieldOverlay.bounds.origin.x + self.fieldOverlay.bounds.size.width/2;
-//        midPoint.y = self.fieldOverlay.bounds.origin.y + self.fieldOverlay.bounds.size.height/2;
-//        
-//        CGFloat size = self.fieldOverlay.bounds.size.width / 2;
-//        if (self.fieldOverlay.bounds.size.height < self.fieldOverlay.bounds.size.width) size = self.fieldOverlay.bounds.size.height / 2;
-//        size *= 0.90;
-//        
-//        CGContextRef context = UIGraphicsGetCurrentContext();
-//        
-//        [self.fieldOverlay drawCircelAtPoint:midPoint withRaduis:size inContext:context];
-//
-  }
+}
 
 
 - (IBAction)photoButtonPressed:(id)sender

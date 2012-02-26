@@ -9,9 +9,6 @@
 #import "TeamPlayersTableViewController.h"
 //#import "PlayerPhotoViewController.h"
 #import "PlayerSummaryViewController.h"
-#import <YAJLios/YAJL.h>
-#include "ASIHTTPRequest.h"
-#import "AwsURLHelper.h"
 #import "Team.h"
 #import "Player.h"
 
@@ -22,35 +19,9 @@
 
 - (NSArray *)players
 {
-    //NSLog(@"getPlayers()");
-    if (!_players) {
-        NSMutableArray *jplayers = [[NSMutableArray alloc] init];
-        NSLog(@"team = %@", self.team);
-        NSString *key = self.team.uniqueId;
-        NSLog(@"key = %@", key);
-        NSURL *playersURL = [AwsURLHelper getPlayersOnASpecifiedTeam:key];
-        NSLog(@"players.url %@", playersURL);
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
-        [request addRequestHeader:@"Accept" value:@"application/json"];
-        [request startSynchronous];
-        NSError *error = [request error];
-        if (!error) {
-            NSString *response = [request responseString];
-            NSLog(@"players.response = %@", response);
-            NSDictionary *temp = [response yajl_JSON];
-            NSLog(@"players[after json parse] = %@", temp);
-            NSArray *x = [temp objectForKey:@"players"];
-            NSLog(@"x = %@", x);
-            for (NSDictionary *t in x) {
-                NSLog(@"t = %@", t);
-                Player *p = [Player playerFromJson:t];
-                [jplayers addObject:p];
-            }
-        }
-        NSLog(@"players dict = %@", jplayers);
-        _players = [[NSArray alloc] initWithArray:jplayers];
-        [jplayers release];
-    }
+    if (!_players)
+        _players = [[Player teamPlayers: self.team] retain];
+    
     return _players;
 }
 

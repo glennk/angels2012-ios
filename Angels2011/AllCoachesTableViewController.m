@@ -8,9 +8,6 @@
 
 #import "AllCoachesTableViewController.h"
 #import "CoachSummaryViewController.h"
-#import <YAJLios/YAJL.h>
-#import "ASIHTTPRequest.h"
-#import "AwsURLHelper.h"
 #import "Coach.h"
 
 @interface AllCoachesTableViewController()
@@ -58,32 +55,9 @@
 
 - (NSArray *)coaches
 {
-    NSLog(@"getCoaches()");
-    if (!_coaches) {
-        NSMutableArray *jcoaches = [[NSMutableArray alloc] init];
-        NSURL *coachesURL = [AwsURLHelper getCoaches];
-        NSLog(@"coaches.url %@", coachesURL);
-        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:coachesURL];
-        [request addRequestHeader:@"Accept" value:@"application/json"];
-        [request startSynchronous];
-        NSError *error = [request error];
-        if (!error) {
-            NSString *response = [request responseString];
-            NSLog(@"coaches.response = %@", response);
-            NSDictionary *temp = [response yajl_JSON];
-            NSLog(@"coaches[after json parse] = %@", temp);
-            NSArray *x = [temp objectForKey:@"coaches"];
-            NSLog(@"x = %@", x);
-            for (NSDictionary *t in x) {
-                NSLog(@"t = %@", t);
-                Coach *c = [Coach coachFromJson:t];
-                [jcoaches addObject:c];
-            }
-        }
-        NSLog(@"jcoaches array = %@", jcoaches);
-        _coaches = [[NSArray alloc] initWithArray:jcoaches];
-        [jcoaches release];
-    }
+    if (!_coaches)
+        _coaches = [[Coach allCoaches] retain];
+    
     return _coaches;
 }
 

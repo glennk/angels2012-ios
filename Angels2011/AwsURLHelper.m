@@ -10,9 +10,9 @@
 
 @implementation AwsURLHelper
 
-#define _HOST @"localhost"
+//#define _HOST @"localhost"
 //#define _HOST @"glenn-env-1.elasticbeanstalk.com"
-//#define _HOST @"192.168.3.101"
+#define _HOST @"192.168.3.105"
 
 
 + (NSString *)buildURL:(NSString *)path
@@ -53,7 +53,7 @@
     //https://www.google.com/calendar/feeds/austinangelsbaseball%40yahoo.com/public/full?alt=jsonc&singleevents=true&sortorder=ascending&futureevents=true
     //return [[[NSURL alloc] initWithString:@"https://www.google.com/calendar/feeds/austinangelsbaseball%40yahoo.com/public/full?alt=jsonc&singleevents=true"] //autorelease];
     return [[[NSURL alloc]
-initWithString:@"https://www.googleapis.com/calendar/v3/calendars/austinangelsbaseball%40yahoo.com/events?key=AIzaSyCPhC0NyIX-4skyCDCbwAWA6AhMTUqGClI&maxResults=10&timeMin=2012-03-01T00:00:00Z&singleEvents=true"] autorelease];
+initWithString:@"https://www.googleapis.com/calendar/v3/calendars/austinangelsbaseball%40yahoo.com/events?key=AIzaSyCPhC0NyIX-4skyCDCbwAWA6AhMTUqGClI&maxResults=10&timeMin=2012-02-01T00:00:00Z&singleEvents=true"] autorelease];
 }
 
 @end
