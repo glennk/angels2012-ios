@@ -34,6 +34,10 @@
         return @"Right";
 }
 
+// Necessary by the move to jboss and jackson-rs which actually puts null objects in the json stream as 'null'
+// if that's what's in the database
+#define _BLANK_IF_NSNULL(a) (a == [NSNull null] ? @"" : a)
+
 + (Player *)playerFromJson:(NSDictionary *)data
 {
     Player *p = [[[Player alloc] init] autorelease];
@@ -62,12 +66,12 @@
     NSDictionary *t = [data objectForKey:@"parents"];
     NSLog(@"looking at parent: %@", t);
     Parent *parent = [[[Parent alloc] init] autorelease];
-    parent.name1 = [t objectForKey:@"parent1"];
-    parent.phone1 = [t objectForKey:@"phone1"];
-    parent.email1 = [t objectForKey:@"email1"];
-    parent.name2 = [t objectForKey:@"parent2"];
-    parent.phone2 = [t objectForKey:@"phone2"];
-    parent.email2 = [t objectForKey:@"email2"];
+    parent.name1 = _BLANK_IF_NSNULL([t objectForKey:@"parent1"]);
+    parent.phone1 = _BLANK_IF_NSNULL([t objectForKey:@"phone1"]);
+    parent.email1 = _BLANK_IF_NSNULL([t objectForKey:@"email1"]);
+    parent.name2 = _BLANK_IF_NSNULL([t objectForKey:@"parent2"]);
+    parent.phone2 = _BLANK_IF_NSNULL([t objectForKey:@"phone2"]);
+    parent.email2 = _BLANK_IF_NSNULL([t objectForKey:@"email2"]);
     p.parents = parent;
     
     return p;
@@ -88,7 +92,8 @@
         NSLog(@"players.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
         NSLog(@"players[after json parse] = %@", temp);
-        NSArray *x = [temp objectForKey:@"players"];
+        //NSArray *x = [temp objectForKey:@"players"];
+        NSDictionary *x = temp;
         NSLog(@"x = %@", x);
         for (NSDictionary *t in x) {
             NSLog(@"t = %@", t);
@@ -119,7 +124,8 @@
         NSLog(@"players.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
         NSLog(@"players[after json parse] = %@", temp);
-        NSArray *x = [temp objectForKey:@"players"];
+        //NSArray *x = [temp objectForKey:@"players"];
+        NSDictionary *x = temp;
         NSLog(@"x = %@", x);
         for (NSDictionary *t in x) {
             NSLog(@"t = %@", t);

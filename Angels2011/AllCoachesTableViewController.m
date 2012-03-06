@@ -7,12 +7,10 @@
 //
 
 #import "AllCoachesTableViewController.h"
-#import "CoachSummaryViewController.h"
 #import "Coach.h"
+#import "Coach3MoreInfoViewController.h"
 
 @interface AllCoachesTableViewController()
-//@property (retain, nonatomic) NSArray *sections;
-//@property (retain, nonatomic) NSArray *coaches;
 @property (retain, nonatomic) NSDictionary * coachesAsDictionary;
 @end
 
@@ -226,9 +224,9 @@
      [detailViewController release];
      */
     
-    NSLog(@"inddexPath: %d", indexPath.row);
-    CoachSummaryViewController *csvc = [[CoachSummaryViewController alloc] init];
+    Coach3MoreInfoViewController *csvc = [[Coach3MoreInfoViewController alloc] init];
     csvc.coach = [self coachAtIndexPath:indexPath];
+    NSLog(@"selected coach: %@", csvc.coach);
     [self.navigationController pushViewController:csvc animated:YES];
     [csvc release]; 
 }

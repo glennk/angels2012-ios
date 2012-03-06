@@ -17,7 +17,6 @@
     IBOutlet UILabel *playerNickname;
     IBOutlet UIImageView *fieldImage;
     IBOutlet UIImageView *banner;
-    IBOutlet UILabel *playerPositions;
     //IBOutlet UIView *fieldOverlay;
 }
 

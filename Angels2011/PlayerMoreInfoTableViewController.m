@@ -146,7 +146,7 @@
             cell.detailTextLabel.text = _player.positions;// @"Shortstop, Pitcher";
         }
     }
-    if (indexPath.section == 1) {
+    if (indexPath.section == 1 && _player.parents != nil) {
         if (indexPath.row == 0) {
             cell.textLabel.text = @"parent";
             cell.detailTextLabel.text = _player.parents.name1;

@@ -16,26 +16,36 @@
 
 @implementation PlayerSummaryViewController
 
-@synthesize player;
+@synthesize player = _player;
+
+- (void)setPlayer:(Player *)newplayer
+{
+    NSLog(@"setPlayer: %@", newplayer);
+    [_player release];
+    _player = newplayer;
+//    [fieldImage.image release];
+    fieldImage.image = nil;
+}
 
 - (UIImage *)playerCardPhoto
 {
-    return [Player playerCardPhoto: self.player];
+    return [Player playerCardPhoto: _player];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    NSLog(@"viewWillAppear: player = %@", _player);
 //    UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ian2" ofType:@"png"]];
 //    if (image == nil)
 //        NSLog(@"Failed to load image for control vieww");
-    fieldImage.image = [self playerCardPhoto];
+    if (fieldImage.image == nil)
+        fieldImage.image = [self playerCardPhoto];
     
     NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
                            @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];
 
-    NSLog(@"player.level = %@", player.level);
-    NSString *bName = [bImgs objectForKey:player.level];
+    NSString *bName = [bImgs objectForKey:_player.level];
     NSLog(@"bName = %@", bName);
     UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:bName ofType:@"png"]];
     if (bimg == nil)
@@ -49,7 +59,7 @@
     NSLog(@"photoButtonPressed");
     PlayerMoreInfoTableViewController *pmivc = [[PlayerMoreInfoTableViewController alloc] init];
     pmivc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-    pmivc.player = player;
+    pmivc.player = _player;
     
     UINavigationController *cntrol = [[UINavigationController alloc] initWithRootViewController:pmivc];
     [self presentViewController:cntrol animated:YES completion:nil];
@@ -86,28 +96,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"playerSummaryViewController.viewDidLoad = %@", player);
-    NSString *s = [NSString stringWithFormat:@"%@ %@", player.firstname, player.lastname];
+    NSLog(@"playerSummaryViewController.viewDidLoad = %@", _player);
+    NSString *s = [NSString stringWithFormat:@"%@ %@", _player.firstname, _player.lastname];
     [playerLabel setText:s]; //[player objectForKey:@"lastname"];
-    playerNumber.text = player.number;
-    playerNickname.text = player.nickname;
-    playerPositions.text = player.positions;
+    playerNumber.text = _player.number;
+    playerNickname.text = _player.nickname;
     // Do any additional setup after loading the view from its nib.
 }
 
 
 - (void)viewDidUnload
 {
-    [playerNumber release];
-    playerNumber = nil;
-    [playerNickname release];
-    playerNickname = nil;
-    [fieldImage release];
-    fieldImage = nil;
-//    [fieldOverlay release];
-//    fieldOverlay = nil;
-    [playerPositions release];
-    playerPositions = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -120,11 +119,6 @@
 }
 
 - (void)dealloc {
-    [playerNumber release];
-    [playerNickname release];
-    [fieldImage release];
-//    [fieldOverlay release];
-    [playerPositions release];
     [super dealloc];
 }
 

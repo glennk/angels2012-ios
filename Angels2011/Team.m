@@ -42,7 +42,8 @@
         NSLog(@"teams.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
         NSLog(@"teams[after json parse] = %@", temp);
-        NSArray *x = [temp objectForKey:@"teams"];
+        //NSArray *x = [temp objectForKey:@"teams"];
+        NSDictionary *x = temp;
         NSLog(@"x = %@", x);
         for (NSDictionary *d in x) {
             NSLog(@"t = %@", d);
