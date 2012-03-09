@@ -9,6 +9,7 @@
 #import "AllPlayersTableViewController.h"
 #import "PlayerSummaryViewController.h"
 #include "Player.h"
+#import "DejalActivityView.h"
 
 @interface AllPlayersTableViewController()
 @property (copy) NSString *jsonkey;
@@ -73,11 +74,22 @@
 
 - (NSArray *)players
 {
-    if (!_players)
-        _players = [[Player allPlayers] retain];
-    
+    if (!_players) {
+        [DejalBezelActivityView activityViewForView:self.view];
+        [Player processPlayerDataWithBlock:^(NSArray *playerData) {
+            _players = [[NSArray alloc] initWithArray:playerData]; //[[Player allPlayers] retain];
+            NSLog(@"viewDidLoad: _players returned");
+            [_sections release];
+            _sections = nil;
+            [_playersAsDictionary release];
+            _playersAsDictionary = nil;
+            [self.tableView reloadData];
+            [DejalActivityView removeView];
+        }];
+    }
     return _players;
 }
+
 
 - (void)toggleNicknames
 {
@@ -131,14 +143,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
-//    _players = self.players;
-//    playersAsDictionary = [self putPlayersInDictionary:FALSE];
 }
 
 - (void)viewDidUnload

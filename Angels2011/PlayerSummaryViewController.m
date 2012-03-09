@@ -9,6 +9,7 @@
 #import "PlayerSummaryViewController.h"
 #import "PlayerMoreInfoTableViewController.h"
 #import "Player.h"
+#import "DejalActivityView.h"
 
 
 @interface PlayerSummaryViewController()
@@ -17,6 +18,21 @@
 @implementation PlayerSummaryViewController
 
 @synthesize player = _player;
+
+
+- (void)processPlayerCardPhotoWithBlock:(void (^)(UIImage * imageData))block
+{
+    //NSURL *url = [AwsURLHelper getPlayers];
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("Player downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        UIImage *imageData = [Player playerCardPhoto: _player];
+		dispatch_async(callerQueue, ^{
+		    block(imageData);
+		});
+	});
+	dispatch_release(downloadQueue);
+}
 
 - (void)setPlayer:(Player *)newplayer
 {
@@ -27,10 +43,10 @@
     fieldImage.image = nil;
 }
 
-- (UIImage *)playerCardPhoto
-{
-    return [Player playerCardPhoto: _player];
-}
+//- (UIImage *)playerCardPhoto
+//{
+//    return [Player playerCardPhoto: _player];
+//}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -39,8 +55,27 @@
 //    UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ian2" ofType:@"png"]];
 //    if (image == nil)
 //        NSLog(@"Failed to load image for control vieww");
-    if (fieldImage.image == nil)
-        fieldImage.image = [self playerCardPhoto];
+    if (fieldImage.image == nil) {
+        [DejalBezelActivityView activityViewForView:self.view];
+        /*
+         Thanks to many test and your tips i have what i want... I make in viewDidLoad:
+         [indicator performSelectionOnMainThread@selector(startAnimati ng)...]
+         [self performSelectionOnBackgroundThread@selector(loadDa ta)...];
+         
+         Then in loadData method, at the end:
+         [indicator performSelectionOnMainThread@selector(stopAnimatin g)...]
+         
+         It seems working, is this the right way to procede?
+         */
+       // UIActivityIndicatorView *busy = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+       // [busy perf
+
+        [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
+            UIImage *image = imageData;
+            fieldImage.image = image;
+            [DejalActivityView removeView];
+        }];
+    }
     
     NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
                            @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];

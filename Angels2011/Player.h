@@ -24,6 +24,7 @@
 @property (nonatomic, retain) Parent * parents;
 
 //+ (Player *)playerFromJson:(NSDictionary *)jsonData;
++ (void)processPlayerDataWithBlock:(void (^)(NSArray *players))fetchPlayers;
 + (NSArray *)allPlayers;
 + (NSArray *)teamPlayers:(Team *)team;
 + (UIImage *)playerCardPhoto:(Player *)player;

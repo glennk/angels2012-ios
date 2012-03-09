@@ -64,7 +64,7 @@
     p.level = [teams objectForKey:@"level"];
     
     NSDictionary *t = [data objectForKey:@"parents"];
-    NSLog(@"looking at parent: %@", t);
+    //NSLog(@"looking at parent: %@", t);
     Parent *parent = [[[Parent alloc] init] autorelease];
     parent.name1 = _BLANK_IF_NSNULL([t objectForKey:@"parent1"]);
     parent.phone1 = _BLANK_IF_NSNULL([t objectForKey:@"phone1"]);
@@ -80,6 +80,7 @@
 + (NSArray *)allPlayers
 {
     NSLog(@"getPlayers()");
+    //sleep(3);
     NSMutableArray *jplayers = [[[NSMutableArray alloc] init] autorelease];
     NSURL *playersURL = [AwsURLHelper getPlayers];
     NSLog(@"players.url %@", playersURL);
@@ -89,21 +90,36 @@
     NSError *error = [request error];
     if (!error) {
         NSString *response = [request responseString];
-        NSLog(@"players.response = %@", response);
+        //NSLog(@"players.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
-        NSLog(@"players[after json parse] = %@", temp);
+        //NSLog(@"players[after json parse] = %@", temp);
         //NSArray *x = [temp objectForKey:@"players"];
         NSDictionary *x = temp;
-        NSLog(@"x = %@", x);
+        //NSLog(@"x = %@", x);
         for (NSDictionary *t in x) {
-            NSLog(@"t = %@", t);
+            //NSLog(@"t = %@", t);
             Player* p = [Player playerFromJson:t];
             [jplayers addObject:p];
         }
     }
-    NSLog(@"jplayers array = %@", jplayers);
+    //NSLog(@"jplayers array = %@", jplayers);
     return jplayers;
 }
+
++ (void)processPlayerDataWithBlock:(void (^)(NSArray *players))block
+{
+    //NSURL *url = [AwsURLHelper getPlayers];
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("Player downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+		NSArray *players = [self allPlayers];
+		dispatch_async(callerQueue, ^{
+		    block(players);
+		});
+	});
+	dispatch_release(downloadQueue);
+}
+
 
 + (NSArray *)teamPlayers:(Team *)team
 {
@@ -137,10 +153,25 @@
     return jplayers;
 }
 
+//+ (void)processPlayerCardPhotoWithBlock:(void (^)(Player *player, UIImage * image))block
+//{
+//    //NSURL *url = [AwsURLHelper getPlayers];
+//	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+//	dispatch_queue_t downloadQueue = dispatch_queue_create("Player downloader", NULL);
+//	dispatch_async(downloadQueue, ^{
+//        UIImage *image = [self playerCardPhoto: self.player];
+//		dispatch_async(callerQueue, ^{
+//		    block(player, image);
+//		});
+//	});
+//	dispatch_release(downloadQueue);
+//}
+
 + (UIImage*)playerCardPhoto:(Player *)player
 {
     NSLog(@"player = %@", player);
     NSString *id = player.uniqueId;
+    //sleep(5);
     NSURL *playersURL = [AwsURLHelper getPhotoOfPlayer:id];
     NSLog(@"players.photo.url %@", playersURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
