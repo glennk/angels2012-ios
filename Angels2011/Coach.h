@@ -13,6 +13,11 @@
 @property (nonatomic, retain) NSString * uniqueId;
 @property (nonatomic, retain) NSString * firstname;
 @property (nonatomic, retain) NSString * lastname;
+@property (nonatomic, retain) NSString * phone1;
+@property (nonatomic, retain) NSString * email1;
+@property (nonatomic, retain) NSString * phone2;
+@property (nonatomic, retain) NSString * email2;
+@property (nonatomic, retain) UIImage * photo;
 
 //+ (Coach *)coachFromJson:(NSDictionary *)jsonData;
 + (NSArray *)allCoaches;

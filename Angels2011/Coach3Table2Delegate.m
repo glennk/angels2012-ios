@@ -11,6 +11,8 @@
 
 @implementation Coach3Table2Delegate
 
+@synthesize coach = _coach;
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -39,11 +41,11 @@
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"mobile";
-                cell.detailTextLabel.text = @"512-555-1212";
+                cell.detailTextLabel.text = _coach.phone1; //@"512-555-1212";
                 break;
             case 1:
                 cell.textLabel.text = @"home";
-                cell.detailTextLabel.text = @"512-555-2222";
+                cell.detailTextLabel.text = _coach.phone2; //@"512-555-2222";
                 break;
             default:
                 break;
@@ -53,11 +55,11 @@
         switch (indexPath.row) {
             case 0:
                 cell.textLabel.text = @"email";
-                cell.detailTextLabel.text = @"david@gmail.com";
+                cell.detailTextLabel.text = _coach.email1; //@"david@gmail.com";
                 break;
             case 1:
                 cell.textLabel.text = @"email";
-                cell.detailTextLabel.text = @"info@austinangelsbaseball.com";
+                cell.detailTextLabel.text = _coach.email2; //@"info@austinangelsbaseball.com";
                 break;
             default:
                 break;

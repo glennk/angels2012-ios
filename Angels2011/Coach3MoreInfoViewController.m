@@ -11,11 +11,17 @@
 
 @interface Coach3MoreInfoViewController()
 @property (retain) Coach3Table2Delegate *t2;
+@property (retain, nonatomic) IBOutlet UIView *mainView;
+@property (retain, nonatomic) IBOutlet UIImageView *coachPicture;
+@property (retain, nonatomic) IBOutlet UIView *activityContainerView;
 @end
 
 @implementation Coach3MoreInfoViewController
 
 @synthesize t2;
+@synthesize mainView;
+@synthesize coachPicture;
+@synthesize activityContainerView;
 @synthesize coach = _coach;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -23,9 +29,31 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         self.hidesBottomBarWhenPushed = YES;
-        
+        mainView.hidden = TRUE;
     }
     return self;
+}
+
+- (void)loadData
+{
+    NSLog(@"loadData()");
+    //sleep(5);
+    
+    UIImage *picture = _coach.photo;
+    if (picture)
+        coachPicture.image = picture;
+    
+    [self setView:mainView];
+    NSString *fname = [NSString stringWithFormat:@"%@ %@", _coach.firstname, _coach.lastname];
+    name.text = fname;
+    
+    t2 = [[Coach3Table2Delegate alloc] init];
+    t2.coach = _coach;
+    
+    table2.delegate = t2;
+    table2.dataSource = t2;
+    [table2 reloadData];
+    [spinner performSelectorOnMainThread:@selector(stopAnimating) withObject:nil waitUntilDone:TRUE];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,17 +69,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self setView:activityContainerView];
 
+    [spinner performSelectorOnMainThread:@selector(startAnimating) withObject:nil waitUntilDone:TRUE];
+    [self performSelectorInBackground:@selector(loadData) withObject:nil];
+    
+    
+    
 //    Coach3Table1Delegate *t1 = [[Coach3Table1Delegate alloc] init];
 //    table1.delegate = t1;
 //    table1.dataSource = t1;
 //    [table1 reloadData];
-    name.text = _coach.lastname; //@"David Zapata";
-    
-    t2 = [[Coach3Table2Delegate alloc] init];
-    table2.delegate = t2;
-    table2.dataSource = t2;
-    [table2 reloadData];
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -61,6 +89,9 @@
 
 - (void)viewDidUnload
 {
+    [self setCoachPicture:nil];
+    [self setActivityContainerView:nil];
+    [self setMainView:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -180,4 +211,10 @@
 //     */
 //}
 
+- (void)dealloc {
+    [coachPicture release];
+    [activityContainerView release];
+    [mainView release];
+    [super dealloc];
+}
 @end

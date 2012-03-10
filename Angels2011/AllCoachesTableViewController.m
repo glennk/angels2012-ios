@@ -12,12 +12,15 @@
 
 @interface AllCoachesTableViewController()
 @property (retain, nonatomic) NSDictionary * coachesAsDictionary;
+@property (retain, nonatomic) UIView * origView;
+@property (retain, nonatomic) UIActivityIndicatorView * spinner;
 @end
 
 @implementation AllCoachesTableViewController
 
 @synthesize sections = _sections;
 @synthesize coaches = _coaches;
+@synthesize origView, spinner;
 
 @synthesize coachesAsDictionary = _coachesAsDictionary;
 
@@ -26,7 +29,7 @@
 {
     if (!_coachesAsDictionary) {
         _coachesAsDictionary = [[NSMutableDictionary alloc] init];
-        for (Coach *t in self.coaches) {
+        for (Coach *t in _coaches) {
             NSString *key = [t.lastname substringToIndex:1];
             if ([_coachesAsDictionary objectForKey:key]) {
                 [[_coachesAsDictionary objectForKey:key] addObject:t];
@@ -51,12 +54,22 @@
     return _sections;
 }
 
-- (NSArray *)coaches
+- (void)loadCoaches
 {
-    if (!_coaches)
+    NSLog(@"loadCoaches()");
+    if (!_coaches) {
         _coaches = [[Coach allCoaches] retain];
-    
-    return _coaches;
+        [spinner stopAnimating];
+        [_sections release];
+        _sections = nil;
+        [_coachesAsDictionary release];
+        _coachesAsDictionary = nil;
+        
+        [self setView: origView];
+        [self.tableView reloadData];
+        
+        [spinner release];
+    }
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -85,6 +98,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner startAnimating];
+    
+    origView = [self.view retain];
+    
+    [self setView:spinner];
+    [self performSelectorInBackground:@selector(loadCoaches) withObject:nil];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;

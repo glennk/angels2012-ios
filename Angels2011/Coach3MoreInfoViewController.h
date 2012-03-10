@@ -17,6 +17,7 @@
     
     IBOutlet UILabel *name;
     IBOutlet UITableView *table2;
+    IBOutlet UIActivityIndicatorView *spinner;
 }
 
 @property (retain, nonatomic) Coach *coach;

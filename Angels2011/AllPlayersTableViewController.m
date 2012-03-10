@@ -9,12 +9,14 @@
 #import "AllPlayersTableViewController.h"
 #import "PlayerSummaryViewController.h"
 #include "Player.h"
-#import "DejalActivityView.h"
+//#import "DejalActivityView.h"
 
 @interface AllPlayersTableViewController()
-@property (copy) NSString *jsonkey;
+//@property (copy) NSString *jsonkey;
 @property (retain, nonatomic) NSDictionary * playersAsDictionary;
 @property BOOL byNickname;
+@property (retain, nonatomic) UIView * origView;
+@property (retain, nonatomic) UIActivityIndicatorView *spinner;
 @end;
 
 @implementation AllPlayersTableViewController
@@ -22,17 +24,17 @@
 @synthesize sections = _sections;
 @synthesize players = _players;
 
-@synthesize jsonkey;
+//@synthesize jsonkey;
 @synthesize playersAsDictionary = _playersAsDictionary;
 @synthesize byNickname;
-
+@synthesize origView, spinner;
 
 - (NSDictionary *)playersAsDictionary
 {
     if (!_playersAsDictionary) {
         NSLog(@"playersAsDictionary()");
-        NSMutableDictionary *p = [[NSMutableDictionary alloc] init];
-        for (Player *t in self.players) {
+        _playersAsDictionary = [[NSMutableDictionary alloc] init];
+        for (Player *t in _players) {
             NSLog(@"t.nickname = %@, t.lastname = %@", t.nickname, t.lastname);
             NSString *key = nil;
             NSString *x = nil;
@@ -47,18 +49,15 @@
                 continue;
             
             NSLog(@"key = %@", key);
-            if (![p objectForKey:key]) {
-                NSMutableArray *x = [[NSMutableArray alloc] init];
+            if (![_playersAsDictionary objectForKey:key]) {
+                NSMutableArray *x = [[[NSMutableArray alloc] init] autorelease];
                 [x addObject:t];
-                [p setValue:x forKey:key];
-                [x release];
+                [_playersAsDictionary setValue:x forKey:key];
             }
             else {
-                [[p objectForKey:key] addObject:t];
+                [[_playersAsDictionary objectForKey:key] addObject:t];
             }
         }
-        _playersAsDictionary = [[NSDictionary alloc] initWithDictionary:p];
-        [p release];
     }
     return _playersAsDictionary;
 }
@@ -72,24 +71,42 @@
     return _sections;
 }
 
-- (NSArray *)players
-{
-    if (!_players) {
-        [DejalBezelActivityView activityViewForView:self.view];
-        [Player processPlayerDataWithBlock:^(NSArray *playerData) {
-            _players = [[NSArray alloc] initWithArray:playerData]; //[[Player allPlayers] retain];
-            NSLog(@"viewDidLoad: _players returned");
-            [_sections release];
-            _sections = nil;
-            [_playersAsDictionary release];
-            _playersAsDictionary = nil;
-            [self.tableView reloadData];
-            [DejalActivityView removeView];
-        }];
-    }
-    return _players;
-}
+//- (NSArray *)players
+//{
+//    if (!_players) {
+//        
+//        [DejalBezelActivityView activityViewForView:self.view];
+//        [Player processPlayerDataWithBlock:^(NSArray *playerData) {
+//            _players = [[NSArray alloc] initWithArray:playerData]; //[[Player allPlayers] retain];
+//            NSLog(@"viewDidLoad: _players returned");
+//            [_sections release];
+//            _sections = nil;
+//            [_playersAsDictionary release];
+//            _playersAsDictionary = nil;
+//            [self.tableView reloadData];
+//            [DejalActivityView removeView];
+//        }];
+//    }
+//    return _players;
+//}
 
+- (void)loadPlayers
+{
+    NSLog(@"loadPlayers()");
+    if (!_players) {
+        _players = [[Player allPlayers] retain];
+        [spinner stopAnimating];
+        [_sections release];
+        _sections = nil;
+        [_playersAsDictionary release];
+        _playersAsDictionary = nil;
+        
+        [self setView: origView];
+        [self.tableView reloadData];
+        
+        [spinner release];
+    }
+}
 
 - (void)toggleNicknames
 {
@@ -98,14 +115,12 @@
     _sections = nil;
     [_playersAsDictionary release];
     _playersAsDictionary = nil;
-    if (jsonkey == @"lastname") {
-        jsonkey = @"nickname";
-        self.byNickname = TRUE;
+    if (self.byNickname) {
+        self.byNickname = FALSE;
         self.navigationItem.leftBarButtonItem.title = @"By Lastnames";
     }
     else {
-        jsonkey = @"lastname";
-        self.byNickname = FALSE;
+        self.byNickname = TRUE;
         self.navigationItem.leftBarButtonItem.title = @"By Nicknames";
     }
     [self.tableView reloadData];
@@ -124,8 +139,7 @@
         UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"By Nicknames" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleNicknames)];
         self.navigationItem.leftBarButtonItem = lbarItem;
         [lbarItem release];
-        NSLog(@"set jsonkey = @lastname");
-        jsonkey = @"lastname";
+        self.byNickname = FALSE;
     }
     return self;
 }
@@ -143,6 +157,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner startAnimating];
+    
+    origView = [self.view retain];
+    
+    [self setView:spinner];
+    [self performSelectorInBackground:@selector(loadPlayers) withObject:nil];
+
 }
 
 - (void)viewDidUnload
@@ -218,7 +240,7 @@
     //NSDictionary *t = [self playerAtIndexPath:indexPath];
     Player *p = [self playerAtIndexPath:indexPath];
     NSLog(@"cell = %@", p);
-    if (jsonkey == @"nickname") {
+    if (self.byNickname) {
         //cell.textLabel.text = [t objectForKey:jsonkey];
         cell.textLabel.text = p.nickname;
     }

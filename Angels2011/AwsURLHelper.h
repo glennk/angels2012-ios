@@ -14,6 +14,7 @@
 + (NSURL *)getPlayersOnASpecifiedTeam:(NSString *)key;
 + (NSURL *)getPlayers;
 + (NSURL *)getPhotoOfPlayer:(NSString *)key;
++ (NSURL *)getPhotoOfCoach:(NSString *)key;
 + (NSURL *)getCoaches;
 + (NSURL *)getGoogleCal;
 

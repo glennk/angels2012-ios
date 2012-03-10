@@ -10,4 +10,6 @@
 
 @interface CalendarTableViewController : UITableViewController
 
+@property (retain, nonatomic) NSArray *events;
+
 @end

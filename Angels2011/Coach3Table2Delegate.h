@@ -7,9 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Coach.h"
 
 @interface Coach3Table2Delegate : NSObject <UITableViewDelegate, UITableViewDataSource> {
 
+    Coach *coach;
 }
+
+@property (retain, nonatomic) Coach *coach;
 
 @end

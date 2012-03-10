@@ -11,8 +11,9 @@
 #import "Team.h"
 
 @interface TeamsTableViewController()
-
 @property (nonatomic, retain) NSDictionary * teamsAsDictionary;
+@property (retain, nonatomic) UIView * origView;
+@property (retain, nonatomic) UIActivityIndicatorView * spinner;
 @end
 
 @implementation TeamsTableViewController
@@ -21,31 +22,13 @@
 @synthesize teams = _teams;
 
 @synthesize teamsAsDictionary = _teamsAsDictionary;
-
-
-- (NSArray *)sections
-{
-    if (!_sections) {
-        _sections = [[self.teamsAsDictionary allKeys] retain];
-        NSLog(@"sections = %@", _sections);
-    }
-    
-    return _sections;
-}
-
-- (NSArray *)teams
-{
-    if (!_teams)
-        _teams = [[Team allTeams] retain];
-    
-    return _teams;
-}
+@synthesize origView, spinner;
 
 - (NSDictionary *)teamsAsDictionary
 {
     if (!_teamsAsDictionary) {
         _teamsAsDictionary = [[NSMutableDictionary alloc] init];
-        for (Team *t in self.teams) {
+        for (Team *t in _teams) {
             NSString *key = [t.level substringToIndex:3];
             if ([_teamsAsDictionary objectForKey:key]) {
                 [[_teamsAsDictionary objectForKey:key] addObject:t];
@@ -59,6 +42,34 @@
         NSLog(@"teamsInDictionary = %@", _teamsAsDictionary);
     }
     return _teamsAsDictionary;
+}
+
+- (NSArray *)sections
+{
+    if (!_sections) {
+        _sections = [[self.teamsAsDictionary allKeys] retain];
+        NSLog(@"sections = %@", _sections);
+    }
+    
+    return _sections;
+}
+
+- (void)loadTeams
+{
+    NSLog(@"loadTeams()");
+    if (!_teams) {
+        _teams = [[Team allTeams] retain];
+        [spinner stopAnimating];
+        [_sections release];
+        _sections = nil;
+        [_teamsAsDictionary release];
+        _teamsAsDictionary = nil;
+        
+        [self setView: origView];
+        [self.tableView reloadData];
+        
+        [spinner release];
+    }
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -87,11 +98,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner startAnimating];
+    
+    origView = [self.view retain];
+    
+    [self setView:spinner];
+    [self performSelectorInBackground:@selector(loadTeams) withObject:nil];
 
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
-    NSLog(@"teams = %@ (retain count=%d)", self.teams, [self.teams retainCount]);
-    NSLog(@"teamsAsDicitonary = %@ (retain count=%d)", self.teamsAsDictionary, [self.teamsAsDictionary retainCount]);
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
