@@ -8,7 +8,7 @@
 
 #import "AllCoachesTableViewController.h"
 #import "Coach.h"
-#import "Coach3MoreInfoViewController.h"
+#import "Coach4MoreInfoViewController.h"
 
 @interface AllCoachesTableViewController()
 @property (retain, nonatomic) NSDictionary * coachesAsDictionary;
@@ -244,7 +244,7 @@
      [detailViewController release];
      */
     
-    Coach3MoreInfoViewController *csvc = [[Coach3MoreInfoViewController alloc] init];
+    Coach4MoreInfoViewController *csvc = [[Coach4MoreInfoViewController alloc] init];
     csvc.coach = [self coachAtIndexPath:indexPath];
     NSLog(@"selected coach: %@", csvc.coach);
     [self.navigationController pushViewController:csvc animated:YES];

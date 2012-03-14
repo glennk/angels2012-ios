@@ -12,17 +12,30 @@
 #import "Team.h"
 #import "Player.h"
 
+@interface TeamPlayersTableViewController()
+@property (retain, nonatomic) UIView * origView;
+@property (retain, nonatomic) UIActivityIndicatorView *spinner;
+@end
+
 @implementation TeamPlayersTableViewController
 
 @synthesize players = _players;
 @synthesize team = _team;
+@synthesize origView, spinner;
 
-- (NSArray *)players
+
+- (void)loadTeamPlayers
 {
-    if (!_players)
+    if (!_players) {
+        sleep(5);
         _players = [[Player teamPlayers: self.team] retain];
-    
-    return _players;
+        [spinner stopAnimating];
+        
+        [self setView: origView];
+        [self.tableView reloadData];
+        
+        [spinner release];
+    }
 }
 
 - (void)setTeam:(Team *)newTeam
@@ -56,12 +69,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-//    _players = [self queryPlayersOnTeam];
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [spinner startAnimating];
+    
+    origView = [self.view retain];
+    
+    [self setView:spinner];
+    [self performSelectorInBackground:@selector(loadTeamPlayers) withObject:nil];
 }
 
 - (void)viewDidUnload
