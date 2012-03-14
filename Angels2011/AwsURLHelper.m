@@ -10,13 +10,13 @@
 
 @implementation AwsURLHelper
 
-#define _HOST @"localhost"
+//#define _HOST @"localhost"
 //#define _HOST @"glenn-env-1.elasticbeanstalk.com"
 //#define _HOST @"192.168.3.105"
 //#define _HOST @"10.71.0.6"
-//#define _HOST @"angelsv2-gkrondev.rhcloud.com"
-#define _PORT @":8080"
-//#define _PORT @""
+#define _HOST @"angelsv2-gkrondev.rhcloud.com"
+//#define _PORT @":8080"
+#define _PORT @""
 #define _CONTEXT @"/mavenproject11"
 #define _RESTPATH @"/rest"
 

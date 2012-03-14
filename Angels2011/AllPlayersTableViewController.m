@@ -157,6 +157,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Players";
+    
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [spinner startAnimating];
     

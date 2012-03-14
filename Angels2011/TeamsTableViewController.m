@@ -98,6 +98,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"Teams";
+    
     spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [spinner startAnimating];
     
