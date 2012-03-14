@@ -9,7 +9,21 @@
 #import "PlayerMoreInfoTableViewController.h"
 #import "Parent.h"
 
+@interface PlayerMoreInfoTableViewController()
+@property (retain, nonatomic) IBOutlet UITableViewCell *headerCell;
+@property (retain, nonatomic) IBOutlet UILabel *headerLabel;
+@property (retain, nonatomic) IBOutlet UITableView *mainTable;
+@property (retain, nonatomic) IBOutlet UITableViewCell *footerCell;
+@property (retain, nonatomic) NSMutableArray *buttonIndexes;
+@end
+
+
 @implementation PlayerMoreInfoTableViewController
+@synthesize headerCell;
+@synthesize headerLabel;
+@synthesize mainTable;
+@synthesize footerCell;
+@synthesize buttonIndexes;
 
 @synthesize player = _player;
 
@@ -19,19 +33,18 @@
     [self.presentingViewController dismissModalViewControllerAnimated:YES];
 }
 
-
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:UITableViewStyleGrouped];
-    if (self) {
-       // style = UITableViewStyleGrouped;
-        // Custom initialization
-        UIBarButtonItem *rBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonPressed:)];
-        self.navigationItem.rightBarButtonItem = rBarItem;
-        [rBarItem release];
-    }
-    return self;
-}
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:UITableViewStyleGrouped];
+//    if (self) {
+//       // style = UITableViewStyleGrouped;
+//        // Custom initialization
+//        UIBarButtonItem *rBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonPressed:)];
+//        self.navigationItem.rightBarButtonItem = rBarItem;
+//        [rBarItem release];
+//    }
+//    return self;
+//}
 
 - (void)didReceiveMemoryWarning
 {
@@ -41,24 +54,87 @@
     // Release any cached data, images, etc that aren't in use.
 }
 
+#define _NON_BLANK(a) (a != nil && [a length] > 0)
+
+- (IBAction)sendMsgButton:(id)sender
+{
+    NSLog(@"sendMsgButtonPressed");
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Send a text message." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    buttonIndexes = [[[NSMutableArray alloc] init] retain];
+    if (_NON_BLANK(_player.parents.phone1)) {
+        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"phone1 %@", _player.parents.phone1]];
+        [buttonIndexes addObject: _player.parents.phone1];
+    }
+    if (_NON_BLANK(_player.parents.phone2)) {
+        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"phone2 %@",_player.parents.phone2]];
+        [buttonIndexes addObject: _player.parents.phone2];
+    }
+    if (_NON_BLANK(_player.parents.email1)) {
+        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"email1 %@",_player.parents.email1]];
+        [buttonIndexes addObject: _player.parents.email1];
+    }
+    if (_NON_BLANK(_player.parents.email2)) {
+        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"email2 %@",_player.parents.email2]];
+        [buttonIndexes addObject: _player.parents.email2];
+    }
+    //    [actionSheet addButtonWithTitle:@"Cancel"];
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
+    
+    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    [actionSheet showInView: self.view];
+    [actionSheet release];
+}
+
+// Action sheet delegate method.
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // the user clicked one of the OK/Cancel buttons
+    NSLog(@"actionSheet, button: %d", buttonIndex);
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+        [buttonIndexes release];
+    }
+    else {
+        NSString *val = [buttonIndexes objectAtIndex:buttonIndex];
+        NSLog(@"val = %@", val);
+        if (val != NULL) {
+            val = [val stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
+            NSString* urlString = [NSString stringWithFormat: @"sms:%@", val];
+            NSLog(@"SMS #: %@", urlString);
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
+        }
+    }
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIBarButtonItem *rBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonPressed:)];
+    self.navigationItem.rightBarButtonItem = rBarItem;
+    [rBarItem release];
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 40)] autorelease];
-    UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)] autorelease];
+    [[NSBundle mainBundle] loadNibNamed:@"PlayerMoreInfo" owner:self options:nil];
+    
     headerLabel.text = [NSString stringWithFormat:@"#%@  %@ %@", _player.number, _player.firstname, _player.lastname];
-    headerLabel.textColor = [UIColor whiteColor];
-    headerLabel.shadowColor = [UIColor blackColor];
-    headerLabel.shadowOffset = CGSizeMake(0, 1);
-    headerLabel.font = [UIFont boldSystemFontOfSize:22];
-    headerLabel.backgroundColor = [UIColor clearColor];
-    [containerView addSubview:headerLabel];
-    self.tableView.tableHeaderView = containerView;
+    
+    self.tableView = mainTable;
+    self.tableView.tableHeaderView = headerCell;
+    self.tableView.tableFooterView = footerCell;
+
+//    // Uncomment the following line to preserve selection between presentations.
+//    // self.clearsSelectionOnViewWillAppear = NO;
+//    UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 40)] autorelease];
+//    UILabel *headerLabel = [[[UILabel alloc] initWithFrame:CGRectMake(10, 10, 300, 30)] autorelease];
+//    headerLabel.text = [NSString stringWithFormat:@"#%@  %@ %@", _player.number, _player.firstname, _player.lastname];
+//    headerLabel.textColor = [UIColor whiteColor];
+//    headerLabel.shadowColor = [UIColor blackColor];
+//    headerLabel.shadowOffset = CGSizeMake(0, 1);
+//    headerLabel.font = [UIFont boldSystemFontOfSize:22];
+//    headerLabel.backgroundColor = [UIColor clearColor];
+//    [containerView addSubview:headerLabel];
+//    self.tableView.tableHeaderView = containerView;
 
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -66,6 +142,10 @@
 
 - (void)viewDidUnload
 {
+    [self setMainTable:nil];
+    [self setHeaderCell:nil];
+    [self setFooterCell:nil];
+    [self setHeaderLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -102,7 +182,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     // Return the number of sections.
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -117,9 +197,10 @@
     if (section == 2) {
         return 1;
     }
-    else {
-        return 1;
-    }
+//    else {
+//        return 1;
+//    }
+    return 0;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -172,37 +253,37 @@
             cell.detailTextLabel.text = _player.parents.email2;
         }
     }
-    if (indexPath.section == 2) {
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"Angels";
-            //           UILabel *label = [[UILabel alloc] init];
-            //cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
-            cell.detailTextLabel.numberOfLines = 3;
-            cell.detailTextLabel.text = @"Fall 2010\nSpring 2011\nFall 2011";
-            //[cell.contentView addSubview:label]; //detailTextLabel.lineBreakMode = label;
-        }
-    }
+//    if (indexPath.section == 2) {
+//        if (indexPath.row == 0) {
+//            cell.textLabel.text = @"Angels";
+//            //           UILabel *label = [[UILabel alloc] init];
+//            //cell.detailTextLabel.lineBreakMode = UILineBreakModeWordWrap;
+//            cell.detailTextLabel.numberOfLines = 3;
+//            cell.detailTextLabel.text = @"Fall 2010\nSpring 2011\nFall 2011";
+//            //[cell.contentView addSubview:label]; //detailTextLabel.lineBreakMode = label;
+//        }
+//    }
     
     return cell;
 }
 
-- (CGFloat)tableView:(UITableView *)tblView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 2)
-        return 100;
-    else
-        return 44;
-        
-}
+//- (CGFloat)tableView:(UITableView *)tblView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (indexPath.section == 2)
+//        return 100;
+//    else
+//        return 44;
+//        
+//}
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     if (section == 1) {
         return @"Parent/Contact Info";
     }
-    if (section == 2) {
-        return @"Years in Angel's Program";
-    }
+//    if (section == 2) {
+//        return @"Years in Angel's Program";
+//    }
     return nil;
 }
 
@@ -290,6 +371,14 @@
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
     }
+}
+
+- (void)dealloc {
+    [mainTable release];
+    [headerCell release];
+    [footerCell release];
+    [headerLabel release];
+    [super dealloc];
 }
 
 @end

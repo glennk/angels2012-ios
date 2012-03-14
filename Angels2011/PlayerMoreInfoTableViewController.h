@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "Player.h"
 
-@interface PlayerMoreInfoTableViewController : UITableViewController {
+@interface PlayerMoreInfoTableViewController : UITableViewController  <UIActionSheetDelegate> {
 
     Player *player;
 }
@@ -17,5 +17,6 @@
 @property (retain, nonatomic) Player *player;
 
 - (IBAction)doneButtonPressed:(id)sender;
+- (IBAction)sendMsgButton:(id)sender;
 
 @end
