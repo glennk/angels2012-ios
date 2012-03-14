@@ -17,6 +17,7 @@
 @property (retain, nonatomic) UIView *origView;
 @property (retain, nonatomic) UIActivityIndicatorView *busyView;
 @property (retain, nonatomic) NSMutableArray *buttonIndexes;
+@property (retain, nonatomic) NSMutableArray *sections;
 @end
 
 @implementation Coach4MoreInfoViewController
@@ -29,6 +30,8 @@
 @synthesize mainTable;
 @synthesize origView, busyView;
 @synthesize buttonIndexes;
+
+@synthesize sections;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
@@ -57,23 +60,21 @@
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Send a text message." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
     
     buttonIndexes = [[[NSMutableArray alloc] init] retain];
-    if (_NON_BLANK(_coach.phone1)) {
-        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"phone1 %@", _coach.phone1]];
-        [buttonIndexes addObject: _coach.phone1];
+    
+    NSEnumerator *enumerator = [sections objectEnumerator];
+    id dictobject;
+    while ((dictobject = [enumerator nextObject])) {
+        // each object is a dictionary
+        NSEnumerator *keyEnumerator = [dictobject keyEnumerator];
+        NSString *key;
+        while ((key = [keyEnumerator nextObject])) {
+            NSString *value = [dictobject valueForKey:key];
+            NSLog(@"key, value pair: %@, %@", key, value);
+            [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"%@ %@", key, [dictobject valueForKey:key]]];
+            [buttonIndexes addObject: [dictobject valueForKey:key]];
+        }
     }
-    if (_NON_BLANK(_coach.phone2)) {
-        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"phone2 %@",_coach.phone2]];
-        [buttonIndexes addObject: _coach.phone2];
-    }
-    if (_NON_BLANK(_coach.email1)) {
-        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"email1 %@",_coach.email1]];
-        [buttonIndexes addObject: _coach.email1];
-    }
-    if (_NON_BLANK(_coach.email2)) {
-        [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"email2 %@",_coach.email2]];
-        [buttonIndexes addObject: _coach.email2];
-    }
-//    [actionSheet addButtonWithTitle:@"Cancel"];
+    
     actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
     
     actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
@@ -127,7 +128,39 @@
     self.tableView = mainTable;
     self.tableView.tableHeaderView = headerCell;
     self.tableView.tableFooterView = footerCell;
+    
+    /**
+     * NSArray[0]
+            NSDictionary[key=home] = '555.1212'
+            NSDictionary[key=mobile] = '666.1212'
+       NSArray[1]
+            NSDictionary[key=email1] = 'bob@gmail.com'
+            NSDictionary[key=email2] = 'dave@gmail.com'
+     */
+    sections = [[NSMutableArray alloc] init];
+    
+    if (_NON_BLANK(_coach.phone1) || _NON_BLANK(_coach.phone2)) {
+        NSMutableDictionary *phone = [[NSMutableDictionary alloc] init];
+        if (_NON_BLANK(_coach.phone1))
+            [phone setObject:_coach.phone1 forKey:@"phone1"];
+        if (_NON_BLANK(_coach.phone2))
+            [phone setObject:_coach.phone2 forKey:@"phone2"];
+        [sections addObject:phone];
+        [phone release];
+    }
+        
+    if (_NON_BLANK(_coach.email1) || _NON_BLANK(_coach.email2)) {
+        NSMutableDictionary *email = [[NSMutableDictionary alloc] init];
+        if (_NON_BLANK(_coach.email1))
+            [email setObject:_coach.email1 forKey:@"email1"];
+        if (_NON_BLANK(_coach.email2))
+            [email setObject:_coach.email2 forKey:@"email2"];
+        [sections addObject:email];
+        [email release];
+    }
 
+    NSLog(@"sections = %@", sections);
+    
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -182,16 +215,16 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 2;
+    NSInteger n = sections.count;
+    NSLog(@"numberOfSectionsInTableView.n = %d", n);
+    return n;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
-    // Return the number of rows in the section.
-    return 2;
+    NSInteger n = [[sections objectAtIndex:section] count];
+    NSLog(@"numberOfRowsInSection.n = %d", n);
+    return n;    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -205,34 +238,40 @@
     
     // Configure the cell...
     // Configure the cell...
-    if (indexPath.section == 0) {
-        switch (indexPath.row) {
-            case 0:
-                cell.textLabel.text = @"mobile";
-                cell.detailTextLabel.text = _coach.phone1; //@"512-555-1212";
-                break;
-            case 1:
-                cell.textLabel.text = @"home";
-                cell.detailTextLabel.text = _coach.phone2; //@"512-555-2222";
-                break;
-            default:
-                break;
-        }
-    }
-    if (indexPath.section == 1) {
-        switch (indexPath.row) {
-            case 0:
-                cell.textLabel.text = @"email";
-                cell.detailTextLabel.text = _coach.email1; //@"david@gmail.com";
-                break;
-            case 1:
-                cell.textLabel.text = @"email";
-                cell.detailTextLabel.text = _coach.email2; //@"info@austinangelsbaseball.com";
-                break;
-            default:
-                break;
-        }
-    }
+    NSDictionary *dict = [sections objectAtIndex:indexPath.section];
+    NSString *key = [[dict allKeys] objectAtIndex:indexPath.row];
+    cell.textLabel.text = key;
+    NSString *label = [[dict allValues] objectAtIndex:indexPath.row];
+    cell.detailTextLabel.text = label;
+    
+//    if (indexPath.section == 0) {
+//        switch (indexPath.row) {
+//            case 0:
+//                cell.textLabel.text = @"mobile";
+//                cell.detailTextLabel.text = _coach.phone1; //@"512-555-1212";
+//                break;
+//            case 1:
+//                cell.textLabel.text = @"home";
+//                cell.detailTextLabel.text = _coach.phone2; //@"512-555-2222";
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    if (indexPath.section == 1) {
+//        switch (indexPath.row) {
+//            case 0:
+//                cell.textLabel.text = @"email";
+//                cell.detailTextLabel.text = _coach.email1; //@"david@gmail.com";
+//                break;
+//            case 1:
+//                cell.textLabel.text = @"email";
+//                cell.detailTextLabel.text = _coach.email2; //@"info@austinangelsbaseball.com";
+//                break;
+//            default:
+//                break;
+//        }
+//    }
     cell.textLabel.textAlignment = UITextAlignmentRight;
     
     return cell;
