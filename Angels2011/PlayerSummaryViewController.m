@@ -9,13 +9,15 @@
 #import "PlayerSummaryViewController.h"
 #import "PlayerMoreInfoTableViewController.h"
 #import "Player.h"
-#import "DejalActivityView.h"
+//#import "DejalActivityView.h"
 
 
 @interface PlayerSummaryViewController()
+@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @end
 
 @implementation PlayerSummaryViewController
+@synthesize spinner;
 
 @synthesize player = _player;
 
@@ -52,28 +54,12 @@
 {
     [super viewWillAppear:animated];
     NSLog(@"viewWillAppear: player = %@", _player);
-//    UIImage *image = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"Ian2" ofType:@"png"]];
-//    if (image == nil)
-//        NSLog(@"Failed to load image for control vieww");
     if (fieldImage.image == nil) {
-        [DejalBezelActivityView activityViewForView:self.view];
-        /*
-         Thanks to many test and your tips i have what i want... I make in viewDidLoad:
-         [indicator performSelectionOnMainThread@selector(startAnimati ng)...]
-         [self performSelectionOnBackgroundThread@selector(loadDa ta)...];
-         
-         Then in loadData method, at the end:
-         [indicator performSelectionOnMainThread@selector(stopAnimatin g)...]
-         
-         It seems working, is this the right way to procede?
-         */
-       // UIActivityIndicatorView *busy = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-       // [busy perf
-
+        
         [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
             UIImage *image = imageData;
             fieldImage.image = image;
-            [DejalActivityView removeView];
+            [spinner stopAnimating];
         }];
     }
     
@@ -131,6 +117,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [spinner startAnimating];
+    
     NSLog(@"playerSummaryViewController.viewDidLoad = %@", _player);
     NSString *s = [NSString stringWithFormat:@"%@ %@", _player.firstname, _player.lastname];
     [playerLabel setText:s]; //[player objectForKey:@"lastname"];
@@ -142,6 +131,7 @@
 
 - (void)viewDidUnload
 {
+    [self setSpinner:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -154,6 +144,7 @@
 }
 
 - (void)dealloc {
+    [spinner release];
     [super dealloc];
 }
 

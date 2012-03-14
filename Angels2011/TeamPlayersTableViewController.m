@@ -27,7 +27,7 @@
 - (void)loadTeamPlayers
 {
     if (!_players) {
-        sleep(5);
+        //sleep(5);
         _players = [[Player teamPlayers: self.team] retain];
         [spinner stopAnimating];
         
