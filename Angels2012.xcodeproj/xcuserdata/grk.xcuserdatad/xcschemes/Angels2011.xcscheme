@@ -14,9 +14,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0CDB74E21455AB5E00672CEB"
-               BuildableName = "Angels2011aws.app"
-               BlueprintName = "Angels2011aws"
-               ReferencedContainer = "container:Angels2011aws.xcodeproj">
+               BuildableName = "Angels2012.app"
+               BlueprintName = "Angels2012"
+               ReferencedContainer = "container:Angels2012.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -32,9 +32,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "0CDB75001455AB5E00672CEB"
-               BuildableName = "Angels2011awsTests.octest"
-               BlueprintName = "Angels2011awsTests"
-               ReferencedContainer = "container:Angels2011aws.xcodeproj">
+               BuildableName = "Angels2012Tests.octest"
+               BlueprintName = "Angels2012Tests"
+               ReferencedContainer = "container:Angels2012.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -42,9 +42,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0CDB74E21455AB5E00672CEB"
-            BuildableName = "Angels2011aws.app"
-            BlueprintName = "Angels2011aws"
-            ReferencedContainer = "container:Angels2011aws.xcodeproj">
+            BuildableName = "Angels2012.app"
+            BlueprintName = "Angels2012"
+            ReferencedContainer = "container:Angels2012.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -60,9 +60,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0CDB74E21455AB5E00672CEB"
-            BuildableName = "Angels2011aws.app"
-            BlueprintName = "Angels2011aws"
-            ReferencedContainer = "container:Angels2011aws.xcodeproj">
+            BuildableName = "Angels2012.app"
+            BlueprintName = "Angels2012"
+            ReferencedContainer = "container:Angels2012.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -83,9 +83,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "0CDB74E21455AB5E00672CEB"
-            BuildableName = "Angels2011aws.app"
-            BlueprintName = "Angels2011aws"
-            ReferencedContainer = "container:Angels2011aws.xcodeproj">
+            BuildableName = "Angels2012.app"
+            BlueprintName = "Angels2012"
+            ReferencedContainer = "container:Angels2012.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
