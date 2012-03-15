@@ -3,7 +3,7 @@
 //  Angels2011aws
 //
 //  Created by Glenn Kronschnabl on 1/12/12.
-//  Copyright (c) 2012 CoreLogic. All rights reserved.
+//  Copyright (c) 2012 Glenn Kronschnabl. All rights reserved.
 //
 
 #import "Player.h"

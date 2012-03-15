@@ -3,7 +3,7 @@
 //  Angels2011
 //
 //  Created by Glenn Kronschnabl on 11/13/11.
-//  Copyright (c) 2011 CoreLogic. All rights reserved.
+//  Copyright (c) 2011 Glenn Kronschnabl. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

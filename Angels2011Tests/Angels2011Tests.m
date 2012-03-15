@@ -3,7 +3,7 @@
 //  Angels2011Tests
 //
 //  Created by Glenn Kronschnabl on 10/24/11.
-//  Copyright 2011 CoreLogic. All rights reserved.
+//  Copyright 2011 Glenn Kronschnabl. All rights reserved.
 //
 
 #import "Angels2011Tests.h"

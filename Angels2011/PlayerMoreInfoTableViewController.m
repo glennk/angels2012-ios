@@ -3,7 +3,7 @@
 //  Angels2011aws
 //
 //  Created by Glenn Kronschnabl on 2/19/12.
-//  Copyright (c) 2012 CoreLogic. All rights reserved.
+//  Copyright (c) 2012 Glenn Kronschnabl. All rights reserved.
 //
 
 #import "PlayerMoreInfoTableViewController.h"
