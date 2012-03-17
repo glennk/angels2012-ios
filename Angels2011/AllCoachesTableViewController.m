@@ -184,7 +184,7 @@
     NSString *s = [NSString stringWithFormat:@"%@ %@", c.firstname, c.lastname]; 
     cell.textLabel.text = s;
     
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }

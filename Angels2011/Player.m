@@ -102,7 +102,15 @@
             [jplayers addObject:p];
         }
     }
-    //NSLog(@"jplayers array = %@", jplayers);
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
+    
+    NSLog(@"jplayers array = %@", jplayers);
     return jplayers;
 }
 
@@ -149,7 +157,15 @@
             [jplayers addObject:p];
         }
     }
-    //NSLog(@"players dict = %@", jplayers);
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
+    
+    NSLog(@"players dict = %@", jplayers);
     return jplayers;
 }
 
@@ -183,15 +199,17 @@
         NSData *responseData = [request responseData];
         image = [UIImage imageWithData:responseData];
     }      
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
     
     if (image == nil)
         NSLog(@"Failed to load image for URL: %@", playersURL);
-    else {
-        //        fieldImage.image = image;
-        //        playerPhoto.frame = CGRectMake(0, 0, image.size.width*SCALE, image.size.height*SCALE);
-        //        CGSize size = CGSizeMake(image.size.width*SCALE, image.size.height*SCALE);
-        //        scrollView.contentSize = size; //image.size;
-    }
+    
     return image;
 }
 

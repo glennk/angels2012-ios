@@ -192,7 +192,7 @@
     Team *t = [self teamAtIndexPath:indexPath];
     NSLog(@"cell = %@", t);
     cell.textLabel.text = t.name;
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }

@@ -89,10 +89,7 @@
     [request addRequestHeader:@"Accept" value:@"application/json"];
     [request startSynchronous];
     NSError *error = [request error];
-    if (error) {
-        NSLog(@"error = %@", [error description]);
-    }
-    else {
+    if (!error) {
         NSString *response = [request responseString];
         //NSLog(@"gcal response: %@", response);
         NSDictionary *temp = [response yajl_JSON];
@@ -113,6 +110,14 @@
             [gcal addObject:event];
         }
     }
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
+    
     NSLog(@"gcal = %@", gcal);
     
     return gcal;

@@ -59,6 +59,14 @@
             [jcoaches addObject:c];
         }
     }
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
+    
     NSLog(@"jcoaches array = %@", jcoaches);
     return jcoaches;
 }
@@ -78,16 +86,18 @@
     if (!error) {
         NSData *responseData = [request responseData];
         image = [UIImage imageWithData:responseData];
-    }      
+    }
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
     
     if (image == nil)
         NSLog(@"Failed to load image for URL: %@", coachURL);
-    else {
-        //        fieldImage.image = image;
-        //        playerPhoto.frame = CGRectMake(0, 0, image.size.width*SCALE, image.size.height*SCALE);
-        //        CGSize size = CGSizeMake(image.size.width*SCALE, image.size.height*SCALE);
-        //        scrollView.contentSize = size; //image.size;
-    }
+
     return image;
 }
 

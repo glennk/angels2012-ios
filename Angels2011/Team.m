@@ -51,8 +51,15 @@
             [jteams addObject:t];
         }
     }
+    else {
+        NSLog(@"error!! %@", error);
+        UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [popup show];
+        [popup release];
+    }
+    
     NSLog(@"teams = %@ (retain count=%d)", jteams, [jteams retainCount]);
-//    _teams = [[NSArray alloc] initWithArray:jteams];
     return jteams;
 }
 
