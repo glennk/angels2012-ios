@@ -57,18 +57,16 @@
 - (void)loadGcal
 {
     DLog(@"loadGcal()");
-    if (!_events) {
-        DLog(@"_gcal is nil, call URL to populate");
-        _events = [[GCalEvent allGcalEvents] retain];
-        [spinner stopAnimating];
-        [_sections release];
-        _sections = nil;
-       
-        [self setView: origView];
-        [self.tableView reloadData];
-        
-        [spinner release];
-    }
+    _events = [[GCalEvent allGcalEvents] retain];
+    [_sections release];
+    _sections = nil;
+    [_eventsAsDictionary release];
+    _eventsAsDictionary = nil;
+    [spinner stopAnimating];
+    [spinner release];
+    [self setView: origView];
+    [self.tableView reloadData];
+    DLog(@"loadGcal()...done");
 }
 
 
@@ -100,11 +98,6 @@
     [super viewDidLoad];
     self.navigationItem.title = @"Tournament Calendar";
 
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.inDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
     [self.inDateFormatter setDateFormat:@"yyyy-MM-dd"];
     self.outDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
@@ -115,13 +108,6 @@
     [self.outDateFormatter setDateFormat:usFormatString];
     [usLocale release];
     
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    
-    origView = [self.view retain];
-    
-    [self setView:spinner];
-    [self performSelectorInBackground:@selector(loadGcal) withObject:nil];
 }
 
 - (void)viewDidUnload
@@ -134,6 +120,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (!_events) {
+        DLog(@"_events is nil, fetch via REST");
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        
+        origView = [self.view retain];
+        
+        [self setView:spinner];
+        [self performSelectorInBackground:@selector(loadGcal) withObject:nil];
+    }    
 }
 
 - (void)viewDidAppear:(BOOL)animated

@@ -58,19 +58,16 @@
 - (void)loadTeams
 {
     DLog(@"loadTeams()");
-    if (!_teams) {
-        _teams = [[Team allTeams] retain];
-        [spinner stopAnimating];
-        [_sections release];
-        _sections = nil;
-        [_teamsAsDictionary release];
-        _teamsAsDictionary = nil;
-        
-        [self setView: origView];
-        [self.tableView reloadData];
-        
-        [spinner release];
-    }
+    _teams = [[Team allTeams] retain];
+    [_sections release];
+    _sections = nil;
+    [_teamsAsDictionary release];
+    _teamsAsDictionary = nil;
+    [spinner stopAnimating];
+    [spinner release];
+    [self setView: origView];
+    [self.tableView reloadData];
+    DLog(@"loadTeams()...done");
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -100,20 +97,6 @@
 {
     [super viewDidLoad];
     self.title = @"Teams";
-    
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    
-    origView = [self.view retain];
-    
-    [self setView:spinner];
-    [self performSelectorInBackground:@selector(loadTeams) withObject:nil];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewDidUnload
@@ -126,6 +109,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (!_teams) {
+        DLog(@"_teams is nil, fetch via REST");
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        
+        origView = [self.view retain];
+    
+        [self setView:spinner];
+        [self performSelectorInBackground:@selector(loadTeams) withObject:nil];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

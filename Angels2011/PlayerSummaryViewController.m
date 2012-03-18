@@ -47,38 +47,6 @@
     fieldImage.image = nil;
 }
 
-//- (UIImage *)playerCardPhoto
-//{
-//    return [Player playerCardPhoto: _player];
-//}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    DLog(@"viewWillAppear: player = %@", _player);
-    if (fieldImage.image == nil) {
-        
-        [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
-            UIImage *image = imageData;
-            fieldImage.image = image;
-            if (image == nil) {
-                noImageAvailLabel.hidden = FALSE;
-            }
-            [spinner stopAnimating];
-        }];
-    }
-    
-    NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
-                           @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];
-
-    NSString *bName = [bImgs objectForKey:_player.level];
-    DLog(@"bName = %@", bName);
-    UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:bName ofType:@"png"]];
-    if (bimg == nil)
-        DLog(@"Failed to load banner for control vieww");
-    banner.image = bimg;
-}
-
 
 - (IBAction)photoButtonPressed:(id)sender
 {
@@ -123,6 +91,12 @@
 {
     [super viewDidLoad];
     
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     [spinner startAnimating];
     
     DLog(@"playerSummaryViewController.viewDidLoad = %@", _player);
@@ -131,6 +105,28 @@
     playerNumber.text = _player.number;
     playerNickname.text = _player.nickname;
     // Do any additional setup after loading the view from its nib.
+    DLog(@"viewWillAppear: player = %@", _player);
+    if (fieldImage.image == nil) {
+        
+        [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
+            UIImage *image = imageData;
+            fieldImage.image = image;
+            if (image == nil) {
+                noImageAvailLabel.hidden = FALSE;
+            }
+            [spinner stopAnimating];
+        }];
+    }
+    
+    NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
+                           @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];
+    
+    NSString *bName = [bImgs objectForKey:_player.level];
+    DLog(@"bName = %@", bName);
+    UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:bName ofType:@"png"]];
+    if (bimg == nil)
+        DLog(@"Failed to load banner for control vieww");
+    banner.image = bimg;
 }
 
 

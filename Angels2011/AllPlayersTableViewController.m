@@ -93,19 +93,16 @@
 - (void)loadPlayers
 {
     DLog(@"loadPlayers()");
-    if (!_players) {
-        _players = [[Player allPlayers] retain];
-        [spinner stopAnimating];
-        [_sections release];
-        _sections = nil;
-        [_playersAsDictionary release];
-        _playersAsDictionary = nil;
-        
-        [self setView: origView];
-        [self.tableView reloadData];
-        
-        [spinner release];
-    }
+    _players = [[Player allPlayers] retain];
+    [_sections release];
+    _sections = nil;
+    [_playersAsDictionary release];
+    _playersAsDictionary = nil;
+    [spinner stopAnimating];
+    [spinner release];
+    [self setView: origView];
+    [self.tableView reloadData];
+    DLog(@"loadPlayers()...done");
 }
 
 - (void)toggleNicknames
@@ -158,15 +155,6 @@
 {
     [super viewDidLoad];
     self.title = @"Players";
-    
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    
-    origView = [self.view retain];
-    
-    [self setView:spinner];
-    [self performSelectorInBackground:@selector(loadPlayers) withObject:nil];
-
 }
 
 - (void)viewDidUnload
@@ -179,6 +167,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (!_players) {
+        DLog(@"_players is nil, fetch via REST");
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        
+        origView = [self.view retain];
+        
+        [self setView:spinner];
+        [self performSelectorInBackground:@selector(loadPlayers) withObject:nil];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated

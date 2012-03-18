@@ -66,6 +66,7 @@
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
+        jcoaches = nil;
     }
     
     DLog(@"jcoaches array = %@", jcoaches);

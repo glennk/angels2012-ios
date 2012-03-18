@@ -117,6 +117,7 @@
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
+        gcal = nil;
     }
     
     DLog(@"gcal = %@", gcal);

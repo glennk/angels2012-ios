@@ -109,6 +109,7 @@
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
+        jplayers = nil;
     }
     
     DLog(@"jplayers array = %@", jplayers);
@@ -164,6 +165,7 @@
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
+        jplayers = nil;
     }
     
     DLog(@"players dict = %@", jplayers);

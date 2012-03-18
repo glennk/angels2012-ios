@@ -58,6 +58,7 @@
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
+        jteams = nil;
     }
     
     DLog(@"teams = %@ (retain count=%d)", jteams, [jteams retainCount]);

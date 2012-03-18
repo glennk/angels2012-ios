@@ -26,16 +26,13 @@
 
 - (void)loadTeamPlayers
 {
-    if (!_players) {
-        //sleep(5);
-        _players = [[Player teamPlayers: self.team] retain];
-        [spinner stopAnimating];
-        
-        [self setView: origView];
-        [self.tableView reloadData];
-        
-        [spinner release];
-    }
+    DLog(@"loadTeamPlayers()");
+    _players = [[Player teamPlayers: self.team] retain];
+    [spinner stopAnimating];
+    [spinner release];
+    [self setView: origView];
+    [self.tableView reloadData];
+    DLog(@"loadTeamPlayers()...done");
 }
 
 - (void)setTeam:(Team *)newTeam
@@ -69,13 +66,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [spinner startAnimating];
-    
-    origView = [self.view retain];
-    
-    [self setView:spinner];
-    [self performSelectorInBackground:@selector(loadTeamPlayers) withObject:nil];
 }
 
 - (void)viewDidUnload
@@ -88,6 +78,17 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    
+    if (!_players) {
+        DLog(@"_players is nil, fetch via REST");
+        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        [spinner startAnimating];
+        
+        origView = [self.view retain];
+        
+        [self setView:spinner];
+        [self performSelectorInBackground:@selector(loadTeamPlayers) withObject:nil];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
