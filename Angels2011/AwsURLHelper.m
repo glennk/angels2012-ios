@@ -7,6 +7,7 @@
 //
 
 #import "AwsURLHelper.h"
+#import "Logging.h"
 
 @implementation AwsURLHelper
 
@@ -14,16 +15,18 @@
 //#define _HOST @"glenn-env-1.elasticbeanstalk.com"
 //#define _HOST @"192.168.3.105"
 //#define _HOST @"10.71.0.6"
-#define _HOST @"angelsv2-gkrondev.rhcloud.com"
+//#define _HOST @"angelsv2-gkrondev.rhcloud.com"
+#define _HOST @"angels2012.ktmsoftware.com"
 //#define _PORT @":8080"
 #define _PORT @""
-#define _CONTEXT @"/mavenproject11"
+//#define _CONTEXT @"/mavenproject11"
+#define _CONTEXT @""
 #define _RESTPATH @"/rest"
 
 + (NSString *)buildURL:(NSString *)path
 {
     NSString * url = [NSString stringWithFormat:@"http://%@%@%@%@%@", _HOST, _PORT, _CONTEXT, _RESTPATH, path];
-    NSLog(@"buildURL = <%@>", url);
+    DLog(@"buildURL = <%@>", url);
     return url;
 }
 
