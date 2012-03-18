@@ -41,7 +41,7 @@
     tbc.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nav3, nav4, nil];
 
     [_window addSubview:tbc.view];
-    [nav1 release]; [nav2 release]; [nav3 release]; [nav4 release];
+    [nav1 release]; [nav2 release]; [nav3 release]; [nav4 release]; [tbc release];
     
     [self.window makeKeyAndVisible];
     return YES;

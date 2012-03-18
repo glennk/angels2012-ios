@@ -33,7 +33,7 @@
         _eventsAsDictionary = [[NSMutableDictionary alloc] init];
         for (GCalEvent *e in _events) {
             if (![_eventsAsDictionary objectForKey:e.start]) {
-                NSMutableArray *x = [[NSMutableArray alloc] init];
+                NSMutableArray *x = [[[NSMutableArray alloc] init] autorelease];
                 [x addObject:e];
                 [_eventsAsDictionary setValue:x forKey:e.start];
                 
