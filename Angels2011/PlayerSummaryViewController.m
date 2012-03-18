@@ -14,10 +14,12 @@
 
 @interface PlayerSummaryViewController()
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (retain, nonatomic) IBOutlet UILabel *noImageAvailLabel;
 @end
 
 @implementation PlayerSummaryViewController
 @synthesize spinner;
+@synthesize noImageAvailLabel;
 
 @synthesize player = _player;
 
@@ -59,6 +61,9 @@
         [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
             UIImage *image = imageData;
             fieldImage.image = image;
+            if (image == nil) {
+                noImageAvailLabel.hidden = FALSE;
+            }
             [spinner stopAnimating];
         }];
     }
@@ -132,6 +137,7 @@
 - (void)viewDidUnload
 {
     [self setSpinner:nil];
+    [self setNoImageAvailLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -145,6 +151,7 @@
 
 - (void)dealloc {
     [spinner release];
+    [noImageAvailLabel release];
     [super dealloc];
 }
 
