@@ -12,6 +12,7 @@
 #import <YAJLios/YAJL.h>
 #import "ASIHTTPRequest.h"
 #import "AwsURLHelper.h"
+#import "Logging.h"
 
 @implementation Player
 
@@ -64,7 +65,7 @@
     p.level = [teams objectForKey:@"level"];
     
     NSDictionary *t = [data objectForKey:@"parents"];
-    //NSLog(@"looking at parent: %@", t);
+    //DLog(@"looking at parent: %@", t);
     Parent *parent = [[[Parent alloc] init] autorelease];
     parent.name1 = _BLANK_IF_NSNULL([t objectForKey:@"parent1"]);
     parent.phone1 = _BLANK_IF_NSNULL([t objectForKey:@"phone1"]);
@@ -79,38 +80,38 @@
 
 + (NSArray *)allPlayers
 {
-    NSLog(@"getPlayers()");
+    DLog(@"getPlayers()");
     //sleep(3);
     NSMutableArray *jplayers = [[[NSMutableArray alloc] init] autorelease];
     NSURL *playersURL = [AwsURLHelper getPlayers];
-    NSLog(@"players.url %@", playersURL);
+    DLog(@"players.url %@", playersURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
     [request addRequestHeader:@"Accept" value:@"application/json"];
     [request startSynchronous];
     NSError *error = [request error];
     if (!error) {
         NSString *response = [request responseString];
-        //NSLog(@"players.response = %@", response);
+        //DLog(@"players.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
-        //NSLog(@"players[after json parse] = %@", temp);
+        //DLog(@"players[after json parse] = %@", temp);
         //NSArray *x = [temp objectForKey:@"players"];
         NSDictionary *x = temp;
-        //NSLog(@"x = %@", x);
+        //DLog(@"x = %@", x);
         for (NSDictionary *t in x) {
-            //NSLog(@"t = %@", t);
+            //DLog(@"t = %@", t);
             Player* p = [Player playerFromJson:t];
             [jplayers addObject:p];
         }
     }
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
     }
     
-    NSLog(@"jplayers array = %@", jplayers);
+    DLog(@"jplayers array = %@", jplayers);
     return jplayers;
 }
 
@@ -131,41 +132,41 @@
 
 + (NSArray *)teamPlayers:(Team *)team
 {
-    NSLog(@"getTeamPlayers()");
-    NSLog(@"team = %@", team);
+    DLog(@"getTeamPlayers()");
+    DLog(@"team = %@", team);
     NSString *key = team.uniqueId;
-    NSLog(@"key = %@", key);
+    DLog(@"key = %@", key);
     
     NSMutableArray *jplayers = [[[NSMutableArray alloc] init] autorelease];
     NSURL *playersURL = [AwsURLHelper getPlayersOnASpecifiedTeam:key];
-    NSLog(@"players.url %@", playersURL);
+    DLog(@"players.url %@", playersURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
     [request addRequestHeader:@"Accept" value:@"application/json"];
     [request startSynchronous];
     NSError *error = [request error];
     if (!error) {
         NSString *response = [request responseString];
-        NSLog(@"players.response = %@", response);
+        DLog(@"players.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
-        NSLog(@"players[after json parse] = %@", temp);
+        DLog(@"players[after json parse] = %@", temp);
         //NSArray *x = [temp objectForKey:@"players"];
         NSDictionary *x = temp;
-        NSLog(@"x = %@", x);
+        DLog(@"x = %@", x);
         for (NSDictionary *t in x) {
-            NSLog(@"t = %@", t);
+            DLog(@"t = %@", t);
             Player *p = [Player playerFromJson:t];
             [jplayers addObject:p];
         }
     }
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
     }
     
-    NSLog(@"players dict = %@", jplayers);
+    DLog(@"players dict = %@", jplayers);
     return jplayers;
 }
 
@@ -185,11 +186,11 @@
 
 + (UIImage*)playerCardPhoto:(Player *)player
 {
-    NSLog(@"player = %@", player);
+    DLog(@"player = %@", player);
     NSString *id = player.uniqueId;
     //sleep(5);
     NSURL *playersURL = [AwsURLHelper getPhotoOfPlayer:id];
-    NSLog(@"players.photo.url %@", playersURL);
+    DLog(@"players.photo.url %@", playersURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:playersURL];
     [request addRequestHeader:@"Accept" value:@"image/jpeg"];
     [request startSynchronous];
@@ -200,7 +201,7 @@
         image = [UIImage imageWithData:responseData];
     }      
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
@@ -208,7 +209,7 @@
     }
     
     if (image == nil)
-        NSLog(@"Failed to load image for URL: %@", playersURL);
+        DLog(@"Failed to load image for URL: %@", playersURL);
     
     return image;
 }

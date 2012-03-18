@@ -9,7 +9,7 @@
 #import "PlayerSummaryViewController.h"
 #import "PlayerMoreInfoTableViewController.h"
 #import "Player.h"
-//#import "DejalActivityView.h"
+#import "Logging.h"
 
 
 @interface PlayerSummaryViewController()
@@ -38,7 +38,7 @@
 
 - (void)setPlayer:(Player *)newplayer
 {
-    NSLog(@"setPlayer: %@", newplayer);
+    DLog(@"setPlayer: %@", newplayer);
     [_player release];
     _player = newplayer;
 //    [fieldImage.image release];
@@ -53,7 +53,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    NSLog(@"viewWillAppear: player = %@", _player);
+    DLog(@"viewWillAppear: player = %@", _player);
     if (fieldImage.image == nil) {
         
         [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
@@ -67,17 +67,17 @@
                            @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];
 
     NSString *bName = [bImgs objectForKey:_player.level];
-    NSLog(@"bName = %@", bName);
+    DLog(@"bName = %@", bName);
     UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:bName ofType:@"png"]];
     if (bimg == nil)
-        NSLog(@"Failed to load banner for control vieww");
+        DLog(@"Failed to load banner for control vieww");
     banner.image = bimg;
 }
 
 
 - (IBAction)photoButtonPressed:(id)sender
 {
-    NSLog(@"photoButtonPressed");
+    DLog(@"photoButtonPressed");
     PlayerMoreInfoTableViewController *pmivc = [[PlayerMoreInfoTableViewController alloc] init];
     pmivc.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
     pmivc.player = _player;
@@ -120,7 +120,7 @@
     
     [spinner startAnimating];
     
-    NSLog(@"playerSummaryViewController.viewDidLoad = %@", _player);
+    DLog(@"playerSummaryViewController.viewDidLoad = %@", _player);
     NSString *s = [NSString stringWithFormat:@"%@ %@", _player.firstname, _player.lastname];
     [playerLabel setText:s]; //[player objectForKey:@"lastname"];
     playerNumber.text = _player.number;

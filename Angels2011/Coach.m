@@ -10,6 +10,7 @@
 #import <YAJLios/YAJL.h>
 #import "ASIHTTPRequest.h"
 #import "AwsURLHelper.h"
+#import "Logging.h"
 
 @implementation Coach
 
@@ -37,47 +38,47 @@
 
 + (NSArray *)allCoaches
 {
-    NSLog(@"getCoaches()");
+    DLog(@"getCoaches()");
     NSMutableArray *jcoaches = [[[NSMutableArray alloc] init] autorelease];
     NSURL *coachesURL = [AwsURLHelper getCoaches];
-    NSLog(@"coaches.url %@", coachesURL);
+    DLog(@"coaches.url %@", coachesURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:coachesURL];
     [request addRequestHeader:@"Accept" value:@"application/json"];
     [request startSynchronous];
     NSError *error = [request error];
     if (!error) {
         NSString *response = [request responseString];
-        NSLog(@"coaches.response = %@", response);
+        DLog(@"coaches.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
-        NSLog(@"coaches[after json parse] = %@", temp);
+        DLog(@"coaches[after json parse] = %@", temp);
         //NSArray *x = [temp objectForKey:@"coaches"];
         NSDictionary *x = temp;
-        NSLog(@"x = %@", x);
+        DLog(@"x = %@", x);
         for (NSDictionary *t in x) {
-            NSLog(@"t = %@", t);
+            DLog(@"t = %@", t);
             Coach *c = [Coach coachFromJson:t];
             [jcoaches addObject:c];
         }
     }
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
     }
     
-    NSLog(@"jcoaches array = %@", jcoaches);
+    DLog(@"jcoaches array = %@", jcoaches);
     return jcoaches;
 }
 
 - (UIImage*)photo
 {
-    NSLog(@"coachCardPhoto(), coach = %@", self);
+    DLog(@"coachCardPhoto(), coach = %@", self);
     NSString *id = self.uniqueId;
     //sleep(5);
     NSURL *coachURL = [AwsURLHelper getPhotoOfCoach:id];
-    NSLog(@"coach.photo.url %@", coachURL);
+    DLog(@"coach.photo.url %@", coachURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:coachURL];
     [request addRequestHeader:@"Accept" value:@"image/jpeg"];
     [request startSynchronous];
@@ -88,7 +89,7 @@
         image = [UIImage imageWithData:responseData];
     }
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
@@ -96,7 +97,7 @@
     }
     
     if (image == nil)
-        NSLog(@"Failed to load image for URL: %@", coachURL);
+        DLog(@"Failed to load image for URL: %@", coachURL);
 
     return image;
 }

@@ -8,6 +8,7 @@
 
 #import "PlayerMoreInfoTableViewController.h"
 #import "Parent.h"
+#import "Logging.h"
 
 @interface PlayerMoreInfoTableViewController()
 @property (retain, nonatomic) IBOutlet UITableViewCell *headerCell;
@@ -29,7 +30,7 @@
 
 - (IBAction)doneButtonPressed:(id)sender
 {
-    NSLog(@"Done button pressed");
+    DLog(@"Done button pressed");
     [self.presentingViewController dismissModalViewControllerAnimated:YES];
 }
 
@@ -58,7 +59,7 @@
 
 - (IBAction)sendMsgButton:(id)sender
 {
-    NSLog(@"sendMsgButtonPressed");
+    DLog(@"sendMsgButtonPressed");
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Send a text message." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
     
     buttonIndexes = [[[NSMutableArray alloc] init] retain];
@@ -90,17 +91,17 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // the user clicked one of the OK/Cancel buttons
-    NSLog(@"actionSheet, button: %d", buttonIndex);
+    DLog(@"actionSheet, button: %d", buttonIndex);
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         [buttonIndexes release];
     }
     else {
         NSString *val = [buttonIndexes objectAtIndex:buttonIndex];
-        NSLog(@"val = %@", val);
+        DLog(@"val = %@", val);
         if (val != NULL) {
             val = [val stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
             NSString* urlString = [NSString stringWithFormat: @"sms:%@", val];
-            NSLog(@"SMS #: %@", urlString);
+            DLog(@"SMS #: %@", urlString);
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
     }
@@ -361,13 +362,13 @@
         if (phone != NULL) {
             phone = [phone stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
             NSString* urlString = [NSString stringWithFormat: @"tel://%@", phone];
-            NSLog(@"Dialing #: %@", urlString);
+            DLog(@"Dialing #: %@", urlString);
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
         if (email != NULL) {
             email = [email stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
             NSString* urlString = [NSString stringWithFormat: @"mailto://%@", email];
-            NSLog(@"Emailing #: %@", urlString);
+            DLog(@"Emailing #: %@", urlString);
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
     }

@@ -8,6 +8,7 @@
 
 #import "CalendarTableViewController.h"
 #import "GCalEvent.h"
+#import "Logging.h"
 
 @interface CalendarTableViewController()
 @property (retain, nonatomic) NSMutableDictionary *eventsAsDictionary;
@@ -48,16 +49,16 @@
 {
     if (!_sections) {
         _sections = [[[self.eventsAsDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
-        NSLog(@"_sections = %@", _sections);
+        DLog(@"_sections = %@", _sections);
     }
     return _sections;
 }
 
 - (void)loadGcal
 {
-    NSLog(@"loadGcal()");
+    DLog(@"loadGcal()");
     if (!_events) {
-        NSLog(@"_gcal is nil, call URL to populate");
+        DLog(@"_gcal is nil, call URL to populate");
         _events = [[GCalEvent allGcalEvents] retain];
         [spinner stopAnimating];
         [_sections release];
@@ -110,7 +111,7 @@
    // [self.outDateFormatter setDateStyle:NSDateFormatterMediumStyle];
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSString *usFormatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMM" options:0 locale:usLocale];
-    NSLog(@"usFormatterString: %@", usFormatString);
+    DLog(@"usFormatterString: %@", usFormatString);
     [self.outDateFormatter setDateFormat:usFormatString];
     [usLocale release];
     
@@ -173,12 +174,12 @@
 
 - (GCalEvent *)entryAtIndexPath:(NSIndexPath *)indexPath
 {
-//    NSLog(@"entryAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
+//    DLog(@"entryAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
     NSString *key = [self.sections objectAtIndex:indexPath.section];
-//    NSLog(@"key = %@", key);
+//    DLog(@"key = %@", key);
     NSArray *eventsInSection = [self.eventsAsDictionary objectForKey:key];
     GCalEvent *t = [eventsInSection objectAtIndex:indexPath.row];
-    NSLog(@"gcalEventAtIndexPath = %@", t);
+    DLog(@"gcalEventAtIndexPath = %@", t);
     return t;
 }
 
@@ -193,7 +194,7 @@
     
     // Configure the cell...
     GCalEvent *t = [self entryAtIndexPath:indexPath];
-    //NSLog(@"cell = %@", t);
+    //DLog(@"cell = %@", t);
     cell.textLabel.text = t.description;
     
     NSString *detailText = [[[NSString alloc] initWithFormat:@"%@", t.location] autorelease];

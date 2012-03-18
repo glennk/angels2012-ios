@@ -7,10 +7,10 @@
 //
 
 #import "TeamPlayersTableViewController.h"
-//#import "PlayerPhotoViewController.h"
 #import "PlayerSummaryViewController.h"
 #import "Team.h"
 #import "Player.h"
+#import "Logging.h"
 
 @interface TeamPlayersTableViewController()
 @property (retain, nonatomic) UIView * origView;
@@ -40,7 +40,7 @@
 
 - (void)setTeam:(Team *)newTeam
 {
-    NSLog(@"setTeam()");
+    DLog(@"setTeam()");
     if (_team != newTeam) {
         _team = newTeam;
     }
@@ -121,14 +121,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"%d", [self.players count]);
+    DLog(@"%d", [self.players count]);
     return [self.players count];
 }
 
 - (Player *)playerAtIndexPath:(NSIndexPath *)indexPath
 {
     Player *p = [self.players objectAtIndex:indexPath.row];
-    NSLog(@"p = %@", p);
+    DLog(@"p = %@", p);
    return p;
 }
 
@@ -145,6 +145,7 @@
     Player *p = [self playerAtIndexPath:indexPath];
     NSString *s = [NSString stringWithFormat:@"%@ %@", p.firstname, p.lastname];
     cell.textLabel.text = s;
+    
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;

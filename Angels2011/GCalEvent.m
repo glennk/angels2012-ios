@@ -10,6 +10,7 @@
 #import "ASIHTTPRequest.h"
 #import <YAJLios/YAJL.h>
 #import "AwsURLHelper.h"
+#import "Logging.h"
 
 @implementation GCalEvent
 
@@ -18,26 +19,26 @@
 
 //- (NSMutableDictionary *)gcalFromDisk
 //{
-//    NSLog(@"getGcal()");
+//    DLog(@"getGcal()");
 //    if (!_gcal) {
-//        NSLog(@"_gcal is nil, call URL to populate");
+//        DLog(@"_gcal is nil, call URL to populate");
 //        _gcal = [[[NSMutableDictionary alloc] init] autorelease];
 //        NSError *error = nil;
 //        NSString *txt = [[[NSString alloc] initWithContentsOfFile:@"/Users/grk/google_calendar.txt" encoding:NSUTF8StringEncoding error:&error] autorelease];
 //        if (error) {
-//            NSLog(@"error = %@", [error description]);
+//            DLog(@"error = %@", [error description]);
 //        }
 //        else {
 //            NSDictionary *temp = [txt yajl_JSON];
-//            //NSLog(@"gcal[after json parse] = %@", temp);
+//            //DLog(@"gcal[after json parse] = %@", temp);
 //            NSDictionary *x = [temp objectForKey:@"data"];
-//            //NSLog(@"x = %@", x);
+//            //DLog(@"x = %@", x);
 //            NSArray *y = [x objectForKey:@"items"];
-//            //NSLog(@"y = %@", y);
+//            //DLog(@"y = %@", y);
 //            for (NSDictionary *d in y) {
-//                //NSLog(@"keys = %@", [d allKeys]);
+//                //DLog(@"keys = %@", [d allKeys]);
 //                //NSString *title = [d objectForKey:@"title"];
-//                //NSLog(@"title = %@, when = %@", title, [d objectForKey:@"when"]);
+//                //DLog(@"title = %@, when = %@", title, [d objectForKey:@"when"]);
 //                NSString *start = [[[d objectForKey:@"when"] objectAtIndex:0] objectForKey:@"start"];
 //                //                NSDateFormatter *inDateFormatter = [[NSDateFormatter alloc] init];
 //                //                [inDateFormatter setDateFormat:@"yyyy-MM-dd"];
@@ -46,7 +47,7 @@
 //                //                NSDateFormatter *outDateFormatter = [[NSDateFormatter alloc] init];
 //                //                [outDateFormatter setDateStyle:NSDateFormatterMediumStyle];
 //                //                NSString *x = [outDateFormatter stringFromDate:dstart];
-//                NSLog(@"key = %@", key);
+//                DLog(@"key = %@", key);
 //                if (![_gcal objectForKey:key]) {
 //                    NSMutableArray *x = [[NSMutableArray alloc] init];
 //                    [x addObject:d];
@@ -57,7 +58,7 @@
 //                }
 //            }
 //        }
-//        NSLog(@"gcal = %@", _gcal);
+//        DLog(@"gcal = %@", _gcal);
 //    }
 //    return _gcal;
 //}
@@ -82,7 +83,7 @@
 
 + (NSArray *)allGcalEvents
 {
-    NSLog(@"allGcalEvents");
+    DLog(@"allGcalEvents");
     NSMutableArray *gcal = [[[NSMutableArray alloc] init] autorelease];
     NSURL *url = [AwsURLHelper getGoogleCal];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
@@ -91,15 +92,15 @@
     NSError *error = [request error];
     if (!error) {
         NSString *response = [request responseString];
-        //NSLog(@"gcal response: %@", response);
+        //DLog(@"gcal response: %@", response);
         NSDictionary *temp = [response yajl_JSON];
-        //NSLog(@"gcal[after json parse] = %@", temp);
+        //DLog(@"gcal[after json parse] = %@", temp);
         //NSDictionary *x = [temp objectForKey:@"data"];
-        //NSLog(@"x = %@", x);
+        //DLog(@"x = %@", x);
         NSArray *y = [temp objectForKey:@"items"];
-        //NSLog(@"y = %@", y);
+        //DLog(@"y = %@", y);
         for (NSDictionary *d in y) {
-            NSLog(@"looking at item: %@", d);
+            DLog(@"looking at item: %@", d);
             if ([d objectForKey:@"recurrence"])
                 continue;
             NSDictionary *key = [d objectForKey:@"start"];
@@ -111,14 +112,14 @@
         }
     }
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
     }
     
-    NSLog(@"gcal = %@", gcal);
+    DLog(@"gcal = %@", gcal);
     
     return gcal;
 }

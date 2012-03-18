@@ -9,6 +9,7 @@
 #import "AllCoachesTableViewController.h"
 #import "Coach.h"
 #import "Coach4MoreInfoViewController.h"
+#import "Logging.h"
 
 @interface AllCoachesTableViewController()
 @property (retain, nonatomic) NSDictionary * coachesAsDictionary;
@@ -40,7 +41,7 @@
                 [_coachesAsDictionary setValue:a forKey:key];
             }
         }
-        NSLog(@"_coachesInDictionary = %@", _coachesAsDictionary);
+        DLog(@"_coachesInDictionary = %@", _coachesAsDictionary);
     }
     return _coachesAsDictionary;
 }
@@ -49,14 +50,14 @@
 {
     if (!_sections) {
         _sections = [[[self.coachesAsDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
-        NSLog(@"sections = %@", _sections);
+        DLog(@"sections = %@", _sections);
     }
     return _sections;
 }
 
 - (void)loadCoaches
 {
-    NSLog(@"loadCoaches()");
+    DLog(@"loadCoaches()");
     if (!_coaches) {
         _coaches = [[Coach allCoaches] retain];
         [spinner stopAnimating];
@@ -184,7 +185,7 @@
     NSString *s = [NSString stringWithFormat:@"%@ %@", c.firstname, c.lastname]; 
     cell.textLabel.text = s;
     
-    //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 
     return cell;
 }
@@ -248,7 +249,7 @@
     
     Coach4MoreInfoViewController *csvc = [[Coach4MoreInfoViewController alloc] init];
     csvc.coach = [self coachAtIndexPath:indexPath];
-    NSLog(@"selected coach: %@", csvc.coach);
+    DLog(@"selected coach: %@", csvc.coach);
     [self.navigationController pushViewController:csvc animated:YES];
     [csvc release]; 
 }

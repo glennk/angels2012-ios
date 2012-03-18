@@ -7,6 +7,7 @@
 //
 
 #import "Coach4MoreInfoViewController.h"
+#import "Logging.h"
 
 @interface Coach4MoreInfoViewController()
 @property (retain, nonatomic) IBOutlet UITableViewCell *headerCell;
@@ -56,7 +57,7 @@
 
 - (IBAction)sendMsgButtonPressed:(id)sender
 {
-    NSLog(@"sendMsgButtonPressed");
+    DLog(@"sendMsgButtonPressed");
     UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Send a text message." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
     
     buttonIndexes = [[[NSMutableArray alloc] init] retain];
@@ -69,7 +70,7 @@
         NSString *key;
         while ((key = [keyEnumerator nextObject])) {
             NSString *value = [dictobject valueForKey:key];
-            NSLog(@"key, value pair: %@, %@", key, value);
+            DLog(@"key, value pair: %@, %@", key, value);
             [actionSheet addButtonWithTitle: [NSString stringWithFormat:@"%@ %@", key, [dictobject valueForKey:key]]];
             [buttonIndexes addObject: [dictobject valueForKey:key]];
         }
@@ -86,17 +87,17 @@
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     // the user clicked one of the OK/Cancel buttons
-    NSLog(@"actionSheet, button: %d", buttonIndex);
+    DLog(@"actionSheet, button: %d", buttonIndex);
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         [buttonIndexes release];
     }
     else {
         NSString *val = [buttonIndexes objectAtIndex:buttonIndex];
-        NSLog(@"val = %@", val);
+        DLog(@"val = %@", val);
         if (val != NULL) {
             val = [val stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
             NSString* urlString = [NSString stringWithFormat: @"sms:%@", val];
-            NSLog(@"SMS #: %@", urlString);
+            DLog(@"SMS #: %@", urlString);
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
     }
@@ -127,7 +128,6 @@
 
     self.tableView = mainTable;
     self.tableView.tableHeaderView = headerCell;
-    self.tableView.tableFooterView = footerCell;
     
     /**
      * NSArray[0]
@@ -159,8 +159,11 @@
         [email release];
     }
 
-    NSLog(@"sections = %@", sections);
+    DLog(@"sections = %@", sections);
     
+    if (sections.count > 0)
+        self.tableView.tableFooterView = footerCell;
+        
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
  
@@ -216,14 +219,14 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     NSInteger n = sections.count;
-    NSLog(@"numberOfSectionsInTableView.n = %d", n);
+    DLog(@"numberOfSectionsInTableView.n = %d", n);
     return n;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     NSInteger n = [[sections objectAtIndex:section] count];
-    NSLog(@"numberOfRowsInSection.n = %d", n);
+    DLog(@"numberOfRowsInSection.n = %d", n);
     return n;    
 }
 
@@ -329,7 +332,7 @@
      [detailViewController release];
      */
     if (indexPath.section == 0) {
-        NSLog(@"indexPath = %@", indexPath);
+        DLog(@"indexPath = %@", indexPath);
         NSString *phone = nil;
         switch (indexPath.row) {
             case 0:
@@ -342,12 +345,12 @@
         if (phone != NULL) {
             phone = [phone stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
             NSString* urlString = [NSString stringWithFormat: @"tel://%@", phone];
-            NSLog(@"Dialing #: %@", urlString);
+            DLog(@"Dialing #: %@", urlString);
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
     }
     if (indexPath.section == 1) {
-        NSLog(@"indexPath = %@", indexPath);
+        DLog(@"indexPath = %@", indexPath);
         NSString *email = nil;
         switch (indexPath.row) {
             case 0:
@@ -360,7 +363,7 @@
         if (email != NULL) {
             email = [email stringByAddingPercentEscapesUsingEncoding: NSASCIIStringEncoding];
             NSString* urlString = [NSString stringWithFormat: @"mailto://%@", email];
-            NSLog(@"Emailing #: %@", urlString);
+            DLog(@"Emailing #: %@", urlString);
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:urlString]];
         }
     }

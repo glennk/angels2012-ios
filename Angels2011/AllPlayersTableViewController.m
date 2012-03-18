@@ -8,8 +8,8 @@
 
 #import "AllPlayersTableViewController.h"
 #import "PlayerSummaryViewController.h"
-#include "Player.h"
-//#import "DejalActivityView.h"
+#import "Player.h"
+#import "Logging.h"
 
 @interface AllPlayersTableViewController()
 //@property (copy) NSString *jsonkey;
@@ -32,23 +32,23 @@
 - (NSDictionary *)playersAsDictionary
 {
     if (!_playersAsDictionary) {
-        NSLog(@"playersAsDictionary()");
+        DLog(@"playersAsDictionary()");
         _playersAsDictionary = [[NSMutableDictionary alloc] init];
         for (Player *t in _players) {
-            NSLog(@"t.nickname = %@, t.lastname = %@", t.nickname, t.lastname);
+            DLog(@"t.nickname = %@, t.lastname = %@", t.nickname, t.lastname);
             NSString *key = nil;
             NSString *x = nil;
             if (self.byNickname)
                 x = t.nickname;
             else
                 x = t.lastname;
-            NSLog(@"x = %@", x);
+            DLog(@"x = %@", x);
             if (x && x.length > 0)
                 key = [x substringToIndex:1];
             else
                 continue;
             
-            NSLog(@"key = %@", key);
+            DLog(@"key = %@", key);
             if (![_playersAsDictionary objectForKey:key]) {
                 NSMutableArray *x = [[[NSMutableArray alloc] init] autorelease];
                 [x addObject:t];
@@ -66,7 +66,7 @@
 {
     if (!_sections) {
         _sections = [[[self.playersAsDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
-        NSLog(@"sections = %@", _sections);
+        DLog(@"sections = %@", _sections);
     }
     return _sections;
 }
@@ -78,7 +78,7 @@
 //        [DejalBezelActivityView activityViewForView:self.view];
 //        [Player processPlayerDataWithBlock:^(NSArray *playerData) {
 //            _players = [[NSArray alloc] initWithArray:playerData]; //[[Player allPlayers] retain];
-//            NSLog(@"viewDidLoad: _players returned");
+//            DLog(@"viewDidLoad: _players returned");
 //            [_sections release];
 //            _sections = nil;
 //            [_playersAsDictionary release];
@@ -92,7 +92,7 @@
 
 - (void)loadPlayers
 {
-    NSLog(@"loadPlayers()");
+    DLog(@"loadPlayers()");
     if (!_players) {
         _players = [[Player allPlayers] retain];
         [spinner stopAnimating];
@@ -110,7 +110,7 @@
 
 - (void)toggleNicknames
 {
-    NSLog(@"toggleNicknames(), setting _sections and _players to nil");
+    DLog(@"toggleNicknames(), setting _sections and _players to nil");
     [_sections release];
     _sections = nil;
     [_playersAsDictionary release];
@@ -219,12 +219,12 @@
 
 - (Player *)playerAtIndexPath:(NSIndexPath *)indexPath
 {
-    //NSLog(@"playerAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
-    //NSLog(@"_players.retainCount = %d", [_players retainCount]);
+    //DLog(@"playerAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
+    //DLog(@"_players.retainCount = %d", [_players retainCount]);
     NSArray *playersInSection = [self.playersAsDictionary objectForKey:[self.sections objectAtIndex:indexPath.section]];
-    //NSLog(@"playerAtIndexPath.playersInSection = %@", playersInSection);
+    //DLog(@"playerAtIndexPath.playersInSection = %@", playersInSection);
     Player *t = [playersInSection objectAtIndex:indexPath.row];
-    NSLog(@"playerAtIndexPath = %@", t);
+    DLog(@"playerAtIndexPath = %@", t);
     return t;
     //    return [teamsInSection objectAtIndex:indexPath.row];
 }
@@ -241,7 +241,7 @@
     // Configure the cell...
     //NSDictionary *t = [self playerAtIndexPath:indexPath];
     Player *p = [self playerAtIndexPath:indexPath];
-    NSLog(@"cell = %@", p);
+    DLog(@"cell = %@", p);
     if (self.byNickname) {
         //cell.textLabel.text = [t objectForKey:jsonkey];
         cell.textLabel.text = p.nickname;
@@ -309,7 +309,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
 {
-    NSLog(@"title = %@, index = %d", title, index);
+    DLog(@"title = %@, index = %d", title, index);
     return index;
 }
 
@@ -325,7 +325,7 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
-    NSLog(@"inddexPath: %d", indexPath.row);
+    DLog(@"inddexPath: %d", indexPath.row);
     PlayerSummaryViewController *psvc = [[PlayerSummaryViewController alloc] init];
  //   psvc.hidesBottomBarWhenPushed = YES;
     psvc.player = [self playerAtIndexPath:indexPath];

@@ -10,6 +10,7 @@
 #import <YAJLios/YAJL.h>
 #import "ASIHTTPRequest.h"
 #import "AwsURLHelper.h"
+#import "Logging.h"
 
 @implementation Team
 
@@ -32,34 +33,34 @@
     NSMutableArray *jteams = [[[NSMutableArray alloc] init] autorelease];
 
     NSURL *teamsURL = [AwsURLHelper getTeams];
-    NSLog(@"teams.url %@", teamsURL);
+    DLog(@"teams.url %@", teamsURL);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:teamsURL];
     [request addRequestHeader:@"Accept" value:@"application/json"];
     [request startSynchronous];
     NSError *error = [request error];
     if (!error) {
         NSString *response = [request responseString];
-        NSLog(@"teams.response = %@", response);
+        DLog(@"teams.response = %@", response);
         NSDictionary *temp = [response yajl_JSON];
-        NSLog(@"teams[after json parse] = %@", temp);
+        DLog(@"teams[after json parse] = %@", temp);
         //NSArray *x = [temp objectForKey:@"teams"];
         NSDictionary *x = temp;
-        NSLog(@"x = %@", x);
+        DLog(@"x = %@", x);
         for (NSDictionary *d in x) {
-            NSLog(@"t = %@", d);
+            DLog(@"t = %@", d);
             Team *t = [Team teamFromJson:d];
             [jteams addObject:t];
         }
     }
     else {
-        NSLog(@"error!! %@", error);
+        DLog(@"error!! %@", error);
         UIAlertView *popup = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Network Unavailable" delegate:nil cancelButtonTitle:@"OK"
                                               otherButtonTitles: nil];
         [popup show];
         [popup release];
     }
     
-    NSLog(@"teams = %@ (retain count=%d)", jteams, [jteams retainCount]);
+    DLog(@"teams = %@ (retain count=%d)", jteams, [jteams retainCount]);
     return jteams;
 }
 
