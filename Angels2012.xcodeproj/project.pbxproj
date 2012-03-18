@@ -20,6 +20,7 @@
 		0C5741601466BB7400275112 /* baseball_field.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 0C57415F1466BB7400275112 /* baseball_field.jpeg */; };
 		0C5741671466C49600275112 /* PlayerSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C5741661466C49600275112 /* PlayerSummaryViewController.xib */; };
 		0C683D5A1462255D00133A54 /* PlayerSummaryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C683D581462255C00133A54 /* PlayerSummaryViewController.m */; };
+		0C868A3B1516967A009C3E46 /* icon57x57.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C868A3A1516967A009C3E46 /* icon57x57.png */; };
 		0C894467150B9B29000DA5F2 /* thumbplaceholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C894463150B9B29000DA5F2 /* thumbplaceholder.png */; };
 		0C89446B150BA33A000DA5F2 /* GCalEvent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C89446A150BA33A000DA5F2 /* GCalEvent.m */; };
 		0C894480150C50D9000DA5F2 /* HeaderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C89447F150C50D8000DA5F2 /* HeaderCell.xib */; };
@@ -66,7 +67,6 @@
 		0CDB774D14581B5300672CEB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB774C14581B5300672CEB /* Reachability.m */; };
 		0CDB8DCA1510FC7600A5F978 /* PlayerMoreInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CDB8DC91510FC7600A5F978 /* PlayerMoreInfo.xib */; };
 		0CEC87A115115CB1000BE0DF /* Coach4MoreInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC87A015115CB1000BE0DF /* Coach4MoreInfoViewController.m */; };
-		0CF5FC7914FAB1BA0064133C /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CF5FC7814FAB1BA0064133C /* icon.png */; };
 		0CFEEF0514FA9F4400348FDE /* PlayerMoreInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -99,6 +99,7 @@
 		0C5741661466C49600275112 /* PlayerSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerSummaryViewController.xib; sourceTree = "<group>"; };
 		0C683D571462255C00133A54 /* PlayerSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerSummaryViewController.h; sourceTree = "<group>"; };
 		0C683D581462255C00133A54 /* PlayerSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerSummaryViewController.m; sourceTree = "<group>"; };
+		0C868A3A1516967A009C3E46 /* icon57x57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon57x57.png; sourceTree = "<group>"; };
 		0C894463150B9B29000DA5F2 /* thumbplaceholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = thumbplaceholder.png; sourceTree = "<group>"; };
 		0C894469150BA339000DA5F2 /* GCalEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCalEvent.h; sourceTree = "<group>"; };
 		0C89446A150BA33A000DA5F2 /* GCalEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCalEvent.m; sourceTree = "<group>"; };
@@ -170,7 +171,6 @@
 		0CDB8DC91510FC7600A5F978 /* PlayerMoreInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerMoreInfo.xib; sourceTree = "<group>"; };
 		0CEC879F15115CB1000BE0DF /* Coach4MoreInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coach4MoreInfoViewController.h; sourceTree = "<group>"; };
 		0CEC87A015115CB1000BE0DF /* Coach4MoreInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coach4MoreInfoViewController.m; sourceTree = "<group>"; };
-		0CF5FC7814FAB1BA0064133C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
 		0CFEEF0314FA9F4400348FDE /* PlayerMoreInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerMoreInfoTableViewController.h; sourceTree = "<group>"; };
 		0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerMoreInfoTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -300,7 +300,7 @@
 				0CA2DB7714B24F730071C30D /* AwsURLHelper.m */,
 				0CDB74F91455AB5E00672CEB /* MainWindow.xib */,
 				0CD19E4E1464D017004974C3 /* Default.png */,
-				0CF5FC7814FAB1BA0064133C /* icon.png */,
+				0C868A3A1516967A009C3E46 /* icon57x57.png */,
 				0C894460150B9B29000DA5F2 /* Images */,
 				0CDB74EE1455AB5E00672CEB /* Supporting Files */,
 			);
@@ -463,13 +463,13 @@
 				0C19DBA614F035A900A457E5 /* 13URedClubTag.png in Resources */,
 				0C19DBA814F035A900A457E5 /* 11UClubTag.png in Resources */,
 				0C99798614F0473B007C00A2 /* 12UWhiteClubTag.png in Resources */,
-				0CF5FC7914FAB1BA0064133C /* icon.png in Resources */,
 				0C894467150B9B29000DA5F2 /* thumbplaceholder.png in Resources */,
 				0C894480150C50D9000DA5F2 /* HeaderCell.xib in Resources */,
 				0C894482150C52E8000DA5F2 /* FooterCell.xib in Resources */,
 				0C894484150C56C6000DA5F2 /* MainTable.xib in Resources */,
 				0CDB8DCA1510FC7600A5F978 /* PlayerMoreInfo.xib in Resources */,
 				0C2BC66D151194A000F68FE0 /* iTunesArtwork in Resources */,
+				0C868A3B1516967A009C3E46 /* icon57x57.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
