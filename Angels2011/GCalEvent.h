@@ -16,6 +16,7 @@
 @property (retain, nonatomic) NSString *start;
 //@property (retain, nonatomic) NSString *key;
 
-+ (NSArray *)allGcalEvents;
+//+(NSArray *)allGcalEvents:(BOOL)includePast;
++(NSArray *)allGcalEvents;
 
 @end

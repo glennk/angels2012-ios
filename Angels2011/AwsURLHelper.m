@@ -16,12 +16,24 @@
 //#define _HOST @"192.168.3.105"
 //#define _HOST @"10.71.0.6"
 //#define _HOST @"angelsv2-gkrondev.rhcloud.com"
+
+#define __DEV true
+
+//openshift PROD
+#if __PROD
 #define _HOST @"angels2012.ktmsoftware.com"
-//#define _PORT @":8080"
 #define _PORT @""
-//#define _CONTEXT @"/mavenproject11"
 #define _CONTEXT @""
 #define _RESTPATH @"/rest"
+#endif
+
+//local jboss DEV
+#if __DEV
+#define _HOST @"localhost"
+#define _PORT @":8080"
+#define _CONTEXT @"/mavenproject11-1.0-SNAPSHOT"
+#define _RESTPATH @"/rest"
+#endif
 
 + (NSString *)buildURL:(NSString *)path
 {
@@ -60,13 +72,31 @@
     return [NSURL URLWithString: [self buildURL: [NSString stringWithFormat:@"/coach/%@/photo", key]]];
 }
 
-+ (NSURL *)getGoogleCal
+static NSString *sFrom = @"2012-01-01T00:00:00Z";
+static NSString *sTo = @"2012-12-31T00:00:00Z";
+
++ (NSURL *)getGoogleCal:(NSDate*)fromDate :(NSDate*)toDate
 {
-    //https://www.googleapis.com/calendar/v3/calendars/austinangelsbaseball%40yahoo.com/events?key=AIzaSyCPhC0NyIX-4skyCDCbwAWA6AhMTUqGClI
-    //https://www.google.com/calendar/feeds/austinangelsbaseball%40yahoo.com/public/full?alt=jsonc&singleevents=true&sortorder=ascending&futureevents=true
-    //return [[[NSURL alloc] initWithString:@"https://www.google.com/calendar/feeds/austinangelsbaseball%40yahoo.com/public/full?alt=jsonc&singleevents=true"] //autorelease];
-    return [[[NSURL alloc]
-initWithString:@"https://www.googleapis.com/calendar/v3/calendars/austinangelsbaseball%40yahoo.com/events?key=AIzaSyCPhC0NyIX-4skyCDCbwAWA6AhMTUqGClI&maxResults=20&timeMin=2012-02-01T00:00:00Z&singleEvents=true"] autorelease];
+    static NSDateFormatter *dateFormatter;
+    
+    if (dateFormatter == nil) {
+        dateFormatter = [[NSDateFormatter alloc] init];
+        [dateFormatter setDateFormat:@"yyyy-MM-dd'T00:00:00Z'"];
+    }
+    
+    if (fromDate != nil) {
+        sFrom = [dateFormatter stringFromDate:fromDate];
+    }
+    
+    if (toDate != nil) {
+        sTo = [dateFormatter stringFromDate:toDate];
+    }
+    
+    NSString *sURL = [NSString stringWithFormat:@"https://www.googleapis.com/calendar/v3/calendars/austinangelsbaseball@yahoo.com/events?key=AIzaSyCPhC0NyIX-4skyCDCbwAWA6AhMTUqGClI&maxResults=1000&timeMin=%@&timeMax=%@&singleEvents=true", sFrom /*@"2012-05-01T00:00:00Z"*/, sTo];
+    
+    DLog(@"googleCalURL: <%@>", sURL);
+    
+    return [NSURL URLWithString: sURL];
 }
 
 @end

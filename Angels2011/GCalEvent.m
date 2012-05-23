@@ -17,52 +17,6 @@
 @synthesize title, description, location, start;
 //@synthesize key;
 
-//- (NSMutableDictionary *)gcalFromDisk
-//{
-//    DLog(@"getGcal()");
-//    if (!_gcal) {
-//        DLog(@"_gcal is nil, call URL to populate");
-//        _gcal = [[[NSMutableDictionary alloc] init] autorelease];
-//        NSError *error = nil;
-//        NSString *txt = [[[NSString alloc] initWithContentsOfFile:@"/Users/grk/google_calendar.txt" encoding:NSUTF8StringEncoding error:&error] autorelease];
-//        if (error) {
-//            DLog(@"error = %@", [error description]);
-//        }
-//        else {
-//            NSDictionary *temp = [txt yajl_JSON];
-//            //DLog(@"gcal[after json parse] = %@", temp);
-//            NSDictionary *x = [temp objectForKey:@"data"];
-//            //DLog(@"x = %@", x);
-//            NSArray *y = [x objectForKey:@"items"];
-//            //DLog(@"y = %@", y);
-//            for (NSDictionary *d in y) {
-//                //DLog(@"keys = %@", [d allKeys]);
-//                //NSString *title = [d objectForKey:@"title"];
-//                //DLog(@"title = %@, when = %@", title, [d objectForKey:@"when"]);
-//                NSString *start = [[[d objectForKey:@"when"] objectAtIndex:0] objectForKey:@"start"];
-//                //                NSDateFormatter *inDateFormatter = [[NSDateFormatter alloc] init];
-//                //                [inDateFormatter setDateFormat:@"yyyy-MM-dd"];
-//                NSString *key = [start substringToIndex:10];
-//                //                NSDate *dstart = [inDateFormatter dateFromString:c];
-//                //                NSDateFormatter *outDateFormatter = [[NSDateFormatter alloc] init];
-//                //                [outDateFormatter setDateStyle:NSDateFormatterMediumStyle];
-//                //                NSString *x = [outDateFormatter stringFromDate:dstart];
-//                DLog(@"key = %@", key);
-//                if (![_gcal objectForKey:key]) {
-//                    NSMutableArray *x = [[NSMutableArray alloc] init];
-//                    [x addObject:d];
-//                    [_gcal setValue:x forKey:key];
-//                    
-//                } else {
-//                    [[_gcal objectForKey:x] addObject:x];
-//                }
-//            }
-//        }
-//        DLog(@"gcal = %@", _gcal);
-//    }
-//    return _gcal;
-//}
-
 + (GCalEvent *)gcalEventFromJson:(NSDictionary *)data
 {
     GCalEvent *event = [[[GCalEvent alloc] init] autorelease];
@@ -81,11 +35,71 @@
     return event;
 }
 
+//+ (NSArray *)allGcalEvents:(BOOL)includePast
+//{
+//    NSDate *fromDate = [[[NSDate alloc] init] autorelease];
+//    
+//    if (includePast) {
+//        NSDateComponents *components = [[NSDateComponents alloc] init];
+//        [components setMonth:2];
+//        [components setYear:2012];
+//        NSCalendar *gregorian = [[NSCalendar alloc]
+//                                 initWithCalendarIdentifier:NSGregorianCalendar];
+//        NSDate *date = [gregorian dateFromComponents:components];
+//        fromDate = date;
+//    }
+//    NSLog(@"fromDate: %@", fromDate);
+//        
+//    return [self gcalFromUrl:fromDate :nil];
+//}
+
 + (NSArray *)allGcalEvents
+{
+//    return [self gcalFromUrl:nil :nil];
+    return [self gcalFromDisk];
+}
+
++ (NSArray *)gcalFromDisk
+{
+    DLog(@"getGcalFromDisk()");
+    NSMutableArray *gcal = [[[NSMutableArray alloc] init] autorelease];
+    NSError *error = nil;
+    NSString *txt = [[[NSString alloc] initWithContentsOfFile:@"/Users/grk/events.json" encoding:NSUTF8StringEncoding error:&error] autorelease];
+    if (error) {
+        DLog(@"error = %@", [error description]);
+    }
+    else {
+        NSDictionary *temp = [txt yajl_JSON];
+        //DLog(@"gcal[after json parse] = %@", temp);
+        NSArray *y = [temp objectForKey:@"items"];
+        //DLog(@"y = %@", y);
+        for (NSDictionary *d in y) {
+//            DLog(@"looking at item: %@", d);
+            if ([d objectForKey:@"recurringEventId"]) {
+                NSLog(@"recurringEventId FOUND!...skipping event!");
+                continue;
+            }
+            NSDictionary *key = [d objectForKey:@"start"];
+            if (!key || ![key objectForKey:@"date"])
+                continue;
+            
+            GCalEvent *event = [GCalEvent gcalEventFromJson:d];
+            [gcal addObject:event];
+        }
+    }
+    
+//    DLog(@"gcal = %@", gcal);
+    
+    return gcal;
+}
+
++ (NSArray *)gcalFromUrl:(NSDate *)fromDate :(NSDate *)toDate
 {
     DLog(@"allGcalEvents");
     NSMutableArray *gcal = [[[NSMutableArray alloc] init] autorelease];
-    NSURL *url = [AwsURLHelper getGoogleCal];
+    NSURL *url = [AwsURLHelper getGoogleCal :fromDate :toDate];
+    DLog(@"gcalFromUrl: %@", url);
+    
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     [request addRequestHeader:@"Accept" value:@"application/json"];
     [request startSynchronous];
@@ -101,8 +115,10 @@
         //DLog(@"y = %@", y);
         for (NSDictionary *d in y) {
             DLog(@"looking at item: %@", d);
-            if ([d objectForKey:@"recurrence"])
+            if ([d objectForKey:@"recurringEventId"]) {
+//                NSLog(@"recurringEventId FOUND!...skipping event!");
                 continue;
+            }
             NSDictionary *key = [d objectForKey:@"start"];
             if (!key || ![key objectForKey:@"date"])
                 continue;
@@ -120,7 +136,7 @@
         gcal = nil;
     }
     
-    DLog(@"gcal = %@", gcal);
+//    DLog(@"gcal = %@", gcal);
     
     return gcal;
 }

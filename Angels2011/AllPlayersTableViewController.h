@@ -8,7 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface AllPlayersTableViewController : UITableViewController {
+@interface AllPlayersTableViewController : UIViewController <UITableViewDelegate, UITableViewDataSource> 
+{
     NSArray *sections;
     NSArray *players;
 }

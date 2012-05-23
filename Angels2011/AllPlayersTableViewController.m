@@ -16,10 +16,15 @@
 @property (retain, nonatomic) NSDictionary * playersAsDictionary;
 @property BOOL byNickname;
 @property (retain, nonatomic) UIView * origView;
+@property (retain, nonatomic) IBOutlet UITableView *myTableView;
+@property (retain, nonatomic) IBOutlet UISegmentedControl *listByNicknameOrLastname;
+- (IBAction)sortBy:(id)sender;
 @property (retain, nonatomic) UIActivityIndicatorView *spinner;
 @end;
 
 @implementation AllPlayersTableViewController
+@synthesize myTableView;
+@synthesize listByNicknameOrLastname;
 
 @synthesize sections = _sections;
 @synthesize players = _players;
@@ -101,42 +106,85 @@
     [spinner stopAnimating];
     [spinner release];
     [self setView: origView];
-    [self.tableView reloadData];
+    [myTableView reloadData];
+ 
     DLog(@"loadPlayers()...done");
 }
 
-- (void)toggleNicknames
-{
-    DLog(@"toggleNicknames(), setting _sections and _players to nil");
+- (IBAction)sortBy:(id)sender {
+    DLog(@"Sorty by changed...");
+    
+    /*
+	 When the user changes the selection in the segmented control, set the appropriate picker as the current subview of the picker container view (and remove the previous one).
+	 */
     [_sections release];
     _sections = nil;
     [_playersAsDictionary release];
     _playersAsDictionary = nil;
-    if (self.byNickname) {
+    
+	NSUInteger selectedUnit = [listByNicknameOrLastname selectedSegmentIndex];
+	if (selectedUnit == 0) {
+        DLog(@"By Lastname");
         self.byNickname = FALSE;
-        self.navigationItem.leftBarButtonItem.title = @"By Lastnames";
-    }
-    else {
+	} else {
+        DLog(@"By Nickname");
         self.byNickname = TRUE;
-        self.navigationItem.leftBarButtonItem.title = @"By Nicknames";
-    }
-    [self.tableView reloadData];
+	}
+    
+    [myTableView reloadData];
     
 }
 
-- (id)initWithStyle:(UITableViewStyle)style
+//- (void)toggleNicknames
+//{
+//    DLog(@"toggleNicknames(), setting _sections and _players to nil");
+//    [_sections release];
+//    _sections = nil;
+//    [_playersAsDictionary release];
+//    _playersAsDictionary = nil;
+//    if (self.byNickname) {
+//        self.byNickname = FALSE;
+//        self.navigationItem.leftBarButtonItem.title = @"By Lastnames";
+//    }
+//    else {
+//        self.byNickname = TRUE;
+//        self.navigationItem.leftBarButtonItem.title = @"By Nicknames";
+//    }
+//    [self.tableView reloadData];
+//    
+//}
+
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    if (self) {
+//        // Custom initialization
+//        UIImage* anImage = [UIImage imageNamed:@"112-group.png"];
+//        UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Players" image:anImage tag:0];
+//        self.tabBarItem = item;
+//        [item release];
+//        UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"By Nicknames" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleNicknames)];
+//        self.navigationItem.leftBarButtonItem = lbarItem;
+//        [lbarItem release];
+//        self.byNickname = FALSE;
+//    }
+//    return self;
+//}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-    self = [super initWithStyle:style];
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
     if (self) {
-        // Custom initialization
         UIImage* anImage = [UIImage imageNamed:@"112-group.png"];
         UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Players" image:anImage tag:0];
         self.tabBarItem = item;
         [item release];
-        UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"By Nicknames" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleNicknames)];
-        self.navigationItem.leftBarButtonItem = lbarItem;
-        [lbarItem release];
-        self.byNickname = FALSE;
+        
+//        UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"Full Calendar" style:UIBarButtonItemStyleBordered target:self action:@selector(gotoAngelsCalendar:)];
+//        self.navigationItem.rightBarButtonItem = lbarItem;
+//        [lbarItem release];
+        
     }
     return self;
 }
@@ -154,6 +202,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [myTableView setDelegate: self];
+    [myTableView setDataSource: self];
+
     self.title = @"Players";
 }
 

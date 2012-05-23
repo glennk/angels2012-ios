@@ -16,6 +16,6 @@
 + (NSURL *)getPhotoOfPlayer:(NSString *)key;
 + (NSURL *)getPhotoOfCoach:(NSString *)key;
 + (NSURL *)getCoaches;
-+ (NSURL *)getGoogleCal;
++ (NSURL *)getGoogleCal:(NSDate*)fromDate :(NSDate*)toDate;
 
 @end

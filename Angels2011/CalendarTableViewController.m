@@ -9,6 +9,7 @@
 #import "CalendarTableViewController.h"
 #import "GCalEvent.h"
 #import "Logging.h"
+#import "WebViewController.h"
 
 @interface CalendarTableViewController()
 @property (retain, nonatomic) NSMutableDictionary *eventsAsDictionary;
@@ -16,6 +17,10 @@
 @property (retain, nonatomic) NSDateFormatter *inDateFormatter, *outDateFormatter;
 @property (retain, nonatomic) UIView * origView;
 @property (retain, nonatomic) UIActivityIndicatorView *spinner;
+@property (retain, nonatomic) IBOutlet UITableView *mainTable;
+@property BOOL includePast;
+- (IBAction)gotoAngelsCalendar:(id)sender;
+
 @end
 
 
@@ -26,6 +31,9 @@
 @synthesize sections = _sections;
 @synthesize inDateFormatter, outDateFormatter;
 @synthesize origView, spinner;
+@synthesize mainTable;
+@synthesize includePast;
+
 
 - (NSDictionary *)eventsAsDictionary
 {
@@ -65,20 +73,72 @@
     [spinner stopAnimating];
     [spinner release];
     [self setView: origView];
-    [self.tableView reloadData];
+    [mainTable reloadData];
+    
+    // scroll to a section that is close to today's date
+//    NSIndexPath *ip = [self getIndexPathNearToday];
+//    if (ip != nil)
+        [mainTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:8] atScrollPosition:UITableViewScrollPositionBottom animated:TRUE];
+    
     DLog(@"loadGcal()...done");
 }
 
-
-- (id)initWithStyle:(UITableViewStyle)style
+// can return nil if we're at the end
+- (NSIndexPath *)getIndexPathNearToday
 {
-    self = [super initWithStyle:style];
+    NSIndexPath *result = nil;
+    NSDate *date = [[NSDate alloc] init];
+//    date = [date dateByAddingTimeInterval:3000000];
+    DLog(@"today = %@", date);
+    // convert each section to a date
+    int i = 0;
+    for (; i < self.sections.count; i++) {
+        NSString *s = [self.sections objectAtIndex:i];
+        NSDate *dstart = [inDateFormatter dateFromString:s];
+        if ([date timeIntervalSinceDate:dstart] < 0) {
+            DLog(@"dstart = %@, today = %@, i = %d", dstart, date, i);
+            result = [NSIndexPath indexPathForRow:0 inSection: (++i < self.sections.count) ? i : self.sections.count-1];
+            break;
+        }
+    }
+    [date release];
+    return result;
+}
+
+//- (void)toggleIncludePast
+//{
+//    DLog(@"toggleIncludePast()");
+//    if (self.includePast) {
+//        self.includePast = FALSE;
+//        self.navigationItem.rightBarButtonItem.title = @"Include Past";
+//    }
+//    else {
+//        self.includePast = TRUE;
+//        self.navigationItem.rightBarButtonItem.title = @"Upcoming";
+//    }
+//    _events = [[GCalEvent allGcalEvents :self.includePast] retain];
+//    [_sections release];
+//    _sections = nil;
+//    [_eventsAsDictionary release];
+//    _eventsAsDictionary = nil;
+//    [mainTable reloadData];
+//    
+//}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    
     if (self) {
-        // Custom initialization
         UIImage* anImage = [UIImage imageNamed:@"83-calendar.png"];
-        UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Calendar" image:anImage tag:0];
+        UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Tournaments" image:anImage tag:0];
         self.tabBarItem = item;
         [item release];
+        
+        UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"Full Calendar" style:UIBarButtonItemStyleBordered target:self action:@selector(gotoAngelsCalendar:)];
+        self.navigationItem.rightBarButtonItem = lbarItem;
+        [lbarItem release];
+        
     }
     return self;
 }
@@ -96,11 +156,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.navigationItem.title = @"Tournament Calendar";
+    [mainTable setDelegate: self];
+    [mainTable setDataSource: self];
 
-    self.inDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    self.navigationItem.title = @"Tournaments";
+
+    self.inDateFormatter = [[NSDateFormatter alloc] init];
     [self.inDateFormatter setDateFormat:@"yyyy-MM-dd"];
-    self.outDateFormatter = [[[NSDateFormatter alloc] init] autorelease];
+    self.outDateFormatter = [[NSDateFormatter alloc] init];
    // [self.outDateFormatter setDateStyle:NSDateFormatterMediumStyle];
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSString *usFormatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMM" options:0 locale:usLocale];
@@ -115,6 +178,9 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
+    self.inDateFormatter = nil;
+    self.outDateFormatter = nil;
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -176,7 +242,7 @@
 //    DLog(@"key = %@", key);
     NSArray *eventsInSection = [self.eventsAsDictionary objectForKey:key];
     GCalEvent *t = [eventsInSection objectAtIndex:indexPath.row];
-    DLog(@"gcalEventAtIndexPath = %@", t);
+//    DLog(@"gcalEventAtIndexPath = %@", t);
     return t;
 }
 
@@ -261,4 +327,16 @@
      */
 }
 
+- (IBAction)gotoAngelsCalendar:(id)sender
+{    
+    DLog(@"gotoAngelsCalendar");
+    WebViewController *web = [[WebViewController alloc] init];
+    
+//    UINavigationController *cntrol = [[UINavigationController alloc] initWithRootViewController:web];
+//    [self presentViewController:cntrol animated:YES completion:nil];
+    [self.navigationController pushViewController:web animated:YES];
+//    [cntrol release];
+    [web release];
+    
+}
 @end
