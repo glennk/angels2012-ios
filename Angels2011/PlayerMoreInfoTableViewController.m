@@ -31,7 +31,12 @@
 - (IBAction)doneButtonPressed:(id)sender
 {
     DLog(@"Done button pressed");
-    [self.presentingViewController dismissModalViewControllerAnimated:YES];
+    if ([self respondsToSelector:@selector(presentingViewController)]){
+        [self.presentingViewController dismissModalViewControllerAnimated:YES];
+    }
+    else {
+        [self.parentViewController dismissModalViewControllerAnimated:YES];
+    }
 }
 
 //- (id)initWithStyle:(UITableViewStyle)style

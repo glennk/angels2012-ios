@@ -56,7 +56,7 @@
     pmivc.player = _player;
     
     UINavigationController *cntrol = [[UINavigationController alloc] initWithRootViewController:pmivc];
-    [self presentViewController:cntrol animated:YES completion:nil];
+    [self presentModalViewController:cntrol animated:YES];
     //[self.navigationController pushViewController:pmivc animated:YES];
     [cntrol release];
     [pmivc release];
@@ -97,8 +97,6 @@
 {
     [super viewWillAppear:animated];
     
-    [spinner startAnimating];
-    
     DLog(@"playerSummaryViewController.viewDidLoad = %@", _player);
     NSString *s = [NSString stringWithFormat:@"%@ %@", _player.firstname, _player.lastname];
     [playerLabel setText:s]; //[player objectForKey:@"lastname"];
@@ -106,8 +104,8 @@
     playerNickname.text = _player.nickname;
     // Do any additional setup after loading the view from its nib.
     DLog(@"viewWillAppear: player = %@", _player);
-    if (fieldImage.image == nil) {
-        
+    if (fieldImage.image == nil) {        
+        [spinner startAnimating];
         [self processPlayerCardPhotoWithBlock:^(UIImage *imageData) {
             UIImage *image = imageData;
             fieldImage.image = image;
