@@ -55,8 +55,8 @@
 
 + (NSArray *)allGcalEvents
 {
-//    return [self gcalFromUrl:nil :nil];
-    return [self gcalFromDisk];
+    return [self gcalFromUrl:nil :nil];
+//    return [self gcalFromDisk];
 }
 
 + (NSArray *)gcalFromDisk

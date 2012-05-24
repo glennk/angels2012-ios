@@ -12,6 +12,7 @@
 @interface Coach4MoreInfoViewController : UITableViewController <UIActionSheetDelegate>
 
 @property (retain, nonatomic) Coach *coach;
+@property (retain, nonatomic) UIImage *picture;
 
 - (IBAction)sendMsgButtonPressed:(id)sender;
 @end

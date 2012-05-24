@@ -13,26 +13,25 @@
 #import "Logging.h"
 
 @interface TeamPlayersTableViewController()
-@property (retain, nonatomic) UIView * origView;
-@property (retain, nonatomic) UIActivityIndicatorView *spinner;
 @end
 
 @implementation TeamPlayersTableViewController
 
 @synthesize players = _players;
 @synthesize team = _team;
-@synthesize origView, spinner;
 
 
-- (void)loadTeamPlayers
+- (void)loadRESTWithBlock:(void (^)(NSArray * restData))block
 {
-    DLog(@"loadTeamPlayers()");
-    _players = [[Player teamPlayers: self.team] retain];
-    [spinner stopAnimating];
-    [spinner release];
-    [self setView: origView];
-    [self.tableView reloadData];
-    DLog(@"loadTeamPlayers()...done");
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("rest downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        NSArray *restData = [[Player teamPlayers: self.team] retain];
+		dispatch_async(callerQueue, ^{
+		    block(restData);
+		});
+	});
+	dispatch_release(downloadQueue);
 }
 
 - (void)setTeam:(Team *)newTeam
@@ -80,14 +79,21 @@
     [super viewWillAppear:animated];
     
     if (!_players) {
-        DLog(@"_players is nil, fetch via REST");
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0., 0., 40., 40.);
+        spinner.center = self.view.center;
+        [self.view addSubview:spinner];
+        
         [spinner startAnimating];
         
-        origView = [self.view retain];
-        
-        [self setView:spinner];
-        [self performSelectorInBackground:@selector(loadTeamPlayers) withObject:nil];
+        [self loadRESTWithBlock:^(NSArray *restData) {
+            _players = [restData copy];
+            
+            [self.tableView reloadData];
+            [spinner stopAnimating];
+            [spinner release];
+        }];
+
     }
 }
 

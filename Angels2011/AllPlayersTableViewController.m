@@ -15,11 +15,9 @@
 //@property (copy) NSString *jsonkey;
 @property (retain, nonatomic) NSDictionary * playersAsDictionary;
 @property BOOL byNickname;
-@property (retain, nonatomic) UIView * origView;
 @property (retain, nonatomic) IBOutlet UITableView *myTableView;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *listByNicknameOrLastname;
 - (IBAction)sortBy:(id)sender;
-@property (retain, nonatomic) UIActivityIndicatorView *spinner;
 @end;
 
 @implementation AllPlayersTableViewController
@@ -32,7 +30,6 @@
 //@synthesize jsonkey;
 @synthesize playersAsDictionary = _playersAsDictionary;
 @synthesize byNickname;
-@synthesize origView, spinner;
 
 - (NSDictionary *)playersAsDictionary
 {
@@ -76,47 +73,23 @@
     return _sections;
 }
 
-//- (NSArray *)players
-//{
-//    if (!_players) {
-//        
-//        [DejalBezelActivityView activityViewForView:self.view];
-//        [Player processPlayerDataWithBlock:^(NSArray *playerData) {
-//            _players = [[NSArray alloc] initWithArray:playerData]; //[[Player allPlayers] retain];
-//            DLog(@"viewDidLoad: _players returned");
-//            [_sections release];
-//            _sections = nil;
-//            [_playersAsDictionary release];
-//            _playersAsDictionary = nil;
-//            [self.tableView reloadData];
-//            [DejalActivityView removeView];
-//        }];
-//    }
-//    return _players;
-//}
-
-- (void)loadPlayers
+- (void)loadRESTWithBlock:(void (^)(NSArray * restData))block
 {
-    DLog(@"loadPlayers()");
-    _players = [[Player allPlayers] retain];
-    [_sections release];
-    _sections = nil;
-    [_playersAsDictionary release];
-    _playersAsDictionary = nil;
-    [spinner stopAnimating];
-    [spinner release];
-    [self setView: origView];
-    [myTableView reloadData];
- 
-    DLog(@"loadPlayers()...done");
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("rest downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        NSArray *restData = [[Player allPlayers] retain];
+		dispatch_async(callerQueue, ^{
+		    block(restData);
+		});
+	});
+	dispatch_release(downloadQueue);
 }
 
-- (IBAction)sortBy:(id)sender {
+- (IBAction)sortBy:(id)sender
+{
     DLog(@"Sorty by changed...");
     
-    /*
-	 When the user changes the selection in the segmented control, set the appropriate picker as the current subview of the picker container view (and remove the previous one).
-	 */
     [_sections release];
     _sections = nil;
     [_playersAsDictionary release];
@@ -132,44 +105,7 @@
 	}
     
     [myTableView reloadData];
-    
 }
-
-//- (void)toggleNicknames
-//{
-//    DLog(@"toggleNicknames(), setting _sections and _players to nil");
-//    [_sections release];
-//    _sections = nil;
-//    [_playersAsDictionary release];
-//    _playersAsDictionary = nil;
-//    if (self.byNickname) {
-//        self.byNickname = FALSE;
-//        self.navigationItem.leftBarButtonItem.title = @"By Lastnames";
-//    }
-//    else {
-//        self.byNickname = TRUE;
-//        self.navigationItem.leftBarButtonItem.title = @"By Nicknames";
-//    }
-//    [self.tableView reloadData];
-//    
-//}
-
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom initialization
-//        UIImage* anImage = [UIImage imageNamed:@"112-group.png"];
-//        UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Players" image:anImage tag:0];
-//        self.tabBarItem = item;
-//        [item release];
-//        UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"By Nicknames" style:UIBarButtonItemStyleBordered target:self action:@selector(toggleNicknames)];
-//        self.navigationItem.leftBarButtonItem = lbarItem;
-//        [lbarItem release];
-//        self.byNickname = FALSE;
-//    }
-//    return self;
-//}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -180,11 +116,6 @@
         UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Players" image:anImage tag:0];
         self.tabBarItem = item;
         [item release];
-        
-//        UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"Full Calendar" style:UIBarButtonItemStyleBordered target:self action:@selector(gotoAngelsCalendar:)];
-//        self.navigationItem.rightBarButtonItem = lbarItem;
-//        [lbarItem release];
-        
     }
     return self;
 }
@@ -220,14 +151,25 @@
     [super viewWillAppear:animated];
     
     if (!_players) {
-        DLog(@"_players is nil, fetch via REST");
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0., 0., 40., 40.);
+        spinner.center = self.view.center;
+        [self.view addSubview:spinner];
+        
         [spinner startAnimating];
         
-        origView = [self.view retain];
+        [self loadRESTWithBlock:^(NSArray *restData) {
+            _players = [restData copy];
+            [_sections release];
+            _sections = nil;
+            [_playersAsDictionary release];
+            _playersAsDictionary = nil;
+            
+            [myTableView reloadData];
+            [spinner stopAnimating];
+            [spinner release];
+        }];
         
-        [self setView:spinner];
-        [self performSelectorInBackground:@selector(loadPlayers) withObject:nil];
     }
 }
 

@@ -13,16 +13,12 @@
 
 @interface AllCoachesTableViewController()
 @property (retain, nonatomic) NSDictionary * coachesAsDictionary;
-@property (retain, nonatomic) UIView * origView;
-@property (retain, nonatomic) UIActivityIndicatorView * spinner;
 @end
 
 @implementation AllCoachesTableViewController
 
 @synthesize sections = _sections;
 @synthesize coaches = _coaches;
-@synthesize origView, spinner;
-
 @synthesize coachesAsDictionary = _coachesAsDictionary;
 
 
@@ -55,19 +51,17 @@
     return _sections;
 }
 
-- (void)loadCoaches
+- (void)loadRESTWithBlock:(void (^)(NSArray * restData))block
 {
-    DLog(@"loadCoaches()");
-    _coaches = [[Coach allCoaches] retain];
-    [_sections release];
-    _sections = nil;
-    [_coachesAsDictionary release];
-    _coachesAsDictionary = nil;
-    [spinner stopAnimating];
-    [spinner release];
-    [self setView: origView];
-    [self.tableView reloadData];
-    DLog(@"loadCoaches()...done");
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("rest downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        NSArray *restData = [[Coach allCoaches] retain];
+		dispatch_async(callerQueue, ^{
+		    block(restData);
+		});
+	});
+	dispatch_release(downloadQueue);
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -112,13 +106,23 @@
     
     if (!_coaches) {
         DLog(@"_coaches is nil, fetch via REST");
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0., 0., 40., 40.);
+        spinner.center = self.view.center;
+        [self.view addSubview: spinner];
         [spinner startAnimating];
         
-        origView = [self.view retain];
-        
-        [self setView:spinner];
-        [self performSelectorInBackground:@selector(loadCoaches) withObject:nil];
+        [self loadRESTWithBlock:^(NSArray *restData) {
+            _coaches = [restData copy];
+            [_sections release];
+            _sections = nil;
+            [_coachesAsDictionary release];
+            _coachesAsDictionary = nil;
+            
+            [self.tableView reloadData];
+            [spinner stopAnimating];
+            [spinner release];
+        }];
     }
 }
 

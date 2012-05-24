@@ -15,10 +15,7 @@
 @property (retain, nonatomic) NSMutableDictionary *eventsAsDictionary;
 @property (retain, nonatomic) NSArray *sections;
 @property (retain, nonatomic) NSDateFormatter *inDateFormatter, *outDateFormatter;
-@property (retain, nonatomic) UIView * origView;
-@property (retain, nonatomic) UIActivityIndicatorView *spinner;
-@property (retain, nonatomic) IBOutlet UITableView *mainTable;
-@property BOOL includePast;
+
 - (IBAction)gotoAngelsCalendar:(id)sender;
 
 @end
@@ -30,9 +27,6 @@
 @synthesize eventsAsDictionary = _eventsAsDictionary;
 @synthesize sections = _sections;
 @synthesize inDateFormatter, outDateFormatter;
-@synthesize origView, spinner;
-@synthesize mainTable;
-@synthesize includePast;
 
 
 - (NSDictionary *)eventsAsDictionary
@@ -62,26 +56,19 @@
     return _sections;
 }
 
-- (void)loadGcal
+- (void)loadRESTWithBlock:(void (^)(NSArray * restData))block
 {
-    DLog(@"loadGcal()");
-    _events = [[GCalEvent allGcalEvents] retain];
-    [_sections release];
-    _sections = nil;
-    [_eventsAsDictionary release];
-    _eventsAsDictionary = nil;
-    [spinner stopAnimating];
-    [spinner release];
-    [self setView: origView];
-    [mainTable reloadData];
-    
-    // scroll to a section that is close to today's date
-//    NSIndexPath *ip = [self getIndexPathNearToday];
-//    if (ip != nil)
-        [mainTable scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:8] atScrollPosition:UITableViewScrollPositionBottom animated:TRUE];
-    
-    DLog(@"loadGcal()...done");
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("GCal downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        NSArray *restData = [[GCalEvent allGcalEvents] retain];
+		dispatch_async(callerQueue, ^{
+		    block(restData);
+		});
+	});
+	dispatch_release(downloadQueue);
 }
+
 
 // can return nil if we're at the end
 - (NSIndexPath *)getIndexPathNearToday
@@ -105,30 +92,9 @@
     return result;
 }
 
-//- (void)toggleIncludePast
-//{
-//    DLog(@"toggleIncludePast()");
-//    if (self.includePast) {
-//        self.includePast = FALSE;
-//        self.navigationItem.rightBarButtonItem.title = @"Include Past";
-//    }
-//    else {
-//        self.includePast = TRUE;
-//        self.navigationItem.rightBarButtonItem.title = @"Upcoming";
-//    }
-//    _events = [[GCalEvent allGcalEvents :self.includePast] retain];
-//    [_sections release];
-//    _sections = nil;
-//    [_eventsAsDictionary release];
-//    _eventsAsDictionary = nil;
-//    [mainTable reloadData];
-//    
-//}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+- (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    
+    self = [super initWithStyle:style];
     if (self) {
         UIImage* anImage = [UIImage imageNamed:@"83-calendar.png"];
         UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Tournaments" image:anImage tag:0];
@@ -138,7 +104,6 @@
         UIBarButtonItem *lbarItem = [[UIBarButtonItem alloc] initWithTitle:@"Full Calendar" style:UIBarButtonItemStyleBordered target:self action:@selector(gotoAngelsCalendar:)];
         self.navigationItem.rightBarButtonItem = lbarItem;
         [lbarItem release];
-        
     }
     return self;
 }
@@ -156,19 +121,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [mainTable setDelegate: self];
-    [mainTable setDataSource: self];
 
     self.navigationItem.title = @"Tournaments";
 
-    self.inDateFormatter = [[NSDateFormatter alloc] init];
-    [self.inDateFormatter setDateFormat:@"yyyy-MM-dd"];
-    self.outDateFormatter = [[NSDateFormatter alloc] init];
+    inDateFormatter = [[NSDateFormatter alloc] init];
+    [inDateFormatter setDateFormat:@"yyyy-MM-dd"];
+    outDateFormatter = [[NSDateFormatter alloc] init];
    // [self.outDateFormatter setDateStyle:NSDateFormatterMediumStyle];
     NSLocale *usLocale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
     NSString *usFormatString = [NSDateFormatter dateFormatFromTemplate:@"EdMMM" options:0 locale:usLocale];
     DLog(@"usFormatterString: %@", usFormatString);
-    [self.outDateFormatter setDateFormat:usFormatString];
+    [outDateFormatter setDateFormat:usFormatString];
     [usLocale release];
     
 }
@@ -178,8 +141,8 @@
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
-    self.inDateFormatter = nil;
-    self.outDateFormatter = nil;
+    inDateFormatter = nil;
+    outDateFormatter = nil;
     
 }
 
@@ -188,15 +151,27 @@
     [super viewWillAppear:animated];
     
     if (!_events) {
-        DLog(@"_events is nil, fetch via REST");
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0., 0., 40., 40.);
+        spinner.center = self.view.center;
+        [self.view addSubview:spinner];
+        
         [spinner startAnimating];
         
-        origView = [self.view retain];
-        
-        [self setView:spinner];
-        [self performSelectorInBackground:@selector(loadGcal) withObject:nil];
-    }    
+        [self loadRESTWithBlock:^(NSArray *restData) {
+            _events = [restData copy];
+            [_sections release];
+            _sections = nil;
+            [_eventsAsDictionary release];
+            _eventsAsDictionary = nil;
+            
+            [self.tableView reloadData];
+            [spinner stopAnimating];
+            [self.tableView scrollToRowAtIndexPath:[self getIndexPathNearToday]
+                               atScrollPosition:UITableViewScrollPositionMiddle animated:TRUE];
+            [spinner release];
+        }];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -338,5 +313,10 @@
 //    [cntrol release];
     [web release];
     
+}
+- (void)dealloc {
+    [inDateFormatter release];
+    [outDateFormatter release];
+    [super dealloc];
 }
 @end

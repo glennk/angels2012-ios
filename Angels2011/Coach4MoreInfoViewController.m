@@ -15,8 +15,6 @@
 @property (retain, nonatomic) IBOutlet UITableViewCell *footerCell;
 @property (retain, nonatomic) IBOutlet UITableView *mainTable;
 
-@property (retain, nonatomic) UIView *origView;
-@property (retain, nonatomic) UIActivityIndicatorView *busyView;
 @property (retain, nonatomic) NSMutableArray *buttonIndexes;
 @property (retain, nonatomic) NSMutableArray *sections;
 @end
@@ -24,12 +22,12 @@
 @implementation Coach4MoreInfoViewController
 
 @synthesize coach = _coach;
+@synthesize picture = _picture;
 
 @synthesize headerCell;
 @synthesize headerCellImage;
 @synthesize footerCell;
 @synthesize mainTable;
-@synthesize origView, busyView;
 @synthesize buttonIndexes;
 
 @synthesize sections;
@@ -103,15 +101,17 @@
     }
 }
 
-/** Round Trip to server */
-- (void)loadPhoto
+- (void)loadRESTWithBlock:(void (^)(UIImage * restData))block
 {
-    UIImage *image = _coach.photo;
-    if (image)
-        headerCellImage.image = image;
-    [busyView stopAnimating];
-    [self setView:origView];
-    [busyView release];
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("rest downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        UIImage *restData = [_coach.photo retain];
+		dispatch_async(callerQueue, ^{
+		    block(restData);
+		});
+	});
+	dispatch_release(downloadQueue);
 }
 
 - (void)viewDidLoad
@@ -185,12 +185,25 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    origView = [self.view retain];
+    
+    if (!_picture) {
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0., 0., 40., 40.);
+        spinner.center = self.view.center;
+        [self.view addSubview:spinner];
+        
+        [spinner startAnimating];
+        
+        [self loadRESTWithBlock:^(UIImage *restData) {
+            if (restData)
+                headerCellImage.image = restData;
+            
+            [self.tableView reloadData];
+            [spinner stopAnimating];
+            [spinner release];
+        }];
+    }
 
-    busyView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    [self setView:busyView];
-    [busyView startAnimating];
-    [self performSelectorInBackground:@selector(loadPhoto) withObject:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated

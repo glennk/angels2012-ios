@@ -11,11 +11,14 @@
 
 @interface WebViewController ()
 @property (retain, nonatomic) IBOutlet UIWebView *webView;
+@property (retain, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 
 @end
 
 @implementation WebViewController
+
 @synthesize webView;
+@synthesize spinner;
 
 - (IBAction)doneButtonPressed:(id)sender
 {
@@ -34,7 +37,7 @@
         UITabBarItem* item = [[UITabBarItem alloc] initWithTitle:@"Google Team Calendar" image:anImage tag:0];
         self.tabBarItem = item;
         [item release];
-
+        
     }
     return self;
 }
@@ -43,12 +46,18 @@
 {
     [super viewDidLoad];
 
-//    UIBarButtonItem *rBarItem = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleBordered target:self action:@selector(doneButtonPressed:)];
-//    self.navigationItem.rightBarButtonItem = rBarItem;
-//    [rBarItem release];
-
+    [webView setDelegate:self];
+    
+    spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    spinner.frame = CGRectMake(0., 0., 40., 40.);
+    spinner.center = self.view.center;
+    [self.view addSubview:spinner];
+    
+    [spinner startAnimating];
+ 
     // Do any additional setup after loading the view from its nib.
-    NSString *str = @"https://www.google.com/calendar/embed?src=austinangelsbaseball%40yahoo.com&ctz=America/Chicago&mode=WEEK";
+//    NSString *str = @"https://www.google.com/calendar/embed?src=austinangelsbaseball%40yahoo.com&ctz=America/Chicago&mode=WEEK";
+    NSString *str = @"https://www.google.com/calendar/embed?src=austinangelsbaseball%40yahoo.com&ctz=America/Chicago";
     NSURL *_url = [[NSURL alloc] initWithString:str];
     NSURLRequest *url = [[NSURLRequest alloc] initWithURL:_url];
     [webView loadRequest:url];
@@ -67,6 +76,13 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    NSLog(@"webViewDidFinishLoad()");
+    [spinner stopAnimating];
+    [spinner release];
 }
 
 - (void)dealloc {

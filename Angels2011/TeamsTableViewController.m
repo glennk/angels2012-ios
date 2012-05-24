@@ -13,8 +13,6 @@
 
 @interface TeamsTableViewController()
 @property (nonatomic, retain) NSDictionary * teamsAsDictionary;
-@property (retain, nonatomic) UIView * origView;
-@property (retain, nonatomic) UIActivityIndicatorView * spinner;
 @end
 
 @implementation TeamsTableViewController
@@ -23,7 +21,6 @@
 @synthesize teams = _teams;
 
 @synthesize teamsAsDictionary = _teamsAsDictionary;
-@synthesize origView, spinner;
 
 - (NSDictionary *)teamsAsDictionary
 {
@@ -55,19 +52,17 @@
     return _sections;
 }
 
-- (void)loadTeams
+- (void)loadRESTWithBlock:(void (^)(NSArray * restData))block
 {
-    DLog(@"loadTeams()");
-    _teams = [[Team allTeams] retain];
-    [_sections release];
-    _sections = nil;
-    [_teamsAsDictionary release];
-    _teamsAsDictionary = nil;
-    [spinner stopAnimating];
-    [spinner release];
-    [self setView: origView];
-    [self.tableView reloadData];
-    DLog(@"loadTeams()...done");
+	dispatch_queue_t callerQueue = dispatch_get_current_queue();
+	dispatch_queue_t downloadQueue = dispatch_queue_create("GCal downloader", NULL);
+	dispatch_async(downloadQueue, ^{
+        NSArray *restData = [[Team allTeams] retain];
+		dispatch_async(callerQueue, ^{
+		    block(restData);
+		});
+	});
+	dispatch_release(downloadQueue);
 }
 
 - (id)initWithStyle:(UITableViewStyle)style
@@ -111,14 +106,24 @@
     [super viewWillAppear:animated];
     
     if (!_teams) {
-        DLog(@"_teams is nil, fetch via REST");
-        spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+        spinner.frame = CGRectMake(0., 0., 40., 40.);
+        spinner.center = self.view.center;
+        [self.view addSubview:spinner];
+        
         [spinner startAnimating];
         
-        origView = [self.view retain];
-    
-        [self setView:spinner];
-        [self performSelectorInBackground:@selector(loadTeams) withObject:nil];
+        [self loadRESTWithBlock:^(NSArray *restData) {
+            _teams = [restData copy];
+            [_sections release];
+            _sections = nil;
+            [_teamsAsDictionary release];
+            _teamsAsDictionary = nil;
+            
+            [self.tableView reloadData];
+            [spinner stopAnimating];
+            [spinner release];
+        }];
     }
 }
 
