@@ -649,8 +649,7 @@
 				GCC_PREFIX_HEADER = "Angels2011/Angels2012-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Angels2011/Angels2012-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
-				New_Setting = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
 					"-Objc",
 					"-all_load",
@@ -739,8 +738,7 @@
 				GCC_PREFIX_HEADER = "Angels2011/Angels2012-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Angels2011/Angels2012-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
-				New_Setting = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
 					"-Objc",
 					"-all_load",
@@ -762,8 +760,7 @@
 				GCC_PREFIX_HEADER = "Angels2011/Angels2012-Prefix.pch";
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Angels2011/Angels2012-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
-				New_Setting = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.3;
 				OTHER_LDFLAGS = (
 					"-Objc",
 					"-all_load",
