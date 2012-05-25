@@ -117,7 +117,7 @@
     }
     
     NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
-                           @"11UClubTag", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag", @"13UR", nil];
+                           @"11UClubTag_newfont", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag_newfont", @"13UR", nil];
     
     NSString *bName = [bImgs objectForKey:_player.level];
     DLog(@"bName = %@", bName);

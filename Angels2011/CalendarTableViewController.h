@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CalendarTableViewController : UITableViewController
+@interface CalendarTableViewController : UITableViewController <UIActionSheetDelegate>
 
 @property (retain, nonatomic) NSArray *events;
 

@@ -234,7 +234,8 @@
     GCalEvent *t = [self entryAtIndexPath:indexPath];
     //DLog(@"cell = %@", t);
     cell.textLabel.text = t.description;
-    
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+ 
     NSString *detailText = [[[NSString alloc] initWithFormat:@"%@", t.location] autorelease];
 
     cell.detailTextLabel.text = detailText; //[t objectForKey:@"location"];
@@ -290,6 +291,13 @@
 
 #pragma mark - Table view delegate
 
+#define _BD_LABEL @"Blue Diamond"
+#define _BD_URL_2 @"http://www.bluediamondtournaments.com/"
+#define _BD_URL @"http://www.quickscores.com/Orgs/index.php?OrgDir=bluediamondtournaments"
+
+#define _AS_LABEL @"Austin Select"
+#define _AS_URL @"http://www.leaguelineup.com/welcome.asp?url=austinselect"
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     // Navigation logic may go here. Create and push another view controller.
@@ -300,19 +308,51 @@
      [self.navigationController pushViewController:detailViewController animated:YES];
      [detailViewController release];
      */
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@"Go to tournament website." delegate:self cancelButtonTitle:nil destructiveButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    
+    [actionSheet addButtonWithTitle: _BD_LABEL];
+    [actionSheet addButtonWithTitle: _AS_LABEL];
+    
+    actionSheet.cancelButtonIndex = [actionSheet addButtonWithTitle:@"Cancel"];
+    
+    actionSheet.actionSheetStyle = UIActionSheetStyleDefault;
+    [actionSheet showFromTabBar: self.parentViewController.tabBarController.tabBar];
+    [actionSheet release];
+
+}
+
+
+// Action sheet delegate method.
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    // the user clicked one of the OK/Cancel buttons
+    DLog(@"actionSheet, button: %d", buttonIndex);
+    if (buttonIndex == actionSheet.cancelButtonIndex) {
+    }
+    else {
+        NSString *url = nil;
+        switch (buttonIndex) {
+            case 0:
+                url = _BD_URL;
+                break;
+            case 1:
+                url = _AS_URL;
+                break;
+            default:
+                break;
+        }
+        DLog(@"URL #: %@", url);
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url]];
+    }
 }
 
 - (IBAction)gotoAngelsCalendar:(id)sender
 {    
     DLog(@"gotoAngelsCalendar");
     WebViewController *web = [[WebViewController alloc] init];
-    
-//    UINavigationController *cntrol = [[UINavigationController alloc] initWithRootViewController:web];
-//    [self presentViewController:cntrol animated:YES completion:nil];
     [self.navigationController pushViewController:web animated:YES];
-//    [cntrol release];
     [web release];
-    
 }
 - (void)dealloc {
     [inDateFormatter release];

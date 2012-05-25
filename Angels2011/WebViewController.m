@@ -42,6 +42,8 @@
     return self;
 }
 
+#define _GOOGLE_CAL_URL @"https://www.google.com/calendar/embed?src=austinangelsbaseball%40yahoo.com&ctz=America/Chicago"
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -56,9 +58,7 @@
     [spinner startAnimating];
  
     // Do any additional setup after loading the view from its nib.
-//    NSString *str = @"https://www.google.com/calendar/embed?src=austinangelsbaseball%40yahoo.com&ctz=America/Chicago&mode=WEEK";
-    NSString *str = @"https://www.google.com/calendar/embed?src=austinangelsbaseball%40yahoo.com&ctz=America/Chicago";
-    NSURL *_url = [[NSURL alloc] initWithString:str];
+    NSURL *_url = [[NSURL alloc] initWithString:_GOOGLE_CAL_URL];
     NSURLRequest *url = [[NSURLRequest alloc] initWithURL:_url];
     [webView loadRequest:url];
     [url release];
