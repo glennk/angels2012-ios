@@ -36,6 +36,12 @@ NSString *orlandoDateStr = @"01 July 2012";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     // Do any additional setup after loading the view from its nib.
     NSDate* today = [NSDate date];
     
@@ -44,7 +50,7 @@ NSString *orlandoDateStr = @"01 July 2012";
     [dateFormat setDateFormat:@"d LLLL yyyy"];
     NSDate *omahaDate = [dateFormat dateFromString:omahaDateStr]; 
     NSDate *orlandoDate = [dateFormat dateFromString:orlandoDateStr]; 
-
+    
     NSCalendar *gregorian = [[NSCalendar alloc]
                              initWithCalendarIdentifier:NSGregorianCalendar];
     NSUInteger unitFlags = NSDayCalendarUnit;
@@ -61,7 +67,6 @@ NSString *orlandoDateStr = @"01 July 2012";
     daysToFlorida.text = [NSString stringWithFormat:@"%d", orlandoDays];
     daystoOmaha.text = [NSString stringWithFormat:@"%d", omahaDays];
     self.navigationItem.title = @"Countdown to...";
-    
 }
 
 - (void)viewDidUnload

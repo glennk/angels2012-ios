@@ -80,7 +80,7 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    NSLog(@"webViewDidFinishLoad()");
+    DLog(@"webViewDidFinishLoad()");
     [spinner stopAnimating];
     [spinner release];
 }

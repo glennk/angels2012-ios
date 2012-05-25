@@ -76,7 +76,7 @@
         for (NSDictionary *d in y) {
 //            DLog(@"looking at item: %@", d);
             if ([d objectForKey:@"recurringEventId"]) {
-                NSLog(@"recurringEventId FOUND!...skipping event!");
+                DLog(@"recurringEventId FOUND!...skipping event!");
                 continue;
             }
             NSDictionary *key = [d objectForKey:@"start"];
@@ -116,7 +116,7 @@
         for (NSDictionary *d in y) {
             DLog(@"looking at item: %@", d);
             if ([d objectForKey:@"recurringEventId"]) {
-//                NSLog(@"recurringEventId FOUND!...skipping event!");
+//                DLog(@"recurringEventId FOUND!...skipping event!");
                 continue;
             }
             NSDictionary *key = [d objectForKey:@"start"];
