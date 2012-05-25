@@ -36,6 +36,8 @@
 		0C99798E14F142B4007C00A2 /* Parent.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C99798D14F142B4007C00A2 /* Parent.m */; };
 		0CA2DB7814B24F740071C30D /* AwsURLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA2DB7714B24F730071C30D /* AwsURLHelper.m */; };
 		0CB6A57514C4C71F0046F272 /* Team.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CB6A57414C4C71F0046F272 /* Team.m */; };
+		0CC179B2156E73730009ED4B /* 13URedClubTag_newfont.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC179B1156E73730009ED4B /* 13URedClubTag_newfont.png */; };
+		0CC179B5156E7A9C0009ED4B /* 11UClubTag_newfont.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CC179B4156E7A9C0009ED4B /* 11UClubTag_newfont.png */; };
 		0CD1010614BFAC2D003EEFEA /* Player.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CD1010514BFAC2D003EEFEA /* Player.m */; };
 		0CD19E281462DC8A004974C3 /* 85-trophy.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD19E271462DC8A004974C3 /* 85-trophy.png */; };
 		0CD19E2A1462DD43004974C3 /* 112-group.png in Resources */ = {isa = PBXBuildFile; fileRef = 0CD19E291462DD43004974C3 /* 112-group.png */; };
@@ -128,6 +130,8 @@
 		0CA2DB7714B24F730071C30D /* AwsURLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AwsURLHelper.m; sourceTree = "<group>"; };
 		0CB6A57314C4C71F0046F272 /* Team.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Team.h; sourceTree = "<group>"; };
 		0CB6A57414C4C71F0046F272 /* Team.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Team.m; sourceTree = "<group>"; };
+		0CC179B1156E73730009ED4B /* 13URedClubTag_newfont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 13URedClubTag_newfont.png; path = ../13URedClubTag_newfont.png; sourceTree = "<group>"; };
+		0CC179B4156E7A9C0009ED4B /* 11UClubTag_newfont.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 11UClubTag_newfont.png; path = ../11UClubTag_newfont.png; sourceTree = "<group>"; };
 		0CD1010414BFAC2D003EEFEA /* Player.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Player.h; sourceTree = "<group>"; };
 		0CD1010514BFAC2D003EEFEA /* Player.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Player.m; sourceTree = "<group>"; };
 		0CD19E271462DC8A004974C3 /* 85-trophy.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "85-trophy.png"; path = "../85-trophy.png"; sourceTree = "<group>"; };
@@ -228,6 +232,8 @@
 				0C5254E314709A7200C116C7 /* 83-calendar.png */,
 				0CD19E291462DD43004974C3 /* 112-group.png */,
 				0CD19E271462DC8A004974C3 /* 85-trophy.png */,
+				0CC179B4156E7A9C0009ED4B /* 11UClubTag_newfont.png */,
+				0CC179B1156E73730009ED4B /* 13URedClubTag_newfont.png */,
 				0C99798514F0473B007C00A2 /* 12UWhiteClubTag.png */,
 				0C19DBA514F035A800A457E5 /* 11UClubTag.png */,
 				0C19DB9114EE81FD00A457E5 /* 12URedClubTag.png */,
@@ -498,6 +504,8 @@
 				0C54A6B2155C178600725481 /* 37-suitcase.png in Resources */,
 				0C1264441568A0D50001EB76 /* WebViewController.xib in Resources */,
 				0C126446156AA7B70001EB76 /* AllPlayersTableViewController.xib in Resources */,
+				0CC179B2156E73730009ED4B /* 13URedClubTag_newfont.png in Resources */,
+				0CC179B5156E7A9C0009ED4B /* 11UClubTag_newfont.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -689,7 +697,7 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
+					"DDEBUG=1",
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
