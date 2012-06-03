@@ -7,6 +7,7 @@
 //
 
 #import "CountdownToOmahaViewController.h"
+#import "Logging.h"
 
 @interface CountdownToOmahaViewController ()
 @property (retain, nonatomic) IBOutlet UILabel *daysToFlorida;
@@ -17,6 +18,10 @@
 @implementation CountdownToOmahaViewController
 @synthesize daysToFlorida;
 @synthesize daystoOmaha;
+
+static NSString *omahaDateStr = @"21 June 2012";
+static NSString *orlandoDateStr = @"01 July 2012";
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -30,17 +35,19 @@
     return self;
 }
 
-NSString *omahaDateStr = @"21 June 2012";
-NSString *orlandoDateStr = @"01 July 2012";
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.navigationItem.title = @"Countdown to...";
+    
+    // register to receive foreground events so we can refresh the counters when the countdown screen is the screen that
+    // was in the background
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calcDate) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)calcDate
 {
-    [super viewWillAppear:animated];
+    DLog(@"calcDate");
     
     // Do any additional setup after loading the view from its nib.
     NSDate* today = [NSDate date];
@@ -66,7 +73,14 @@ NSString *orlandoDateStr = @"01 July 2012";
     
     daysToFlorida.text = [NSString stringWithFormat:@"%d", orlandoDays];
     daystoOmaha.text = [NSString stringWithFormat:@"%d", omahaDays];
-    self.navigationItem.title = @"Countdown to...";
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    DLog(@"viewWillAppear");
+    
+    [self calcDate];
 }
 
 - (void)viewDidUnload
