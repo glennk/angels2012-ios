@@ -7,9 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <MessageUI/MFMessageComposeViewController.h>
 #import "Team.h"
 
-@interface TeamPlayersTableViewController : UITableViewController {
+@interface TeamPlayersTableViewController : UITableViewController <MFMessageComposeViewControllerDelegate, UIAlertViewDelegate> {
     NSArray *players;
     Team *team;
 }
