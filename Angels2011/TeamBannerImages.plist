@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>banners</key>
+	<dict/>
+	<key>12UW</key>
+	<string>12UWhiteClubTag</string>
+	<key>13UR</key>
+	<string>13URedClubTag_newfont</string>
+	<key>12UR</key>
+	<string>12URedClubTag</string>
+	<key>11UW</key>
+	<string>11UClubTag_newfont</string>
+</dict>
+</plist>
