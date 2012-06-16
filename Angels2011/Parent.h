@@ -16,5 +16,7 @@
 @property (nonatomic, retain) NSString * name2;
 @property (nonatomic, retain) NSString * phone2;
 @property (nonatomic, retain) NSString * email2;
+@property BOOL phone1_can_text;
+@property BOOL phone2_can_text;
 
 @end

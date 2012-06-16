@@ -15,6 +15,8 @@
 @interface PlayerSummaryViewController()
 @property (retain, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
 @property (retain, nonatomic) IBOutlet UILabel *noImageAvailLabel;
+@property (retain, nonatomic) NSDictionary *banners;
+@property (retain, nonatomic) UIImageView *banner;
 @end
 
 @implementation PlayerSummaryViewController
@@ -22,6 +24,8 @@
 @synthesize noImageAvailLabel;
 
 @synthesize player = _player;
+@synthesize banners = _banners;
+@synthesize banner = _banner;
 
 
 - (void)processPlayerCardPhotoWithBlock:(void (^)(UIImage * imageData))block
@@ -91,6 +95,8 @@
 {
     [super viewDidLoad];
     
+    NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"TeamBannerImages" ofType:@"plist"];
+    _banners = [[NSDictionary dictionaryWithContentsOfFile:plistPath] retain];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -115,16 +121,13 @@
             [spinner stopAnimating];
         }];
     }
-    
-    NSDictionary *bImgs = [NSDictionary dictionaryWithObjectsAndKeys: 
-                           @"11UClubTag_newfont", @"11UW", @"12UWhiteClubTag", @"12UW", @"12URedClubTag", @"12UR", @"13URedClubTag_newfont", @"13UR", nil];
-    
-    NSString *bName = [bImgs objectForKey:_player.level];
+        
+    NSString *bName = [_banners objectForKey:_player.level];
     DLog(@"bName = %@", bName);
     UIImage *bimg = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:bName ofType:@"png"]];
     if (bimg == nil)
         DLog(@"Failed to load banner for control vieww");
-    banner.image = bimg;
+    _banner.image = bimg;
 }
 
 

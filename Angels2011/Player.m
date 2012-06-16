@@ -38,6 +38,7 @@
 // Necessary by the move to jboss and jackson-rs which actually puts null objects in the json stream as 'null'
 // if that's what's in the database
 #define _BLANK_IF_NSNULL(a) (a == [NSNull null] ? @"" : a)
+#define _FALSE_IF_NSNULL(a) (a == [NSNull null] ? NO : YES)
 
 + (Player *)playerFromJson:(NSDictionary *)data
 {
@@ -73,6 +74,8 @@
     parent.name2 = _BLANK_IF_NSNULL([t objectForKey:@"parent2"]);
     parent.phone2 = _BLANK_IF_NSNULL([t objectForKey:@"phone2"]);
     parent.email2 = _BLANK_IF_NSNULL([t objectForKey:@"email2"]);
+    parent.phone1_can_text = [[t objectForKey:@"phone1CanText"] boolValue];
+    parent.phone2_can_text = [[t objectForKey:@"phone2CanText"] boolValue];
     p.parents = parent;
     
     return p;

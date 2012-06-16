@@ -41,10 +41,10 @@
             NSString *key = nil;
             NSString *x = nil;
             if (self.byNickname)
-                x = t.nickname;
+                x = (t.nickname.length > 0) ? t.nickname : @" ";
             else
                 x = t.lastname;
-            DLog(@"x = %@", x);
+            DLog(@"x = '%@'", x);
             if (x && x.length > 0)
                 key = [x substringToIndex:1];
             else
@@ -227,21 +227,21 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier] autorelease];
     }
     
     // Configure the cell...
-    //NSDictionary *t = [self playerAtIndexPath:indexPath];
     Player *p = [self playerAtIndexPath:indexPath];
-    DLog(@"cell = %@", p);
     if (self.byNickname) {
-        //cell.textLabel.text = [t objectForKey:jsonkey];
         cell.textLabel.text = p.nickname;
+        NSString *s = [NSString stringWithFormat:@"#%@, %@ %@", p.number, p.firstname, p.lastname]; 
+        cell.detailTextLabel.text = s;
     }
     else {
-        //NSString *s = [NSString stringWithFormat:@"%@ %@", [t objectForKey:@"firstname"], [t objectForKey:@"lastname"]]; 
         NSString *s = [NSString stringWithFormat:@"%@ %@", p.firstname, p.lastname]; 
         cell.textLabel.text = s;
+        s = [NSString stringWithFormat:@"#%@, %@", p.number, p.nickname]; 
+        cell.detailTextLabel.text = s;
     }
     
     //cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

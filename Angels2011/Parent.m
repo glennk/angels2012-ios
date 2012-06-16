@@ -16,5 +16,7 @@
 @synthesize name2;
 @synthesize phone2;
 @synthesize email2;
+@synthesize phone1_can_text;
+@synthesize phone2_can_text;
 
 @end

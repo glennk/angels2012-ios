@@ -14,16 +14,12 @@
 #import "Logging.h"
 
 @interface TeamPlayersTableViewController()
-@property (retain, nonatomic) IBOutlet UITableViewCell *headerCell;
-@property (retain, nonatomic) IBOutlet UIButton *customButton;
-- (IBAction)sendTeamText:(id)sender;
 @property (retain, nonatomic) NSDictionary *banners;
 @property (retain, nonatomic) UIImageView *banner;
+- (IBAction)sendTeamText:(id)sender;
 @end
 
 @implementation TeamPlayersTableViewController
-@synthesize headerCell;
-@synthesize customButton;
 
 @synthesize players = _players;
 @synthesize team = _team;
@@ -44,34 +40,36 @@
 	dispatch_release(downloadQueue);
 }
 
-
 - (IBAction)sendTeamText:(id)sender
 {
-    MFMessageComposeViewController *controller = [[[MFMessageComposeViewController alloc] init] autorelease];
-    if([MFMessageComposeViewController canSendText]) {
-//        controller.body = @"Hello from ...";
-        NSMutableArray *smsTo = [[NSMutableArray alloc] init];
-        for (Player *p in _players) {
-            if (p.parents.phone1 && [p.parents.phone1 length] > 0) {
-                 [smsTo addObject: p.parents.phone1];
-            }
-            if (p.parents.phone1 && [p.parents.phone2 length] > 0) {
-                [smsTo addObject: p.parents.phone2];
-            }
+    NSMutableArray *smsTo = [[NSMutableArray alloc] init];
+    for (Player *p in _players) {
+        if (p.parents.phone1 && [p.parents.phone1 length] > 0 && p.parents.phone1_can_text) {
+            [smsTo addObject: p.parents.phone1];
         }
-//            controller.recipients = smsTo;
-        controller.recipients = [NSArray arrayWithObjects:@"(512)657-4117", @"(512)705-6639", @"(512)977-3501", nil];
+        if (p.parents.phone1 && [p.parents.phone2 length] > 0 && p.parents.phone2_can_text) {
+            [smsTo addObject: p.parents.phone2];
+        }
+    }
+    DLog(@"smsTo: %@", smsTo);
+    
+    MFMessageComposeViewController *controller = [[[MFMessageComposeViewController alloc] init] autorelease];
+    if ([MFMessageComposeViewController canSendText]) {
+        controller.body = @"Note from ...";
+        controller.recipients = smsTo;
+        //controller.recipients = [NSArray arrayWithObjects:@"(512)657-4117", @"(512)705-6639", @"(512)977-3501", nil];
         controller.messageComposeDelegate = self;
         [self  presentModalViewController:controller animated:YES];
-        [smsTo release];
     }
+    
+    [smsTo release];
 }
 
 - (void)messageComposeViewController:(MFMessageComposeViewController *)controller didFinishWithResult:(MessageComposeResult)result
 {
 	switch (result) {
 		case MessageComposeResultCancelled:
-			NSLog(@"Cancelled");
+			DLog(@"Cancelled");
 			break;
 		case MessageComposeResultFailed:
 //			UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"MyApp" message:@"Unknown Error" delegate:self cancelButtonTitle:@"OK" otherButtonTitles: nil];
@@ -126,49 +124,12 @@
     _banners = [[NSDictionary dictionaryWithContentsOfFile:plistPath] retain];
     
     // Create and set the table header view.
-    if (headerCell == nil) {
-        _banner = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 54.0)] autorelease];
-        
-//        UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Bob"] autorelease];
-//        [cell.contentView  addSubview:photo];
-//        UIButton *button = [[[UIButton alloc] initWithFrame:CGRectMake(0., 45, 300, 80)] autorelease];
-//        [button setTitle:@"Team Text" forState: UIControlStateNormal];
-//        [cell.contentView addSubview:button];
-        self.tableView.tableHeaderView = _banner;
-        
-
-//        [[NSBundle mainBundle] loadNibNamed:@"TeamPlayersHeaderView" owner:self options:nil];
-//        self.tableView.tableFooterView = headerCell;
-
-//        [customButton setTitle:@"Team Text" forState: UIControlStateNormal];
-//        [[customButton layer] setCornerRadius:8.0f];
-//        [[customButton layer] setMasksToBounds: TRUE];
-//        [[customButton layer] setBorderWidth: 1.0f];
-//        [[customButton layer] setBackgroundColor:[[UIColor redColor] CGColor]];
-//        self.tableView.allowsSelectionDuringEditing = YES;
-    }
-
-//    UITableViewCell *cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"Bob"] autorelease];
-//    cell.textLabel.text = @"Team Text";
-//    self.tableView.tableFooterView = cell;
-
-//    UIView *containerView = [[[UIView alloc] initWithFrame:CGRectMake(0, 0, 300, 60)] autorelease];
-//    //[containerView setBackgroundColor:[UIColor grayColor]];
-//    UIButton *button = [[[UIButton alloc] initWithFrame:CGRectMake(20, 10, 280, 30)] autorelease];
-//    [button setTitle:@"Team Text" forState: UIControlStateNormal];
-//    [[button layer] setCornerRadius:8.0f];
-//    [[button layer] setMasksToBounds: TRUE];
-//    [[button layer] setBorderWidth: 1.0f];
-//    [[button layer] setBackgroundColor:[[UIColor grayColor] CGColor]];
-//    [containerView addSubview:button];
-//    self.tableView.tableFooterView = containerView;    
+    _banner = [[[UIImageView alloc] initWithFrame:CGRectMake(0.0, 0.0, 320.0, 54.0)] autorelease];
+    self.tableView.tableHeaderView = _banner;
 }
 
 - (void)viewDidUnload
 {
-    [self setHeaderView:nil];
-    [self setHeaderCell:nil];
-    [self setCustomButton:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -342,8 +303,6 @@
 }
 
 - (void)dealloc {
-    [headerCell release];
-    [customButton release];
     [super dealloc];
 }
 @end
