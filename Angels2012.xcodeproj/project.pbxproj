@@ -10,6 +10,7 @@
 		0C1264431568A0D50001EB76 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C1264411568A0D50001EB76 /* WebViewController.m */; };
 		0C1264441568A0D50001EB76 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C1264421568A0D50001EB76 /* WebViewController.xib */; };
 		0C126446156AA7B70001EB76 /* AllPlayersTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0C126445156AA7B70001EB76 /* AllPlayersTableViewController.xib */; };
+		0C13AB7D158454E2003D9E31 /* TeamBannerImages.plist in Resources */ = {isa = PBXBuildFile; fileRef = 0C13AB7C158454E2003D9E31 /* TeamBannerImages.plist */; };
 		0C19DB8314EB466700A457E5 /* Coach.m in Sources */ = {isa = PBXBuildFile; fileRef = 0C19DB8214EB466700A457E5 /* Coach.m */; };
 		0C19DB9214EE81FD00A457E5 /* 12URedClubTag.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C19DB9114EE81FD00A457E5 /* 12URedClubTag.png */; };
 		0C19DB9414EE83DD00A457E5 /* Angels2012.png in Resources */ = {isa = PBXBuildFile; fileRef = 0C19DB9314EE83DD00A457E5 /* Angels2012.png */; };
@@ -75,6 +76,7 @@
 		0CDB774D14581B5300672CEB /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CDB774C14581B5300672CEB /* Reachability.m */; };
 		0CDB8DCA1510FC7600A5F978 /* PlayerMoreInfo.xib in Resources */ = {isa = PBXBuildFile; fileRef = 0CDB8DC91510FC7600A5F978 /* PlayerMoreInfo.xib */; };
 		0CEC87A115115CB1000BE0DF /* Coach4MoreInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CEC87A015115CB1000BE0DF /* Coach4MoreInfoViewController.m */; };
+		0CF5C99E157C577600E43FD2 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0CF5C99D157C577600E43FD2 /* MessageUI.framework */; };
 		0CFEEF0514FA9F4400348FDE /* PlayerMoreInfoTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */; };
 /* End PBXBuildFile section */
 
@@ -93,6 +95,7 @@
 		0C1264411568A0D50001EB76 /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		0C1264421568A0D50001EB76 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		0C126445156AA7B70001EB76 /* AllPlayersTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AllPlayersTableViewController.xib; sourceTree = "<group>"; };
+		0C13AB7C158454E2003D9E31 /* TeamBannerImages.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = TeamBannerImages.plist; sourceTree = "<group>"; };
 		0C19DB8114EB466700A457E5 /* Coach.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coach.h; sourceTree = "<group>"; };
 		0C19DB8214EB466700A457E5 /* Coach.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coach.m; sourceTree = "<group>"; };
 		0C19DB9114EE81FD00A457E5 /* 12URedClubTag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = 12URedClubTag.png; path = ../12URedClubTag.png; sourceTree = "<group>"; };
@@ -113,7 +116,6 @@
 		0C54A6AD155C12DB00725481 /* CountdownToOmahaViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CountdownToOmahaViewController.m; sourceTree = "<group>"; };
 		0C54A6AE155C12DC00725481 /* CountdownToOmahaViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CountdownToOmahaViewController.xib; sourceTree = "<group>"; };
 		0C54A6B1155C178600725481 /* 37-suitcase.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "37-suitcase.png"; sourceTree = "<group>"; };
-		0C57415F1466BB7400275112 /* baseball_field.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = baseball_field.jpeg; path = ../baseball_field.jpeg; sourceTree = "<group>"; };
 		0C5741661466C49600275112 /* PlayerSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerSummaryViewController.xib; sourceTree = "<group>"; };
 		0C683D571462255C00133A54 /* PlayerSummaryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerSummaryViewController.h; sourceTree = "<group>"; };
 		0C683D581462255C00133A54 /* PlayerSummaryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerSummaryViewController.m; sourceTree = "<group>"; };
@@ -190,6 +192,7 @@
 		0CDB8DC91510FC7600A5F978 /* PlayerMoreInfo.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlayerMoreInfo.xib; sourceTree = "<group>"; };
 		0CEC879F15115CB1000BE0DF /* Coach4MoreInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Coach4MoreInfoViewController.h; sourceTree = "<group>"; };
 		0CEC87A015115CB1000BE0DF /* Coach4MoreInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Coach4MoreInfoViewController.m; sourceTree = "<group>"; };
+		0CF5C99D157C577600E43FD2 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
 		0CFEEF0314FA9F4400348FDE /* PlayerMoreInfoTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlayerMoreInfoTableViewController.h; sourceTree = "<group>"; };
 		0CFEEF0414FA9F4400348FDE /* PlayerMoreInfoTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlayerMoreInfoTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -199,6 +202,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0CF5C99E157C577600E43FD2 /* MessageUI.framework in Frameworks */,
 				0CDB774914581AF700672CEB /* libz.dylib in Frameworks */,
 				0CDB774714581ACC00672CEB /* MobileCoreServices.framework in Frameworks */,
 				0CDB774514581ABC00672CEB /* SystemConfiguration.framework in Frameworks */,
@@ -227,7 +231,6 @@
 		0C894460150B9B29000DA5F2 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				0C57415F1466BB7400275112 /* baseball_field.jpeg */,
 				0C54A6B1155C178600725481 /* 37-suitcase.png */,
 				0C5254E314709A7200C116C7 /* 83-calendar.png */,
 				0CD19E291462DD43004974C3 /* 112-group.png */,
@@ -269,6 +272,7 @@
 		0CDB74E61455AB5E00672CEB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0CF5C99D157C577600E43FD2 /* MessageUI.framework */,
 				0CDB774614581ACC00672CEB /* MobileCoreServices.framework */,
 				0CDB774414581ABC00672CEB /* SystemConfiguration.framework */,
 				0CDB774214581AA600672CEB /* CFNetwork.framework */,
@@ -346,6 +350,7 @@
 				0CDB74F01455AB5E00672CEB /* InfoPlist.strings */,
 				0CDB74F31455AB5E00672CEB /* main.m */,
 				0CDB74F51455AB5E00672CEB /* Angels2012-Prefix.pch */,
+				0C13AB7C158454E2003D9E31 /* TeamBannerImages.plist */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -506,6 +511,7 @@
 				0C126446156AA7B70001EB76 /* AllPlayersTableViewController.xib in Resources */,
 				0CC179B2156E73730009ED4B /* 13URedClubTag_newfont.png in Resources */,
 				0CC179B5156E7A9C0009ED4B /* 11UClubTag_newfont.png in Resources */,
+				0C13AB7D158454E2003D9E31 /* TeamBannerImages.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -696,10 +702,7 @@
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DDEBUG=1",
-					"$(inherited)",
-				);
+				GCC_PREPROCESSOR_DEFINITIONS = "";
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				GCC_VERSION = com.apple.compilers.llvmgcc42;
 				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;

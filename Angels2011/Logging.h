@@ -3,7 +3,7 @@
 //  Angels2012
 //
 //  Created by Glenn Kronschnabl on 3/16/12.
-//  Copyright (c) 2012 CoreLogic. All rights reserved.
+//  Copyright (c) 2012 Glenn Kronschnabl. All rights reserved.
 //
 
 #ifndef Angels2012_Logging_h

@@ -17,8 +17,8 @@
 //#define _HOST @"10.71.0.6"
 //#define _HOST @"angelsv2-gkrondev.rhcloud.com"
 
-//#define __PROD true
-#define __DEV TRUE
+#define __PROD true
+//#define __DEV TRUE
 
 //openshift PROD
 #if __PROD
