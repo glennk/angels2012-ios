@@ -13,65 +13,130 @@
 
 @interface AllPlayersTableViewController()
 //@property (copy) NSString *jsonkey;
-@property (retain, nonatomic) NSDictionary * playersAsDictionary;
+//@property (retain, nonatomic) NSDictionary * playersAsDictionary;
 @property BOOL byNickname;
 @property (retain, nonatomic) IBOutlet UITableView *myTableView;
 @property (retain, nonatomic) IBOutlet UISegmentedControl *listByNicknameOrLastname;
 - (IBAction)sortBy:(id)sender;
+@property (retain, nonatomic) NSMutableArray * myplayers;
 @end;
 
 @implementation AllPlayersTableViewController
 @synthesize myTableView;
 @synthesize listByNicknameOrLastname;
 
-@synthesize sections = _sections;
-@synthesize players = _players;
+//@synthesize sections = _sections;
+//@synthesize players = _players;
 
 //@synthesize jsonkey;
-@synthesize playersAsDictionary = _playersAsDictionary;
+//@synthesize playersAsDictionary = _playersAsDictionary;
 @synthesize byNickname;
 
-- (NSDictionary *)playersAsDictionary
-{
-    if (!_playersAsDictionary) {
-        DLog(@"playersAsDictionary()");
-        _playersAsDictionary = [[NSMutableDictionary alloc] init];
-        for (Player *t in _players) {
-            DLog(@"t.nickname = %@, t.lastname = %@", t.nickname, t.lastname);
-            NSString *key = nil;
-            NSString *x = nil;
-            if (self.byNickname)
-                x = (t.nickname.length > 0) ? t.nickname : @" ";
-            else
-                x = t.lastname;
-            DLog(@"x = '%@'", x);
-            if (x && x.length > 0)
-                key = [x substringToIndex:1];
-            else
-                continue;
-            
-            DLog(@"key = %@", key);
-            if (![_playersAsDictionary objectForKey:key]) {
-                NSMutableArray *x = [[[NSMutableArray alloc] init] autorelease];
-                [x addObject:t];
-                [_playersAsDictionary setValue:x forKey:key];
-            }
-            else {
-                [[_playersAsDictionary objectForKey:key] addObject:t];
-            }
-        }
-    }
-    return _playersAsDictionary;
+@synthesize myplayers;
+
+
+- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView {
+    return [[UILocalizedIndexedCollation currentCollation] sectionIndexTitles];
 }
 
-- (NSArray *)sections
-{
-    if (!_sections) {
-        _sections = [[[self.playersAsDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
-        DLog(@"sections = %@", _sections);
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if ([[self.myplayers objectAtIndex:section] count] > 0) {
+        return [[[UILocalizedIndexedCollation currentCollation] sectionTitles] objectAtIndex:section];
     }
-    return _sections;
+    return nil;
 }
+
+- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index
+{
+    return [[UILocalizedIndexedCollation currentCollation] sectionForSectionIndexTitleAtIndex:index];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    
+    UILocalizedIndexedCollation *theCollation = [UILocalizedIndexedCollation currentCollation];
+    self.myplayers = [NSMutableArray arrayWithCapacity:1];
+    
+    SEL mysel = nil;
+    if (self.byNickname)
+        mysel = @selector(nickname);
+    else
+        mysel = @selector(lastname);
+        
+    for (Player *p in _players) {
+        //DLog(@"player = %@", p.lastname);
+        NSInteger sect = [theCollation sectionForObject:p collationStringSelector:mysel];
+        //DLog(@"in sect index = %i", sect);
+        p.sectionNumber = sect;
+    }
+    
+    // (2)
+    NSInteger highSection = [[theCollation sectionTitles] count];
+    NSMutableArray *sectionArrays = [NSMutableArray arrayWithCapacity:highSection];
+    for (int i=0; i<=highSection; i++) {
+        NSMutableArray *sectionArray = [NSMutableArray arrayWithCapacity:1];
+        [sectionArrays addObject:sectionArray];
+    }
+    
+    // (3)
+    for (Player *p in _players) {
+        [(NSMutableArray *)[sectionArrays objectAtIndex:p.sectionNumber] addObject:p];
+    }
+    
+    // (4)
+    for (NSMutableArray *sectionArray in sectionArrays) {
+        NSArray *sortedSection = [theCollation sortedArrayFromArray:sectionArray
+                                            collationStringSelector:mysel];
+        [self.myplayers addObject:sortedSection];
+    }
+
+    return [self.myplayers count];
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return [[self.myplayers objectAtIndex:section] count];
+}
+
+//- (NSDictionary *)XXXplayersAsDictionary
+//{
+//    if (!_playersAsDictionary) {
+//        DLog(@"playersAsDictionary()");
+//        _playersAsDictionary = [[NSMutableDictionary alloc] init];
+//        for (Player *t in _players) {
+//            DLog(@"t.nickname = %@, t.lastname = %@", t.nickname, t.lastname);
+//            NSString *key = nil;
+//            NSString *x = nil;
+//            if (self.byNickname)
+//                x = (t.nickname.length > 0) ? t.nickname : @" ";
+//            else
+//                x = t.lastname;
+//            DLog(@"x = '%@'", x);
+//            if (x && x.length > 0)
+//                key = [x substringToIndex:1];
+//            else
+//                continue;
+//            
+//            DLog(@"key = %@", key);
+//            if (![_playersAsDictionary objectForKey:key]) {
+//                NSMutableArray *x = [[[NSMutableArray alloc] init] autorelease];
+//                [x addObject:t];
+//                [_playersAsDictionary setValue:x forKey:key];
+//            }
+//            else {
+//                [[_playersAsDictionary objectForKey:key] addObject:t];
+//            }
+//        }
+//    }
+//    return _playersAsDictionary;
+//}
+//
+//- (NSArray *)sections
+//{
+//    if (!_sections) {
+//        _sections = [[[self.playersAsDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
+//        DLog(@"sections = %@", _sections);
+//    }
+//    return _sections;
+//}
 
 - (void)loadRESTWithBlock:(void (^)(NSArray * restData))block
 {
@@ -89,11 +154,6 @@
 - (IBAction)sortBy:(id)sender
 {
     DLog(@"Sorty by changed...");
-    
-    [_sections release];
-    _sections = nil;
-    [_playersAsDictionary release];
-    _playersAsDictionary = nil;
     
 	NSUInteger selectedUnit = [listByNicknameOrLastname selectedSegmentIndex];
 	if (selectedUnit == 0) {
@@ -133,10 +193,13 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    DLog(@"viewDidLoad()");
+    
     [myTableView setDelegate: self];
     [myTableView setDataSource: self];
 
     self.title = @"Players";
+    
 }
 
 - (void)viewDidUnload
@@ -149,6 +212,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    DLog(@"viewWillAppear()");
     
     if (!_players) {
         UIActivityIndicatorView *spinner = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
@@ -160,10 +224,10 @@
         
         [self loadRESTWithBlock:^(NSArray *restData) {
             _players = [restData copy];
-            [_sections release];
-            _sections = nil;
-            [_playersAsDictionary release];
-            _playersAsDictionary = nil;
+//            [_sections release];
+//            _sections = nil;
+//            [_playersAsDictionary release];
+//            _playersAsDictionary = nil;
             
             [myTableView reloadData];
             [spinner stopAnimating];
@@ -196,30 +260,44 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return self.sections.count;
-}
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    // Return the number of sections.
+//    return self.sections.count;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    // Return the number of rows in the section.
+//    NSArray *playersInSection = [self.playersAsDictionary objectForKey:[self.sections objectAtIndex:section]];
+//    return playersInSection.count;
+//}
+//
+//- (Player *)playerAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    //DLog(@"playerAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
+//    //DLog(@"_players.retainCount = %d", [_players retainCount]);
+//    NSArray *playersInSection = [self.playersAsDictionary objectForKey:[self.sections objectAtIndex:indexPath.section]];
+//    //DLog(@"playerAtIndexPath.playersInSection = %@", playersInSection);
+//    Player *t = [playersInSection objectAtIndex:indexPath.row];
+//    DLog(@"playerAtIndexPath = %@", t);
+//    return t;
+//    //    return [teamsInSection objectAtIndex:indexPath.row];
+//}
+//
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    NSArray *playersInSection = [self.playersAsDictionary objectForKey:[self.sections objectAtIndex:section]];
-    return playersInSection.count;
-}
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    static NSString *CellIdentifier = @"StateCell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+//    if (cell == nil) {
+//        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault
+//                                       reuseIdentifier:CellIdentifier] autorelease];
+//    }
+//    Player *playerObj = [[self.myplayers objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+//    cell.textLabel.text = playerObj.nickname;
+//    return cell;
+//}
 
-- (Player *)playerAtIndexPath:(NSIndexPath *)indexPath
-{
-    //DLog(@"playerAtIndexPath: section=%d, row=%d", indexPath.section, indexPath.row);
-    //DLog(@"_players.retainCount = %d", [_players retainCount]);
-    NSArray *playersInSection = [self.playersAsDictionary objectForKey:[self.sections objectAtIndex:indexPath.section]];
-    //DLog(@"playerAtIndexPath.playersInSection = %@", playersInSection);
-    Player *t = [playersInSection objectAtIndex:indexPath.row];
-    DLog(@"playerAtIndexPath = %@", t);
-    return t;
-    //    return [teamsInSection objectAtIndex:indexPath.row];
-}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -231,7 +309,8 @@
     }
     
     // Configure the cell...
-    Player *p = [self playerAtIndexPath:indexPath];
+    Player *p = [[self.myplayers objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+//    Player *p = [self playerAtIndexPath:indexPath];
     if (self.byNickname) {
         cell.textLabel.text = p.nickname;
         NSString *s = [NSString stringWithFormat:@"#%@, %@ %@", p.number, p.firstname, p.lastname]; 
@@ -249,10 +328,10 @@
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
-{
-    return [self.sections objectAtIndex:section];
-}
+//- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+//{
+//    return [self.sections objectAtIndex:section];
+//}
 
 /*
 // Override to support conditional editing of the table view.
@@ -293,17 +372,17 @@
 }
 */
 
-- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
-{
-    NSArray *keys = [_playersAsDictionary.allKeys sortedArrayUsingSelector:@selector(compare:)];
-    return keys; //[NSArray arrayWithObjects:[self.pla@"a", @"e", @"i", @"m", @"p", nil];
-}
-
-- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
-{
-    DLog(@"title = %@, index = %d", title, index);
-    return index;
-}
+//- (NSArray *)sectionIndexTitlesForTableView:(UITableView *)tableView
+//{
+//    NSArray *keys = [_playersAsDictionary.allKeys sortedArrayUsingSelector:@selector(compare:)];
+//    return keys; //[NSArray arrayWithObjects:[self.pla@"a", @"e", @"i", @"m", @"p", nil];
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString*)title atIndex:(NSInteger)index
+//{
+//    DLog(@"title = %@, index = %d", title, index);
+//    return index;
+//}
 
 #pragma mark - Table view delegate
 
@@ -320,7 +399,8 @@
     DLog(@"inddexPath: %d", indexPath.row);
     PlayerSummaryViewController *psvc = [[PlayerSummaryViewController alloc] init];
  //   psvc.hidesBottomBarWhenPushed = YES;
-    psvc.player = [self playerAtIndexPath:indexPath];
+    Player *p = [[self.myplayers objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    psvc.player = p;
     [self.navigationController pushViewController:psvc animated:YES];
     [psvc release]; 
     

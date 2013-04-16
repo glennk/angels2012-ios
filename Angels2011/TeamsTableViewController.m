@@ -13,6 +13,7 @@
 
 @interface TeamsTableViewController()
 @property (nonatomic, retain) NSDictionary * teamsAsDictionary;
+@property (nonatomic, retain) NSMutableArray * sectionLevels;
 @end
 
 @implementation TeamsTableViewController
@@ -21,9 +22,13 @@
 @synthesize teams = _teams;
 
 @synthesize teamsAsDictionary = _teamsAsDictionary;
+@synthesize sectionLevels = _sectionLevels;
 
 - (NSDictionary *)teamsAsDictionary
 {
+    if (!_sectionLevels)
+        _sectionLevels = [[NSMutableArray alloc] init];
+    
     if (!_teamsAsDictionary) {
         _teamsAsDictionary = [[NSMutableDictionary alloc] init];
         for (Team *t in _teams) {
@@ -35,21 +40,33 @@
                 NSMutableArray *a = [[[NSMutableArray alloc] init] autorelease];
                 [a addObject:t];
                 [_teamsAsDictionary setValue:a forKey:key];
+                [_sectionLevels addObject:key];
             }
         }
         DLog(@"teamsInDictionary = %@", _teamsAsDictionary);
+        DLog(@"sectionLevels = %@", _sectionLevels);
     }
+    
     return _teamsAsDictionary;
 }
 
-- (NSArray *)sections
+- (NSArray *)XXXsections
 {
     if (!_sections) {
-        _sections = [[self.teamsAsDictionary allKeys] retain];
+        _sections = [[[self.teamsAsDictionary allKeys] sortedArrayUsingSelector:@selector(compare:)] retain];
         DLog(@"sections = %@", _sections);
     }
     
     return _sections;
+}
+
+- (NSArray *)sections
+{
+    DLog(@"sections()");
+//    if (!_sectionLevels) {
+        [self teamsAsDictionary];
+//    }
+    return _sectionLevels;
 }
 
 - (void)loadRESTWithBlock:(void (^)(NSArray * restData))block

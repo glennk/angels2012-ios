@@ -20,7 +20,7 @@
 + (GCalEvent *)gcalEventFromJson:(NSDictionary *)data
 {
     GCalEvent *event = [[[GCalEvent alloc] init] autorelease];
-    event.title = [data objectForKey:@"title"];
+    event.title = [data objectForKey:@"summary"];
     event.description = [data objectForKey:@"description"];
     event.location = [data objectForKey:@"location"];
     // check shouldn't really be necessary due to guard condition below
@@ -93,9 +93,19 @@
     return gcal;
 }
 
+static NSString *seasonDateStr = @"01 August 2012";
+
+
 + (NSArray *)gcalFromUrl:(NSDate *)fromDate :(NSDate *)toDate
 {
     DLog(@"allGcalEvents");
+    
+    // Convert string to date object
+    NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+    [dateFormat setDateFormat:@"d LLLL yyyy"];
+    if (fromDate == nil)
+        fromDate = [dateFormat dateFromString:seasonDateStr];
+
     NSMutableArray *gcal = [[[NSMutableArray alloc] init] autorelease];
     NSURL *url = [AwsURLHelper getGoogleCal :fromDate :toDate];
     DLog(@"gcalFromUrl: %@", url);

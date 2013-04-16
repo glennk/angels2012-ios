@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSString * level;
 @property (nonatomic, retain) NSString * bats;
 @property (nonatomic, retain) NSString * throws;
+@property NSInteger sectionNumber;
 @property (nonatomic, retain) Parent * parents;
 
 //+ (Player *)playerFromJson:(NSDictionary *)jsonData;

@@ -233,10 +233,10 @@
     // Configure the cell...
     GCalEvent *t = [self entryAtIndexPath:indexPath];
     //DLog(@"cell = %@", t);
-    cell.textLabel.text = t.description;
+    cell.textLabel.text = t.title;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
  
-    NSString *detailText = [[[NSString alloc] initWithFormat:@"%@", t.location] autorelease];
+    NSString *detailText = [[[NSString alloc] initWithFormat:@"%@", t.description] autorelease];
 
     cell.detailTextLabel.text = detailText; //[t objectForKey:@"location"];
     return cell;

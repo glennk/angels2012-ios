@@ -11,7 +11,7 @@
 #import "AllPlayersTableViewController.h"
 #import "AllCoachesTableViewController.h"
 #import "CalendarTableViewController.h"
-#import "CountdownToOmahaViewController.h"
+//#import "CountdownToOmahaViewController.h"
 #import "WebViewController.h"
 //#import "LottaRows2ViewController.h"
 
@@ -38,21 +38,21 @@
     CalendarTableViewController *ctvc = [[CalendarTableViewController alloc] init];
     [nav4 pushViewController:ctvc animated:YES];
     
-    UINavigationController *nav5 = [[UINavigationController alloc] init];
-    CountdownToOmahaViewController *ctovc = [[CountdownToOmahaViewController alloc] init];
-    [nav5 pushViewController:ctovc animated:YES];
+//    UINavigationController *nav5 = [[UINavigationController alloc] init];
+//    CountdownToOmahaViewController *ctovc = [[CountdownToOmahaViewController alloc] init];
+//    [nav5 pushViewController:ctovc animated:YES];
     
 //    UINavigationController *nav6 = [[UINavigationController alloc] init];
 //    LottaRows2ViewController *lvc = [[LottaRows2ViewController alloc] init];
 //    [nav6 pushViewController:lvc animated:YES];
 
-    [ttvc release]; [aptvc release]; [actvc release]; [ctvc release]; [ctovc release]; /*[lvc release];*/
+    [ttvc release]; [aptvc release]; [actvc release]; [ctvc release]; /*[ctovc release]; [lvc release];*/
     
     UITabBarController *tbc = [[UITabBarController alloc] init];
-    tbc.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nav3, nav4, nav5, /*nav6,*/ nil];
+    tbc.viewControllers = [NSArray arrayWithObjects:nav1, nav2, nav3, nav4, /*nav5, nav6,*/ nil];
 
     [_window addSubview:tbc.view];
-    [nav1 release]; [nav2 release]; [nav3 release]; [nav4 release]; [nav5 release]; //causes crash [tbc release];
+    [nav1 release]; [nav2 release]; [nav3 release]; [nav4 release]; //[nav5 release]; //causes crash [tbc release];
     
     [self.window makeKeyAndVisible];
     return YES;
